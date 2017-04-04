@@ -8,8 +8,9 @@ import Profile from '../components/header/profile'
 import { getMenuData } from '../actions/headerActions'
 
 class Header extends Component {
-  constructor() {
+  constructor(props) {
     super(props)
+    console.log('getMenu')
     this.props.getMenu()
   }
   componentDidMount() {

@@ -1,0 +1,24 @@
+{
+  "links": [
+    {
+      "text": "Склад",
+      "path": "/stock",
+      "active": false
+    },
+    {
+      "text": "Продажи",
+      "path": "/sales",
+      "active": false
+    },
+    {
+      "text": "Закупки",
+      "path": "/orders",
+      "active": false
+    },
+    {
+      "text": "Контрагенты",
+      "path": "/partners",
+      "active": false
+    }
+  ]
+}

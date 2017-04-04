@@ -7,11 +7,11 @@ export function getMenuData() {
 			payload: null
 		})
 
-		fetch('header.json')
+		fetch('menu.json')
 			.then(function(response) {
-		    return response.json()
+		    	return response.json()
 		  }).then(function(res) {
-		    console.log('parsed json', json)
+		    console.log('parsed json', res)
 		    dispatch({
 	        type: 'GET_MENU_SUCCESS',
 	        payload: res

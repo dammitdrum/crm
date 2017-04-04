@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
+import { applyMiddleware, compose, createStore } from 'redux'
 import rootReducer from './reducers'
 import thunk from 'redux-thunk'
 import { Router, Route, hashHistory} from 'react-router'
@@ -15,26 +15,40 @@ import Orders from './containers/orders'
 import Partners from './containers/partners'
 import User from './containers/user'
 
-
 const initialState = {
 
 }
 
-const store = createStore(
-	rootReducer,
-	initialState,
-	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-	applyMiddleware(thunk)
-)
+const middleware = [thunk]
 
-const history = syncHistoryWithStore(hashHistory, store)
+const enhancers = []
+
+let composeEnhancers = compose
+
+
+const composeWithDevToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+if (typeof composeWithDevToolsExtension === 'function') {
+  composeEnhancers = composeWithDevToolsExtension
+}
+
+const store = createStore(
+  rootReducer,
+  initialState,
+  composeEnhancers(
+    applyMiddleware(...middleware),
+    ...enhancers
+  )
+)
+store.asyncReducers = {}
 
 if (module.hot) {
-	module.hot.accept('./reducers', () => {
-		const nextRootReducer = require('./reducers')
-		store.replaceReducer(nextRootReducer)
-	})
+  module.hot.accept('./reducers', () => {
+    const reducers = require('./reducers').default
+    store.replaceReducer(reducers(store.asyncReducers))
+  })
 }
+
+const history = syncHistoryWithStore(hashHistory, store)
 
 ReactDOM.render(
   <Provider store={store}>
