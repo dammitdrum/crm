@@ -47,9 +47,7 @@ const header = (state = initialState, action) => {
         profile.active = true;
       }
       return { ...state, menu: menu, profile: profile }
-
-    case 'CLICK_MENU':
-      console.log(action.payload)
+      
     default:
       return state
   }

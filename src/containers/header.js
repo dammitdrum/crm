@@ -10,9 +10,9 @@ import { getMenuData } from '../actions/headerActions'
 class Header extends Component {
   constructor(props) {
     super(props)
-    let links = this.props.menu.links
+    let links = props.menu.links
     if (!links.length) {
-      this.props.getMenu()
+      props.getMenu()
     }
   }
   render() {
