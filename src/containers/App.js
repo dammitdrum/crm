@@ -21,9 +21,11 @@ class App extends Component {
   }
 }
 
-export default connect(
-    (state) => ({
-      header: state.header,
-      stock: state.stock
-    })
-)(App)
+const mapStateToProps = state => (
+  {
+    header: state.header,
+    stock: state.stock
+  }
+)
+
+export default connect(mapStateToProps)(App)
