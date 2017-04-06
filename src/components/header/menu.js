@@ -9,7 +9,7 @@ class Menu extends Component {
 			list = <li><strong>loading...</strong></li>
 		}
 		if (data.error) {
-			list = <li><strong>Ops...</strong></li>
+			list = <li><strong>{data.error}</strong></li>
 		}
 		if (data.links) {
 			list = data.links.map((link,i) =>

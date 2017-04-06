@@ -10,17 +10,29 @@ import { getMenuData } from '../actions/headerActions'
 class Header extends Component {
   constructor(props) {
     super(props)
-    let links = props.menu.links
-    if (!links.length) {
+    if (!props.menu.links.length) {
       props.getMenu()
-    }
+    } 
   }
   render() {
+    let props = this.props
+    let links = props.menu.links
+
+    if (links && links.length) {
+      links.forEach(link => {
+        link.active = false
+        if (link.path === props.path) {
+          link.active = true
+        }
+      })
+    }
+    props.profile.active = props.profile.path === props.path ? true : false
+
     return (
     	<nav className="navbar navbar-default navbar-static-top">
   		 	<div className="container">
-  			    <Menu menu={ this.props.menu }/>
-            <Profile profile={ this.props.profile }/>
+  			    <Menu menu={ props.menu }/>
+            <Profile profile={ props.profile }/>
   		 	</div>
   		</nav>
     )
@@ -30,7 +42,8 @@ class Header extends Component {
 const mapStateToProps = state => (
   {
     menu: state.header.menu,
-    profile: state.header.profile
+    profile: state.header.profile,
+    path: state.header.path
   }
 )
 

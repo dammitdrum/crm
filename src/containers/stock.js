@@ -24,9 +24,10 @@ class Stock extends Component {
       content = <h3 className='text-center'><strong>Ops...</strong></h3>
     } 
     if (data.items) {
+      let categories = _.uniqBy(data.items, 'category').map((item) => item.category)
       content = (
         <div>
-          <Categories categories={ data.categories }/>
+          <Categories categories={ categories }/>
           <Table items={ data.items }/>
         </div>
       )
@@ -47,7 +48,6 @@ const mapStateToProps = state => (
   {
     title: state.stock.title,
     items: state.stock.items,
-    categories: state.stock.categories,
     loaded: state.stock.loaded
   }
 )

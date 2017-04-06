@@ -6,7 +6,6 @@ class Categories extends Component {
 		
 		return (
 			<ul className='nav nav-pills stock_filters'>
-				<li><a>Все товары</a></li>
 				{
 					cats.map((item, i) =>
 			      <li key={ i }>

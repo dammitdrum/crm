@@ -2,23 +2,19 @@
   "links": [
     {
       "text": "Склад",
-      "path": "/stock",
-      "active": false
+      "path": "/stock"
     },
     {
       "text": "Продажи",
-      "path": "/sales",
-      "active": false
+      "path": "/sales"
     },
     {
       "text": "Закупки",
-      "path": "/orders",
-      "active": false
+      "path": "/orders"
     },
     {
       "text": "Контрагенты",
-      "path": "/partners",
-      "active": false
+      "path": "/partners"
     }
   ]
 }
