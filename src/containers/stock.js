@@ -25,6 +25,7 @@ class Stock extends Component {
     } 
     if (data.items) {
       let categories = _.uniqBy(data.items, 'category').map((item) => item.category)
+      categories.unshift('Все категории')
       content = (
         <div>
           <Categories categories={ categories }/>
