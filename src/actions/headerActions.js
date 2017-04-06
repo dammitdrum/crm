@@ -9,7 +9,7 @@ export function getMenuData() {
 
 		fetch('menu.json')
 			.then(function(response) {
-		    	return response.json()
+		    return response.json()
 		  }).then(function(res) {
 		    console.log('parsed json', res)
 		    dispatch({

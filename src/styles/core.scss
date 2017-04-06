@@ -93,6 +93,9 @@ h2 {
 }
 .stock_filters {
     margin-bottom: 20px;
+    a {
+        cursor: pointer;
+    }
 }
 .stock_controls {
     position: relative;

@@ -10,15 +10,13 @@ export function getStockData() {
 		fetch('/stock/read')
 			.then(function(response) {
 		    return response.json()
-		  })
-			.then(function(res) {
-		    console.log(res)
+		  }).then(function(res) {
 		    dispatch({
 	        type: 'GET_STOCK_SUCCESS',
 	        payload: res
 	      })
 		  }).catch(function(err) {
-		  	console.log(res)
+		  	console.log(err)
 		    dispatch({
 	        type: 'GET_STOCK_FAIL',
 	        payload: err

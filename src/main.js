@@ -53,13 +53,14 @@ const history = syncHistoryWithStore(hashHistory, store)
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-    	<Route path="/" component={App}></Route>
-    	<Route path="/stock" component={Stock}></Route>
-    	<Route path="/sales" component={Sales}></Route>
-    	<Route path="/orders" component={Orders}></Route>
-    	<Route path="/partners" component={Partners}></Route>
-    	<Route path="/user" component={User}></Route>
+    	<Route path="/" component={App}/>
+    	<Route path="/stock" component={Stock}/>
+    	<Route path="/sales" component={Sales}/>
+    	<Route path="/orders" component={Orders}/>
+    	<Route path="/partners" component={Partners}/>
+    	<Route path="/user" component={User}/>
     </Router>
   </Provider>,
   document.getElementById('root')
 )
+

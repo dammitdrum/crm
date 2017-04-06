@@ -45,10 +45,10 @@ class Stock extends Component {
 
 const mapStateToProps = state => (
   {
-    title: state.title,
-    items: state.items,
-    categories: state.categories,
-    loaded: state.loaded
+    title: state.stock.title,
+    items: state.stock.items,
+    categories: state.stock.categories,
+    loaded: state.stock.loaded
   }
 )
 

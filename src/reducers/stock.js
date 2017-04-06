@@ -1,6 +1,4 @@
-//import uniqBy from 'lodash-es'
-import fp from 'lodash/fp';
-const _ = fp();
+import _ from 'lodash'
 
 const initialState = {
   title: 'Склад',
@@ -10,15 +8,14 @@ const initialState = {
 }
 
 const stock = (state = initialState, action) => {
-	switch (action.payload) {
+	switch (action.type) {
 		case 'GET_STOCK_REQUEST':
 			return { ...state, loading: true, fetch: true }
 
 		case 'GET_STOCK_SUCCESS':
-			console.log(action.payload)
 			return { ...state,
 				items: action.payload,
-				categories: _.uniqBy(action.payload, 'category'),
+				categories: _.uniqBy(action.payload, 'category').map((item) => item.category),
 				loaded: true,
 				fetch: true
 			}
