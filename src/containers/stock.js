@@ -5,14 +5,24 @@ import { bindActionCreators } from 'redux'
 import Header from './header'
 import Categories from '../components/stock/categories'
 import Table from '../components/stock/table'
-import { getStockData } from '../actions/stockActions'
+import { getStockData, filterByCategory } from '../actions/stockActions'
+import Enum from '../Enum'
 
 class Stock extends Component {
 	constructor(props) {
     super(props)
     if (!props.loaded) {
-      props.getStock()
+      props.getStockData()
     }
+  }
+  clickCategory(e) {
+    if (e.target.closest('.active')) return
+    let category = e.target.innerText
+    let items = []
+    if (category !== Enum.defaultCatStock) {
+      items = _.filter(this.props.items, item => item.category === category)
+    }
+    this.props.filterByCategory(items, category)
   }
   render() {
     let data = this.props, content
@@ -23,13 +33,18 @@ class Stock extends Component {
     if (data.error) {
       content = <h3 className='text-center'><strong>Ops...</strong></h3>
     } 
-    if (data.items) {
-      let categories = _.uniqBy(data.items, 'category').map((item) => item.category)
-      categories.unshift('Все категории')
+    if (data.items.length) {
+      let categories = [Enum.defaultCatStock].concat(
+        _.uniqBy(data.items, 'category').map((item) => item.category).sort()
+      )
       content = (
         <div>
-          <Categories categories={ categories }/>
-          <Table items={ data.items }/>
+          <Categories 
+            categories={ categories } 
+            handler={ ::this.clickCategory }
+            active={ data.activeCategory }
+          />
+          <Table items={ data.filtered.length ? data.filtered : data.items }/>
         </div>
       )
     }
@@ -49,13 +64,17 @@ const mapStateToProps = state => (
   {
     title: state.stock.title,
     items: state.stock.items,
-    loaded: state.stock.loaded
+    filtered: state.stock.filtered,
+    activeCategory: state.stock.category,
+    loaded: state.stock.loaded,
+    loading: state.stock.loading
   }
 )
 
 const mapDispatchToProps = dispatch => (
   {
-    getStock: bindActionCreators(getStockData, dispatch)
+    getStockData: bindActionCreators(getStockData, dispatch),
+    filterByCategory: bindActionCreators(filterByCategory, dispatch)
   }
 )
 

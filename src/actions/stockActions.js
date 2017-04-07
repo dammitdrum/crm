@@ -24,3 +24,10 @@ export function getStockData() {
 		  })
 	}
 }
+
+export function filterByCategory(items, category) {
+	return {
+		type: 'FILTER_BY_CATEGORY',
+		payload: { items, category }
+	}
+}

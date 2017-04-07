@@ -6,6 +6,7 @@ import rootReducer from './reducers'
 import thunk from 'redux-thunk'
 import { Router, Route, hashHistory} from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
+import _ from 'lodash'
 
 import './styles/core.scss'
 import App from './containers/App'
