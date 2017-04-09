@@ -2,12 +2,14 @@
 const project = require('../config/project.config')
 const app = require('../server/main')
 const debug = require('debug')('app:bin:dev-server')
+const bodyParser= require('body-parser')
 
 const mongoose = require('mongoose')
 const crypto = require('crypto')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
+app.use(bodyParser.json());
 app.use(session({
     secret: 'dammitdrum',
     resave: false,

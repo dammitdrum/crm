@@ -34,8 +34,8 @@ export function createItem(item) {
 		fetch('/stock/create', {
 			method: 'POST',
 			headers: {
-				'Accept': 'application/json, text/plain, */*',
-		    'Content-Type': 'application/json;charset=UTF-8'
+				'Accept': 'application/json',
+		    'Content-Type': 'application/json'
 		  },
 			body: JSON.stringify(item)
 		}).then(function(res) {
