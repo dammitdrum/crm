@@ -81,8 +81,13 @@ h2 {
         text-align: center;
         width: 50px;
     }
-    th.long {
-        width: 130px;
+    th {
+        &.long {
+            width: 130px;
+        }
+        &.pointer {
+            cursor: pointer;
+        }
     }
     .caret {
         opacity: 0;
@@ -99,8 +104,6 @@ h2 {
 }
 .stock_controls {
     position: relative;
-    .add_butt {
-    }
 }
 .options_td {
     width: 50px;
@@ -116,7 +119,7 @@ h2 {
       margin-bottom: 4px;
   }
   input {
-      margin-bottom: 10px;
+      margin-bottom: 5px;
   }
   .ng-valid.ng-touched {
     border-color: limegreen;

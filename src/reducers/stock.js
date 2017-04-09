@@ -3,8 +3,10 @@ import Enum from '../Enum'
 const initialState = {
   title: 'Склад',
   items: [],
-  filtered: [],
-  category: Enum.defaultCatStock,
+  searchQuery: '',
+  activeCategory: Enum.defaultCatStock,
+  isOpenCreateModal: false,
+  sortBy: { code: 'price', type: 'asc' },
   loading: false,
   loaded: false
 }
@@ -26,11 +28,30 @@ const stock = (state = initialState, action) => {
 		case 'GET_STOCK_FAIL':
 			return { ...state, error: true }
 
-		case 'FILTER_BY_CATEGORY':
+		case 'CREATE_ITEM_REQUEST':
+			return { ...state}
+
+		case 'CREATE_ITEM_SUCCESS':
 			return { ...state, 
-				filtered: payload.items, 
-				category: payload.category 
+				items: state.items.push(payload),
+				isOpenCreateModal: false
 			}
+
+		case 'CREATE_ITEM_FAIL':
+			return { ...state}
+
+		case 'FILTER_BY_CATEGORY':
+			return { ...state, activeCategory: payload }
+
+		case 'FILTER_BY_SEARCH':
+			return { ...state, searchQuery: payload }
+
+		case 'SHOW_CREATE_MODAL':
+			return { ...state, isOpenCreateModal: payload }
+
+		case 'SORT_STOCK_DATA':
+			return { ...state, sortBy: payload }
+
 		default:
       return state
 	}

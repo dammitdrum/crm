@@ -8,8 +8,8 @@ export function getStockData() {
 		})
 
 		fetch('/stock/read')
-			.then(function(response) {
-		    return response.json()
+			.then(function(res) {
+		    return res.json()
 		  }).then(function(res) {
 		    dispatch({
 	        type: 'GET_STOCK_SUCCESS',
@@ -25,9 +25,61 @@ export function getStockData() {
 	}
 }
 
-export function filterByCategory(items, category) {
+export function createItem(item) {
+	return dispatch => {
+		dispatch({
+			type: 'CREATE_ITEM_REQUEST',
+			payload: null
+		})
+		fetch('/stock/create', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json, text/plain, */*',
+		    'Content-Type': 'application/json;charset=UTF-8'
+		  },
+			body: JSON.stringify(item)
+		}).then(function(res) {
+		    return res.json()
+		  }).then(function(res) {
+		    dispatch({
+	        type: 'CREATE_ITEM_SUCCESS',
+	        payload: res
+	      })
+		  }).catch(function(err) {
+		  	console.log(err)
+		    dispatch({
+	        type: 'CREATE_ITEM_FAIL',
+	        payload: err
+	      })
+		  })
+	}
+}
+
+
+export function filterByCategory(category) {
 	return {
 		type: 'FILTER_BY_CATEGORY',
-		payload: { items, category }
+		payload: category
+	}
+}
+
+export function filterBySearch(query) {
+	return {
+		type: 'FILTER_BY_SEARCH',
+		payload: query
+	}
+}
+
+export function showCreateModal(toggle) {
+	return {
+		type: 'SHOW_CREATE_MODAL',
+		payload: toggle
+	}
+}
+
+export function sortStockData(sortBy) {
+	return {
+		type: 'SORT_STOCK_DATA',
+		payload: sortBy
 	}
 }
