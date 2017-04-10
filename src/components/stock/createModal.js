@@ -3,7 +3,10 @@ import { Modal } from 'react-bootstrap'
 
 class CreateModal extends Component {
 	mess(e) {
-		e.target.setCustomValidity('Не менее одного символа')
+		e.target.setCustomValidity('Только буквы')
+	}
+	change(e) {
+		try{ e.target.setCustomValidity('') }catch(e){}
 	}
 	render() {
 		const props = this.props
@@ -16,7 +19,10 @@ class CreateModal extends Component {
 	        <Modal.Body>
 	        	<div className="input_field">
 		        	<p className='title'>Наименование</p>
-						  <input type='text' className='input' name='name' required onInvalid={ ::this.mess }/>
+						  <input type='text' className='input' name='name' required 
+						  	pattern='^[A-Za-zА-Яа-яЁё\s]+$'
+						  	onInvalid={ ::this.mess } 
+						  	onChange={ ::this.change }/>
 						</div>
 						<div className="input_field">
 		        	<p className='title'>Артикул</p>
