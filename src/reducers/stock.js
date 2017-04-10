@@ -32,8 +32,10 @@ const stock = (state = initialState, action) => {
 			return { ...state}
 
 		case 'CREATE_ITEM_SUCCESS':
+			let items = state.items
+			items.push(payload)
 			return { ...state, 
-				items: state.items.push(payload),
+				items: items,
 				isOpenCreateModal: false
 			}
 

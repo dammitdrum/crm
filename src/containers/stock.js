@@ -40,7 +40,7 @@ class Stock extends Component {
     let code = e.target.getAttribute('data-sort')
     let type = this.props.sortBy.type === 'desc' ? 'asc' : 'desc'
     type = code !== this.props.sortBy.code ? 'asc' : type
-    this.props.sortStockData({ code: code, type: type })
+    this.props.sortStockData({ code, type })
   }
   submitCreate(e) {
     e.preventDefault()
@@ -66,7 +66,7 @@ class Stock extends Component {
     }
 
     // data not empty
-    if (data.items.length) {
+    if (data.loaded) {
       categories = [Enum.defaultCatStock].concat(
         _.uniqBy(data.items, 'category').map((item) => item.category).sort()
       )

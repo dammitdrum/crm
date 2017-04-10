@@ -43,7 +43,7 @@ export function createItem(item) {
 		  }).then(function(res) {
 		    dispatch({
 	        type: 'CREATE_ITEM_SUCCESS',
-	        payload: res
+	        payload: res.item
 	      })
 		  }).catch(function(err) {
 		  	console.log(err)
