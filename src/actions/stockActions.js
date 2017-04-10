@@ -70,9 +70,9 @@ export function filterBySearch(query) {
 	}
 }
 
-export function showCreateModal(toggle) {
+export function showItemModal(toggle) {
 	return {
-		type: 'SHOW_CREATE_MODAL',
+		type: 'SHOW_ITEM_MODAL',
 		payload: toggle
 	}
 }

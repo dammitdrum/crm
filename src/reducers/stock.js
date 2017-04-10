@@ -5,7 +5,7 @@ const initialState = {
   items: [],
   searchQuery: '',
   activeCategory: Enum.defaultCatStock,
-  isOpenCreateModal: false,
+  isOpenItemModal: false,
   sortBy: { code: 'price', type: 'asc' },
   loading: false,
   loaded: false
@@ -36,7 +36,7 @@ const stock = (state = initialState, action) => {
 			items.push(payload)
 			return { ...state, 
 				items: items,
-				isOpenCreateModal: false
+				isOpenItemModal: false
 			}
 
 		case 'CREATE_ITEM_FAIL':
@@ -48,8 +48,8 @@ const stock = (state = initialState, action) => {
 		case 'FILTER_BY_SEARCH':
 			return { ...state, searchQuery: payload }
 
-		case 'SHOW_CREATE_MODAL':
-			return { ...state, isOpenCreateModal: payload }
+		case 'SHOW_ITEM_MODAL':
+			return { ...state, isOpenItemModal: payload }
 
 		case 'SORT_STOCK_DATA':
 			return { ...state, sortBy: payload }

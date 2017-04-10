@@ -1,6 +1,17 @@
 import React, { Component } from 'react'
 
 class Table extends Component {
+	constructor(props) {
+		super(props)
+		this.headInfo =[
+      { text: 'Артикул', code: 'art'},
+      { text: 'Наименование', code: 'name'},
+      { text: 'Цена', code: 'price'},
+      { text: 'Наличие', code: 'quantity'},
+      { text: 'Обязательства', code: 'debt'},
+      { text: 'Заказано', code: 'ordered'}
+    ]
+	}
 	render() {
 		let props = this.props
 		let data = props.data, list
@@ -34,7 +45,7 @@ class Table extends Component {
 					<tr className={ data.sortBy.type === 'asc' ? '' : 'dropup'} >
 						<th>#<span className="caret"></span></th>
 						{
-							props.headInfo.map((item, i) => 
+							this.headInfo.map((item, i) => 
 								<th key={ i } 
 									className="pointer" 
 									data-sort={ item.code } 
