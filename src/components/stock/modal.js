@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
 
-class ItemModal extends Component {
+class StockModal extends Component {
 	constructor(props) {
 		super(props)
 		this.fields = [
@@ -19,10 +19,25 @@ class ItemModal extends Component {
 	}
 	render() {
 		const props = this.props
+		let title, btnClass, btnText
+
+		switch (props.params.mode) {
+			case 'create':
+				title = 'Создание нового товара'
+				btnClass = 'btn-success'
+				btnText = 'Создать товар'
+				break
+
+			case 'edit':
+				title = 'Редактирование товара'
+				btnClass = 'btn-warning'
+				btnText = 'Сохранить товар'
+				break
+		}
 		return (
-			<Modal show={ props.toggle } onHide={ props.close }>
+			<Modal show={ props.params.show } onHide={ props.close }>
         <Modal.Header closeButton>
-          <h3 className='modal-title'>Создание нового товара</h3>
+          <h3 className='modal-title'>{ title }</h3>
         </Modal.Header>
         <form className='modal_form'  onSubmit={ props.submit }>
 	        <Modal.Body>
@@ -42,8 +57,8 @@ class ItemModal extends Component {
 	        	}
 	        </Modal.Body>
 	        <Modal.Footer>
-	          <button className="btn btn-success" type="submit">
-	          	Создать товар <span className="glyphicon glyphicon-cloud-upload"></span>
+	          <button className={ 'btn ' + btnClass } type="submit">
+	          	{ btnText } <span className="glyphicon glyphicon-cloud-upload"></span>
 	          </button>
 	        </Modal.Footer>
       	</form>
@@ -52,4 +67,4 @@ class ItemModal extends Component {
 	}
 } 
 
-export default ItemModal
+export default StockModal

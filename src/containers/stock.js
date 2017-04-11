@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux'
 import Header from './header'
 import Controls from '../components/stock/controls'
 import Table from '../components/stock/table'
-import ItemModal from '../components/stock/itemModal'
+import StockModal from '../components/stock/modal'
 import { 
     getStockData, 
     filterByCategory, 
     filterBySearch, 
-    showItemModal,
+    showModal,
     sortStockData,
     createItem
   } from '../actions/stockActions'
@@ -30,19 +30,20 @@ class Stock extends Component {
   changeSearch(e) {
     this.props.filterBySearch(e.target.value)
   }
-  openModal() {
-    this.props.showItemModal(true)
+  openModal(e) {
+    let mode = e.currentTarget.getAttribute('data-mode')
+    this.props.showModal({ show: true, mode})
   }
   closeModal() {
-    this.props.showItemModal(false)
+    this.props.showModal({ show: false, mode: this.props.modal.mode})
   }
   clickSort(e) {
-    let code = e.target.getAttribute('data-sort')
+    let code = e.currentTarget.getAttribute('data-sort')
     let type = this.props.sortBy.type === 'desc' ? 'asc' : 'desc'
     type = code !== this.props.sortBy.code ? 'asc' : type
     this.props.sortStockData({ code, type })
   }
-  submitCreate(e) {
+  submitModal(e) {
     e.preventDefault()
     this.props.createItem({
       name: e.target.name.value,
@@ -110,10 +111,10 @@ class Stock extends Component {
           <h2 className="main_title">{ data.title }</h2>
           { content }
         </div>
-        <ItemModal 
-          toggle={ data.isOpenItemModal } 
+        <StockModal 
+          params={ data.modal } 
           close={ ::this.closeModal }
-          submit={ ::this.submitCreate }
+          submit={ ::this.submitModal }
         />
       </div>
     )
@@ -126,7 +127,7 @@ const mapStateToProps = state => (
     items: state.stock.items,
     searchQuery: state.stock.searchQuery,
     activeCategory: state.stock.activeCategory,
-    isOpenItemModal: state.stock.isOpenItemModal,
+    modal: state.stock.modal,
     loaded: state.stock.loaded,
     loading: state.stock.loading,
     sortBy: state.stock.sortBy
@@ -138,7 +139,7 @@ const mapDispatchToProps = dispatch => (
     getStockData: bindActionCreators(getStockData, dispatch),
     filterByCategory: bindActionCreators(filterByCategory, dispatch),
     filterBySearch: bindActionCreators(filterBySearch, dispatch),
-    showItemModal: bindActionCreators(showItemModal, dispatch),
+    showModal: bindActionCreators(showModal, dispatch),
     sortStockData: bindActionCreators(sortStockData, dispatch),
     createItem: bindActionCreators(createItem, dispatch)
   }

@@ -70,10 +70,10 @@ export function filterBySearch(query) {
 	}
 }
 
-export function showItemModal(toggle) {
+export function showModal(params) {
 	return {
-		type: 'SHOW_ITEM_MODAL',
-		payload: toggle
+		type: 'SHOW_MODAL',
+		payload: params
 	}
 }
 

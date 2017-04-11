@@ -23,7 +23,7 @@ class Categories extends Component {
 			    onChange={ this.props.inputHandler }
 			    value={ this.props.query }
 			  />
-			  <button className="btn btn-default add_butt pull-right" onClick={ this.props.openModal }>
+			  <button className="btn btn-default add_butt pull-right" data-mode='create' onClick={ this.props.openModal }>
 			    <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать товар
 			  </button>
 			</div>
