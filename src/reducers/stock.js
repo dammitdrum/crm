@@ -51,7 +51,7 @@ const stock = (state = initialState, action) => {
 		case 'SHOW_MODAL':
 			return { ...state, modal: payload }
 
-		case 'SORT_STOCK_DATA':
+		case 'SORT_DATA':
 			return { ...state, sortBy: payload }
 
 		default:

@@ -7,11 +7,11 @@ import Controls from '../components/stock/controls'
 import Table from '../components/stock/table'
 import StockModal from '../components/stock/modal'
 import { 
-    getStockData, 
+    getData, 
     filterByCategory, 
     filterBySearch, 
     showModal,
-    sortStockData,
+    sortData,
     createItem
   } from '../actions/stockActions'
 import Enum from '../Enum'
@@ -20,7 +20,7 @@ class Stock extends Component {
 	constructor(props) {
     super(props)
     if (!props.loaded) {
-      props.getStockData()
+      props.getData()
     } 
   }
   clickCategory(e) {
@@ -41,7 +41,7 @@ class Stock extends Component {
     let code = e.currentTarget.getAttribute('data-sort')
     let type = this.props.sortBy.type === 'desc' ? 'asc' : 'desc'
     type = code !== this.props.sortBy.code ? 'asc' : type
-    this.props.sortStockData({ code, type })
+    this.props.sortData({ code, type })
   }
   submitModal(e) {
     e.preventDefault()
@@ -136,11 +136,11 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    getStockData: bindActionCreators(getStockData, dispatch),
+    getData: bindActionCreators(getData, dispatch),
     filterByCategory: bindActionCreators(filterByCategory, dispatch),
     filterBySearch: bindActionCreators(filterBySearch, dispatch),
     showModal: bindActionCreators(showModal, dispatch),
-    sortStockData: bindActionCreators(sortStockData, dispatch),
+    sortData: bindActionCreators(sortData, dispatch),
     createItem: bindActionCreators(createItem, dispatch)
   }
 )

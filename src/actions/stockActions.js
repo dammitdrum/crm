@@ -1,6 +1,6 @@
 import 'whatwg-fetch'
 
-export function getStockData() {
+export function getData() {
 	return dispatch => {
 		dispatch({
 			type: 'GET_STOCK_REQUEST',
@@ -77,9 +77,9 @@ export function showModal(params) {
 	}
 }
 
-export function sortStockData(sortBy) {
+export function sortData(sortBy) {
 	return {
-		type: 'SORT_STOCK_DATA',
+		type: 'SORT_DATA',
 		payload: sortBy
 	}
 }
