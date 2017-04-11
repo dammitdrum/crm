@@ -12,7 +12,8 @@ import {
     filterBySearch, 
     showModal,
     sortData,
-    createItem
+    createItem,
+    deleteItem
   } from '../actions/stockActions'
 import Enum from '../Enum'
 
@@ -37,11 +38,18 @@ class Stock extends Component {
   closeModal() {
     this.props.showModal({ show: false, mode: this.props.modal.mode})
   }
-  clickSort(e) {
+  onSort(e) {
     let code = e.currentTarget.getAttribute('data-sort')
     let type = this.props.sortBy.type === 'desc' ? 'asc' : 'desc'
     type = code !== this.props.sortBy.code ? 'asc' : type
     this.props.sortData({ code, type })
+  }
+  onDelete(e) {
+    let id = e.currentTarget.getAttribute('data-id')
+    this.props.deleteItem(id)
+  }
+  onEdit(e) {
+    let id = e.currentTarget.getAttribute('data-id')
   }
   submitModal(e) {
     e.preventDefault()
@@ -99,7 +107,9 @@ class Stock extends Component {
           <Table 
             data={ data }
             items= { items }
-            clickSort={ ::this.clickSort }
+            onSort={ ::this.onSort }
+            onDelete={ ::this.onDelete }
+            onEdit={ ::this.onEdit }
           />
         </div>
       )
@@ -141,7 +151,8 @@ const mapDispatchToProps = dispatch => (
     filterBySearch: bindActionCreators(filterBySearch, dispatch),
     showModal: bindActionCreators(showModal, dispatch),
     sortData: bindActionCreators(sortData, dispatch),
-    createItem: bindActionCreators(createItem, dispatch)
+    createItem: bindActionCreators(createItem, dispatch),
+    deleteItem: bindActionCreators(deleteItem, dispatch)
   }
 )
 

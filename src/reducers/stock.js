@@ -1,7 +1,7 @@
 import Enum from '../Enum'
 
 const initialState = {
-  title: 'Склад',
+  title: 'Прайс-лист',
   items: [],
   searchQuery: '',
   activeCategory: Enum.defaultCatStock,
@@ -13,6 +13,7 @@ const initialState = {
 
 const stock = (state = initialState, action) => {
 	let payload = action.payload
+	let items = state.items
 
 	switch (action.type) {
 		case 'GET_STOCK_REQUEST':
@@ -28,11 +29,7 @@ const stock = (state = initialState, action) => {
 		case 'GET_STOCK_FAIL':
 			return { ...state, error: true }
 
-		case 'CREATE_ITEM_REQUEST':
-			return { ...state}
-
 		case 'CREATE_ITEM_SUCCESS':
-			let items = state.items
 			items.push(payload)
 			return { ...state, 
 				items: items,
@@ -40,6 +37,15 @@ const stock = (state = initialState, action) => {
 			}
 
 		case 'CREATE_ITEM_FAIL':
+			return { ...state}
+
+		case 'DELETE_ITEM_SUCCESS':
+			items = _.filter(items, item => item._id !== payload)
+			return { ...state, 
+				items: items
+			}
+
+		case 'DELETE_ITEM_FAIL':
 			return { ...state}
 
 		case 'FILTER_BY_CATEGORY':

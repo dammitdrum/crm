@@ -19,7 +19,7 @@ class Table extends Component {
 		if (!props.items.length) {
 			list = (
 				<tr>
-					<td colSpan="7" className="text-center">
+					<td colSpan="8" className="text-center">
 						<strong>Ничего нет
 							{ data.searchQuery ? ' по запросу "' + data.searchQuery.trim() + '" в категории ' + data.activeCategory : ''}
 						</strong>
@@ -36,6 +36,14 @@ class Table extends Component {
 	      	<td>{ item.quantity }</td>
 	      	<td>{ item.debt }</td>
 	      	<td>{ item.ordered }</td>
+	      	<td>
+	      		<button className="btn btn-sm btn-warning" data-id={ item._id } onClick={ props.onEdit }>
+							<span className="glyphicon glyphicon-edit"></span>
+						</button>&nbsp;
+						<button className="btn btn-sm btn-danger" data-id={ item._id } onClick={ props.onDelete }>
+							<span className="glyphicon glyphicon-remove"></span>
+						</button>
+	      	</td>
 	      </tr>
 	    )	
 		}
@@ -43,19 +51,20 @@ class Table extends Component {
 			<table className='stock_table table table-hover table-striped table-bordered'>
 				<thead>
 					<tr className={ data.sortBy.type === 'asc' ? '' : 'dropup'} >
-						<th>#<span className="caret"></span></th>
+						<th>#</th>
 						{
 							this.headInfo.map((item, i) => 
 								<th key={ i } 
 									className="pointer" 
 									data-sort={ item.code } 
-									onClick={ props.clickSort }
+									onClick={ props.onSort }
 									title={'Сортировать по "' + item.text + '"'}>
 									{ item.text }
 									<span className={ data.sortBy.code === item.code ? 'caret visible' : 'caret'}></span>
 								</th>
 							)
 						}
+						<th>Ред./Уд.</th>
 					</tr>
 				</thead>
 				<tbody>{list}</tbody>

@@ -27,10 +27,6 @@ export function getData() {
 
 export function createItem(item) {
 	return dispatch => {
-		dispatch({
-			type: 'CREATE_ITEM_REQUEST',
-			payload: null
-		})
 		fetch('/stock/create', {
 			method: 'POST',
 			headers: {
@@ -49,6 +45,25 @@ export function createItem(item) {
 		  	console.log(err)
 		    dispatch({
 	        type: 'CREATE_ITEM_FAIL',
+	        payload: err
+	      })
+		  })
+	}
+}
+
+export function deleteItem(id) {
+	return dispatch => {
+		fetch('/stock/delete/'+id, {
+			method: 'DELETE'
+		}).then(function() {
+		    dispatch({
+	        type: 'DELETE_ITEM_SUCCESS',
+	        payload: id
+	      })
+		  }).catch(function(err) {
+		  	console.log(err)
+		    dispatch({
+	        type: 'DELETE_ITEM_FAIL',
 	        payload: err
 	      })
 		  })

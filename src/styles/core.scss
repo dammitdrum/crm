@@ -74,12 +74,15 @@ h2 {
     text-align: center;
 }
 .stock_table {
-    th:first-child {
-        text-align: center;
-    }
-    td:first-child {
-        text-align: center;
-        width: 50px;
+    td {
+        &:first-child {
+            text-align: center;
+            width: 50px;
+        }
+        &:last-child {
+            text-align: center;
+            width: 100px;  
+        }
     }
     th {
         &.long {
@@ -88,12 +91,32 @@ h2 {
         &.pointer {
             cursor: pointer;
         }
+        &:last-child {
+            text-align: center;
+        }
+        &:first-child {
+            text-align: center;
+        }
+    }
+    tbody>tr {
+        .btn {
+            opacity: 0.15;
+        }
+        &:hover {
+            .btn {
+                opacity: 1;
+            }
+        }
     }
     .caret {
         opacity: 0;
         &.visible {
             opacity: 1;
         }
+    }
+    &.table>tbody>tr>td {
+        vertical-align: middle;
+        padding: 5px 8px;
     }
 }
 .stock_filters {
@@ -124,6 +147,9 @@ h2 {
   .ng-valid.ng-touched {
     border-color: limegreen;
   }
+}
+.modal-footer {
+    text-align: center;
 }
 .search_field {
     width: 300px;

@@ -7,7 +7,7 @@ class StockModal extends Component {
 		this.fields = [
       { text: 'Наименование', name: 'name', reg: '.{3,}', mess: 'Не менее 3 символов'},
       { text: 'Артикул', name: 'art', reg: '.{3,}', mess: 'Не менее 3 символов'},
-      { text: 'Цена', name: 'art', reg: '^[0-9]+$', mess: 'Только цифры'},
+      { text: 'Цена', name: 'price', reg: '^[0-9]+$', mess: 'Только цифры'},
       { text: 'Категория', name: 'category', reg: '.{3,}', mess: 'Не менее 3 символов'},
     ]
 	}
@@ -35,9 +35,9 @@ class StockModal extends Component {
 				break
 		}
 		return (
-			<Modal show={ props.params.show } onHide={ props.close }>
+			<Modal bsSize='sm' show={ props.params.show } onHide={ props.close }>
         <Modal.Header closeButton>
-          <h3 className='modal-title'>{ title }</h3>
+          <h4 className='modal-title'>{ title }</h4>
         </Modal.Header>
         <form className='modal_form'  onSubmit={ props.submit }>
 	        <Modal.Body>
