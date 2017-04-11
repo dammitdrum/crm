@@ -40,9 +40,8 @@ const stock = (state = initialState, action) => {
 			return { ...state}
 
 		case 'DELETE_ITEM_SUCCESS':
-			items = _.filter(items, item => item._id !== payload)
 			return { ...state, 
-				items: items
+				items: items.filter(item => item._id !== payload)
 			}
 
 		case 'DELETE_ITEM_FAIL':
