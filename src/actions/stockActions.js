@@ -53,6 +53,11 @@ export function createItem(item) {
 
 export function deleteItem(id) {
 	return dispatch => {
+		dispatch({
+      type: 'DELETE_ITEM_REQUEST',
+      payload: id
+    })
+
 		fetch('/stock/delete/'+id, {
 			method: 'DELETE'
 		}).then(function() {

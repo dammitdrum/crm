@@ -28,7 +28,7 @@ class Table extends Component {
 			)
 		} else {
 			list = props.items.map((item, i) =>
-	      <tr key={ i }>
+	      <tr key={ i } className={ item.deleting ? 'deleting' : ''}>
 	      	<td>{ i + 1 }</td>
 	      	<td>{ item.art }</td>
 	      	<td>{ item.name }</td>

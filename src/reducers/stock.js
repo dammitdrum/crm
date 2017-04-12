@@ -13,7 +13,6 @@ const initialState = {
 
 const stock = (state = initialState, action) => {
 	let payload = action.payload
-	let items = state.items
 
 	switch (action.type) {
 		case 'GET_STOCK_REQUEST':
@@ -30,18 +29,27 @@ const stock = (state = initialState, action) => {
 			return { ...state, error: true }
 
 		case 'CREATE_ITEM_SUCCESS':
-			items.push(payload)
 			return { ...state, 
-				items: items,
+				items: state.items.push(payload).concat(),
 				modal: false
 			}
 
 		case 'CREATE_ITEM_FAIL':
 			return { ...state}
 
+		case 'DELETE_ITEM_REQUEST':
+			state.items.forEach(item => {
+				if (item._id === payload) {
+					item.deleting = true
+				}
+			})
+			return { ...state,
+				items: state.items.concat()
+			}
+
 		case 'DELETE_ITEM_SUCCESS':
 			return { ...state, 
-				items: items.filter(item => item._id !== payload)
+				items: state.items.filter(item => item._id !== payload)
 			}
 
 		case 'DELETE_ITEM_FAIL':
