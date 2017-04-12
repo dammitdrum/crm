@@ -51,6 +51,7 @@ class StockModal extends Component {
 								  	data-mess={ field.mess }
 								  	onInvalid={ ::this.mess } 
 								  	onChange={ ::this.change }
+								  	defaultValue={ props.item ? props.item[field.name] : '' }
 								  	required/>
 								</div>
 	        		)

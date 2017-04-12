@@ -51,6 +51,32 @@ export function createItem(item) {
 	}
 }
 
+export function updateItem(item) {
+	return dispatch => {
+		fetch('/stock/edit'+item._id, {
+			method: 'PUT',
+			headers: {
+				'Accept': 'application/json',
+		    'Content-Type': 'application/json'
+		  },
+			body: JSON.stringify(item)
+		}).then(function(res) {
+		    return res.json()
+		  }).then(function(res) {
+		    dispatch({
+	        type: 'UPDATE_ITEM_SUCCESS',
+	        payload: res.item
+	      })
+		  }).catch(function(err) {
+		  	console.log(err)
+		    dispatch({
+	        type: 'UPDATE_ITEM_FAIL',
+	        payload: err
+	      })
+		  })
+	}
+}
+
 export function deleteItem(id) {
 	return dispatch => {
 		dispatch({

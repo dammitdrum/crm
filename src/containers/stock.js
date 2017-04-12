@@ -6,7 +6,7 @@ import Header from './header'
 import Controls from '../components/stock/controls'
 import Table from '../components/stock/table'
 import StockModal from '../components/stock/modal'
-import { getData, filterByCategory, filterBySearch, showModal, sortData, createItem, deleteItem } from '../actions/stockActions'
+import * as Actions from '../actions/stockActions'
 import Enum from '../Enum'
 
 class Stock extends Component {
@@ -24,8 +24,9 @@ class Stock extends Component {
     this.props.filterBySearch(e.target.value)
   }
   openModal(e) {
-    let mode = e.currentTarget.getAttribute('data-mode')
-    this.props.showModal({ show: true, mode})
+    let itemId = e.currentTarget.getAttribute('data-id')
+    let mode = itemId ? 'edit' : 'create'
+    this.props.showModal({ show: true, mode, itemId })
   }
   closeModal() {
     this.props.showModal({ show: false, mode: this.props.modal.mode})
@@ -40,17 +41,18 @@ class Stock extends Component {
     let id = e.currentTarget.getAttribute('data-id')
     this.props.deleteItem(id)
   }
-  onEdit(e) {
-    let id = e.currentTarget.getAttribute('data-id')
-  }
   submitModal(e) {
     e.preventDefault()
-    this.props.createItem({
-      name: e.target.name.value,
-      art: e.target.art.value,
-      price: e.target.price.value,
-      category: e.target.category.value
+    let modalData = {}
+    e.target.querySelectorAll('input[name]').forEach(field => {
+      modalData[field.getAttribute('name')] = field.value
     })
+    console.log(modalData)
+    if (this.props.modal.itemId) {
+      this.props.updateItem(modalData)
+    } else {
+      this.props.createItem(modalData)
+    }
   }
   render() {
     let data = this.props
@@ -101,7 +103,7 @@ class Stock extends Component {
             items= { items }
             onSort={ ::this.onSort }
             onDelete={ ::this.onDelete }
-            onEdit={ ::this.onEdit }
+            openModal={ ::this.openModal }
           />
         </div>
       )
@@ -114,7 +116,9 @@ class Stock extends Component {
           { content }
         </div>
         <StockModal 
-          params={ data.modal } 
+          params={ data.modal }
+          item={ data.modal.itemId ? 
+            data.items.filter(item => item._id === data.modal.itemId)[0] : null }
           close={ ::this.closeModal }
           submit={ ::this.submitModal }
         />
@@ -138,13 +142,14 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    getData: bindActionCreators(getData, dispatch),
-    filterByCategory: bindActionCreators(filterByCategory, dispatch),
-    filterBySearch: bindActionCreators(filterBySearch, dispatch),
-    showModal: bindActionCreators(showModal, dispatch),
-    sortData: bindActionCreators(sortData, dispatch),
-    createItem: bindActionCreators(createItem, dispatch),
-    deleteItem: bindActionCreators(deleteItem, dispatch)
+    getData:          bindActionCreators(Actions.getData, dispatch),
+    filterByCategory: bindActionCreators(Actions.filterByCategory, dispatch),
+    filterBySearch:   bindActionCreators(Actions.filterBySearch, dispatch),
+    showModal:        bindActionCreators(Actions.showModal, dispatch),
+    sortData:         bindActionCreators(Actions.sortData, dispatch),
+    createItem:       bindActionCreators(Actions.createItem, dispatch),
+    updateItem:         bindActionCreators(Actions.updateItem, dispatch),
+    deleteItem:       bindActionCreators(Actions.deleteItem, dispatch)
   }
 )
 

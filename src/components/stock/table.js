@@ -37,7 +37,7 @@ class Table extends Component {
 	      	<td>{ item.debt }</td>
 	      	<td>{ item.ordered }</td>
 	      	<td>
-	      		<button className="btn btn-sm btn-warning" data-id={ item._id } onClick={ props.onEdit }>
+	      		<button className="btn btn-sm btn-warning" data-id={ item._id } onClick={ props.openModal }>
 							<span className="glyphicon glyphicon-edit"></span>
 						</button>&nbsp;
 						<button className="btn btn-sm btn-danger" data-id={ item._id } onClick={ props.onDelete }>

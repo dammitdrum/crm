@@ -31,7 +31,19 @@ const stock = (state = initialState, action) => {
 		case 'CREATE_ITEM_SUCCESS':
 			return { ...state, 
 				items: state.items.push(payload).concat(),
-				modal: false
+				modal: {
+					show: false,
+					mode: 'create'
+				}
+			}
+
+		case 'UPDATE_ITEM_SUCCESS':
+			return { ...state, 
+				items: state.items.filter(item => item._id !== payload._id).push(payload),
+				modal: {
+					show: false,
+					mode: 'edit'
+				}
 			}
 
 		case 'CREATE_ITEM_FAIL':
