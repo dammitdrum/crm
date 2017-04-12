@@ -6,15 +6,7 @@ import Header from './header'
 import Controls from '../components/stock/controls'
 import Table from '../components/stock/table'
 import StockModal from '../components/stock/modal'
-import { 
-    getData, 
-    filterByCategory, 
-    filterBySearch, 
-    showModal,
-    sortData,
-    createItem,
-    deleteItem
-  } from '../actions/stockActions'
+import { getData, filterByCategory, filterBySearch, showModal, sortData, createItem, deleteItem } from '../actions/stockActions'
 import Enum from '../Enum'
 
 class Stock extends Component {
