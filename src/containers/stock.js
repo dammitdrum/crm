@@ -47,9 +47,8 @@ class Stock extends Component {
     e.target.querySelectorAll('input[name]').forEach(field => {
       modalData[field.getAttribute('name')] = field.value
     })
-    console.log(modalData)
     if (this.props.modal.itemId) {
-      this.props.updateItem(modalData)
+      this.props.updateItem(modalData, this.props.modal.itemId)
     } else {
       this.props.createItem(modalData)
     }

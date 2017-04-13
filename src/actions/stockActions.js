@@ -3,8 +3,7 @@ import 'whatwg-fetch'
 export function getData() {
 	return dispatch => {
 		dispatch({
-			type: 'GET_STOCK_REQUEST',
-			payload: null
+			type: 'GET_STOCK_REQUEST'
 		})
 
 		fetch('/stock/read')
@@ -41,6 +40,12 @@ export function createItem(item) {
 	        type: 'CREATE_ITEM_SUCCESS',
 	        payload: res.item
 	      })
+	      setTimeout(() => {
+	      	dispatch({
+		        type: 'STOP_FLASH_CREATE_ITEM',
+		        payload: res.item
+		      })
+	      }, 1000)
 		  }).catch(function(err) {
 		  	console.log(err)
 		    dispatch({
@@ -51,9 +56,9 @@ export function createItem(item) {
 	}
 }
 
-export function updateItem(item) {
+export function updateItem(item, id) {
 	return dispatch => {
-		fetch('/stock/edit'+item._id, {
+		fetch('/stock/update/'+id, {
 			method: 'PUT',
 			headers: {
 				'Accept': 'application/json',
@@ -67,6 +72,12 @@ export function updateItem(item) {
 	        type: 'UPDATE_ITEM_SUCCESS',
 	        payload: res.item
 	      })
+	      setTimeout(() => {
+	      	dispatch({
+		        type: 'STOP_FLASH_UPDATE_ITEM',
+		        payload: id
+		      })
+	      }, 1000)
 		  }).catch(function(err) {
 		  	console.log(err)
 		    dispatch({

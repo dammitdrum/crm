@@ -12,6 +12,17 @@ class Table extends Component {
       { text: 'Заказано', code: 'ordered'}
     ]
 	}
+	getItemClass(item) {
+		if (item.deleting) {
+			return 'deleting'
+		}
+		if (item.creating) {
+			return 'creating'
+		}
+		if (item.updating) {
+			return 'updating'
+		}
+	}
 	render() {
 		let props = this.props
 		let data = props.data, list
@@ -28,7 +39,7 @@ class Table extends Component {
 			)
 		} else {
 			list = props.items.map((item, i) =>
-	      <tr key={ i } className={ item.deleting ? 'deleting' : ''}>
+	      <tr key={ i } className={ this.getItemClass(item) }>
 	      	<td>{ i + 1 }</td>
 	      	<td>{ item.art }</td>
 	      	<td>{ item.name }</td>

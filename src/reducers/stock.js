@@ -29,25 +29,51 @@ const stock = (state = initialState, action) => {
 			return { ...state, error: true }
 
 		case 'CREATE_ITEM_SUCCESS':
+			state.items.push({ ...payload, creating: true })
 			return { ...state, 
-				items: state.items.push(payload).concat(),
+				items: state.items.concat(),
 				modal: {
 					show: false,
 					mode: 'create'
 				}
 			}
 
-		case 'UPDATE_ITEM_SUCCESS':
+		case 'CREATE_ITEM_FAIL':
+			return { ...state}
+
+		case 'STOP_FLASH_CREATE_ITEM':
+			state.items.forEach(item => {
+				if (item._id === payload._id) {
+					item.creating = false
+				}
+			})
 			return { ...state, 
-				items: state.items.filter(item => item._id !== payload._id).push(payload),
+				items: state.items.concat()
+			}
+
+		case 'UPDATE_ITEM_SUCCESS':
+			let updateItems = state.items.filter(item => item._id !== payload._id)
+			updateItems.push({ ...payload, updating: true })
+			return { ...state, 
+				items: updateItems,
 				modal: {
 					show: false,
 					mode: 'edit'
 				}
 			}
 
-		case 'CREATE_ITEM_FAIL':
+		case 'UPDATE_ITEM_FAIL':
 			return { ...state}
+
+		case 'STOP_FLASH_UPDATE_ITEM':
+			state.items.forEach(item => {
+				if (item._id === payload) {
+					item.updating = false
+				}
+			})
+			return { ...state, 
+				items: state.items.concat()
+			}
 
 		case 'DELETE_ITEM_REQUEST':
 			state.items.forEach(item => {

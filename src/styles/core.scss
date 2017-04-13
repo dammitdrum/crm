@@ -75,6 +75,7 @@ h2 {
 }
 .stock_table {
     td {
+        transition: all 0.25s;
         &:first-child {
             text-align: center;
             width: 50px;
@@ -99,8 +100,21 @@ h2 {
         }
     }
     tbody>tr {
+        transition: all 0.25s;
         &.deleting {
             background: #ffd9d9;
+            td {
+                opacity: 0.5
+            }
+        }
+        &.creating {
+            background: #d5ffd4;
+            td {
+                opacity: 0.5
+            }
+        }
+        &.updating {
+            background: #fff3d1;
             td {
                 opacity: 0.5
             }
