@@ -11,8 +11,7 @@ import _ from 'lodash'
 import './styles/core.scss'
 import App from './containers/App'
 import Stock from './containers/stock'
-import Sales from './containers/sales'
-import Orders from './containers/orders'
+import Deals from './containers/deals'
 import Partners from './containers/partners'
 import User from './containers/user'
 
@@ -56,8 +55,7 @@ ReactDOM.render(
     <Router history={history}>
     	<Route path="/" component={App}/>
     	<Route path="/stock" component={Stock}/>
-    	<Route path="/sales" component={Sales}/>
-    	<Route path="/orders" component={Orders}/>
+    	<Route path="/deals" component={Deals}/>
     	<Route path="/partners" component={Partners}/>
     	<Route path="/user" component={User}/>
     </Router>

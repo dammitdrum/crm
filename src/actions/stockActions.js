@@ -40,12 +40,6 @@ export function createItem(item) {
 	        type: 'CREATE_ITEM_SUCCESS',
 	        payload: res.item
 	      })
-	      setTimeout(() => {
-	      	dispatch({
-		        type: 'STOP_FLASH_CREATE_ITEM',
-		        payload: res.item
-		      })
-	      }, 1000)
 		  }).catch(function(err) {
 		  	console.log(err)
 		    dispatch({
@@ -77,7 +71,7 @@ export function updateItem(item, id) {
 		        type: 'STOP_FLASH_UPDATE_ITEM',
 		        payload: id
 		      })
-	      }, 1000)
+	      }, 2000)
 		  }).catch(function(err) {
 		  	console.log(err)
 		    dispatch({

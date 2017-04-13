@@ -29,7 +29,7 @@ const stock = (state = initialState, action) => {
 			return { ...state, error: true }
 
 		case 'CREATE_ITEM_SUCCESS':
-			state.items.push({ ...payload, creating: true })
+			state.items.push(payload)
 			return { ...state, 
 				items: state.items.concat(),
 				modal: {
@@ -40,16 +40,6 @@ const stock = (state = initialState, action) => {
 
 		case 'CREATE_ITEM_FAIL':
 			return { ...state}
-
-		case 'STOP_FLASH_CREATE_ITEM':
-			state.items.forEach(item => {
-				if (item._id === payload._id) {
-					item.creating = false
-				}
-			})
-			return { ...state, 
-				items: state.items.concat()
-			}
 
 		case 'UPDATE_ITEM_SUCCESS':
 			let updateItems = state.items.filter(item => item._id !== payload._id)

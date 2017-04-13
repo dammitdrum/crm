@@ -60,7 +60,7 @@ var Partner = new Schema({
     type: String
 })
 
-var Sale = new Schema({
+var Deal = new Schema({
     date: { type: Date, default: Date.now },
     number: { type: Number, unique: true, required: true},
     customer: Partner,
@@ -70,19 +70,9 @@ var Sale = new Schema({
     state: { type: String, default: 'new'}
 });
 
-var Order = new Schema({
-    date: { type: Date, default: Date.now },
-    number: { type: Number, unique: true, required: true},
-    supplier: Partner,
-    items: [{id: String, number: Number, price: Number}],
-    sum: { type: Number, default: 0},
-    state: { type: String, default: 'new'}
-});
-
 var UserModel = mongoose.model('User', User);
 var ItemModel = mongoose.model('Item', Item);
-var SaleModel = mongoose.model('Sale', Sale);
-var OrderModel = mongoose.model('Order', Order);
+var DealModel = mongoose.model('Deal', Deal);
 var PartnerModel = mongoose.model('Partner', Partner);
 
 function hash(text) {
@@ -133,11 +123,8 @@ app.get('/stock/read', function (req, res) {
 app.get('/partners/read', function (req, res) {
     readHandler(PartnerModel,req,res);
 });
-app.get('/sales/read', function (req, res) {
-    readHandler(SaleModel,req,res);
-});
-app.get('/orders/read', function (req, res) {
-    readHandler(OrderModel,req,res);
+app.get('/deals/read', function (req, res) {
+    readHandler(DealModel,req,res);
 });
 app.get('/users/read', function (req, res) {
     readHandler(UserModel,req,res);
@@ -167,8 +154,8 @@ app.post('/stock/create', function (req, res) {
 
     createHandler(item,res,'item');
 });
-app.post('/sales/create', function (req, res) {
-    var sale = new SaleModel({
+app.post('/deals/create', function (req, res) {
+    var deal = new DealModel({
         number: req.body.number,
         customer: req.body.customer,
         items: req.body.items,
@@ -176,17 +163,7 @@ app.post('/sales/create', function (req, res) {
         manager: req.body.manager
     });
 
-   createHandler(sale,res,'sale');
-});
-app.post('/orders/create', function (req, res) {
-    var order = new OrderModel({
-        number: req.body.number,
-        supplier: req.body.supplier,
-        items: req.body.items,
-        sum: req.body.sum
-    });
-
-   createHandler(order,res,'order');
+   createHandler(deal,res,'deal');
 });
 app.post('/partners/create', function (req, res) {
     var partner = new PartnerModel({
@@ -227,11 +204,8 @@ function createHandler(item,res,str) {
 app.put('/stock/update/:id', function (req, res){
    updateHandler(ItemModel,req,res,'item');
 });
-app.put('/sales/update/:id', function (req, res){
-    updateHandler(SaleModel,req,res,'sale');
-});
-app.put('/orders/update/:id', function (req, res){
-    updateHandler(OrderModel,req,res,'order');
+app.put('/deals/update/:id', function (req, res){
+    updateHandler(DealModel,req,res,'deal');
 });
 app.put('/partners/update/:id', function (req, res){
     updateHandler(PartnerModel,req,res,'partner');
@@ -266,11 +240,8 @@ function updateHandler(Model,req,res,str) {
 app.delete('/stock/delete/:id', function (req, res){
     deleteHandler(ItemModel,req,res,'item');
 });
-app.delete('/sales/delete/:id', function (req, res){
-    deleteHandler(SaleModel,req,res,'sale');
-});
-app.delete('/orders/delete/:id', function (req, res){
-    deleteHandler(OrderModel,req,res,'order');
+app.delete('/deals/delete/:id', function (req, res){
+    deleteHandler(DealModel,req,res,'deal');
 });
 app.delete('/partners/delete/:id', function (req, res){
     deleteHandler(PartnerModel,req,res,'partner');

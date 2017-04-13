@@ -171,10 +171,20 @@ h2 {
 .modal-footer {
     text-align: center;
 }
+.clear_search {
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 24px;
+    &:hover {
+        color: red;
+    }
+}
 .search_field {
     width: 300px;
     margin-bottom: 20px;
+    margin-right: 5px;
     height: 30px;
+    float: left;
 }
 .panel_user {
     width: 300px;

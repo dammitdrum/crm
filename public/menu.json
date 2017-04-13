@@ -5,12 +5,8 @@
       "path": "/stock"
     },
     {
-      "text": "Продажи",
-      "path": "/sales"
-    },
-    {
-      "text": "Закупки",
-      "path": "/orders"
+      "text": " Сделки",
+      "path": "/deals"
     },
     {
       "text": "Контрагенты",

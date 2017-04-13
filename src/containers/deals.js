@@ -3,13 +3,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import Header from './header'
-import Controls from '../components/stock/controls'
-import Table from '../components/stock/table'
-import StockModal from '../components/stock/modal'
-import * as Actions from '../actions/stockActions'
+import Controls from '../components/deals/controls'
+import Table from '../components/deals/table'
+import * as Actions from '../actions/dealsActions'
 import Enum from '../Enum'
 
-class Stock extends Component {
+class Deals extends Component {
 	constructor(props) {
     super(props)
     if (!props.loaded) {
@@ -23,14 +22,6 @@ class Stock extends Component {
   changeSearch(e) {
     this.props.filterBySearch(e.target.value)
   }
-  openModal(e) {
-    let itemId = e.currentTarget.getAttribute('data-id')
-    let mode = itemId ? 'edit' : 'create'
-    this.props.showModal({ show: true, mode, itemId })
-  }
-  closeModal() {
-    this.props.showModal({ show: false, mode: this.props.modal.mode})
-  }
   clearSearch() {
     this.props.filterBySearch('')
   }
@@ -39,22 +30,6 @@ class Stock extends Component {
     let type = this.props.sortBy.type === 'desc' ? 'asc' : 'desc'
     type = code !== this.props.sortBy.code ? 'asc' : type
     this.props.sortData({ code, type })
-  }
-  onDelete(e) {
-    let id = e.currentTarget.getAttribute('data-id')
-    this.props.deleteItem(id)
-  }
-  submitModal(e) {
-    e.preventDefault()
-    let modalData = {}
-    e.target.querySelectorAll('input[name]').forEach(field => {
-      modalData[field.getAttribute('name')] = field.value
-    })
-    if (this.props.modal.itemId) {
-      this.props.updateItem(modalData, this.props.modal.itemId)
-    } else {
-      this.props.createItem(modalData)
-    }
   }
   render() {
     let data = this.props
@@ -97,7 +72,6 @@ class Stock extends Component {
             clickCategory={ ::this.clickCategory }
             activeCategory={ data.activeCategory }
             changeSearch={ ::this.changeSearch }
-            openModal={ ::this.openModal }
             clearSearch={ ::this.clearSearch }
             query={ data.searchQuery }
           />
@@ -105,8 +79,6 @@ class Stock extends Component {
             data={ data }
             items= { items }
             onSort={ ::this.onSort }
-            onDelete={ ::this.onDelete }
-            openModal={ ::this.openModal }
           />
         </div>
       )
@@ -114,17 +86,10 @@ class Stock extends Component {
     return (
       <div>
         <Header/>
-        <div className='stock container'>
+        <div className='deals container'>
           <h2 className="main_title">{ data.title }</h2>
           { content }
         </div>
-        <StockModal 
-          params={ data.modal }
-          item={ data.modal.itemId ? 
-            data.items.filter(item => item._id === data.modal.itemId)[0] : null }
-          close={ ::this.closeModal }
-          submit={ ::this.submitModal }
-        />
       </div>
     )
   }
@@ -132,14 +97,13 @@ class Stock extends Component {
 
 const mapStateToProps = state => (
   {
-    title: state.stock.title,
-    items: state.stock.items,
-    searchQuery: state.stock.searchQuery,
-    activeCategory: state.stock.activeCategory,
-    modal: state.stock.modal,
-    loaded: state.stock.loaded,
-    loading: state.stock.loading,
-    sortBy: state.stock.sortBy
+    title: state.deals.title,
+    items: state.deals.items,
+    searchQuery: state.deals.searchQuery,
+    activeCategory: state.deals.activeCategory,
+    loaded: state.deals.loaded,
+    loading: state.deals.loading,
+    sortBy: state.deals.sortBy
   }
 )
 
@@ -148,12 +112,8 @@ const mapDispatchToProps = dispatch => (
     getData:          bindActionCreators(Actions.getData, dispatch),
     filterByCategory: bindActionCreators(Actions.filterByCategory, dispatch),
     filterBySearch:   bindActionCreators(Actions.filterBySearch, dispatch),
-    showModal:        bindActionCreators(Actions.showModal, dispatch),
-    sortData:         bindActionCreators(Actions.sortData, dispatch),
-    createItem:       bindActionCreators(Actions.createItem, dispatch),
-    updateItem:       bindActionCreators(Actions.updateItem, dispatch),
-    deleteItem:       bindActionCreators(Actions.deleteItem, dispatch)
+    sortData:         bindActionCreators(Actions.sortData, dispatch)
   }
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(Stock)
+export default connect(mapStateToProps, mapDispatchToProps)(Deals)
