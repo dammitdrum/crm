@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { applyMiddleware, compose, createStore } from 'redux'
 import rootReducer from './reducers'
 import thunk from 'redux-thunk'
-import { Router, Route, hashHistory} from 'react-router'
+import { Router, Route, hashHistory, IndexRoute} from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import _ from 'lodash'
 
@@ -53,11 +53,13 @@ const history = syncHistoryWithStore(hashHistory, store)
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-    	<Route path="/" component={App}/>
-    	<Route path="/stock" component={Stock}/>
-    	<Route path="/deals" component={Deals}/>
-    	<Route path="/partners" component={Partners}/>
-    	<Route path="/user" component={User}/>
+    	<Route path="/" component={App}>
+        <IndexRoute component={Stock}/>
+      	<Route path="/stock" component={Stock}/>
+      	<Route path="/deals" component={Deals}/>
+      	<Route path="/partners" component={Partners}/>
+      	<Route path="/user" component={User}/>
+      </Route>
     </Router>
   </Provider>,
   document.getElementById('root')
