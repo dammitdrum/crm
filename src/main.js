@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { applyMiddleware, compose, createStore } from 'redux'
 import rootReducer from './reducers'
 import thunk from 'redux-thunk'
-import { Router, Route, hashHistory, IndexRoute} from 'react-router'
+import { Router, Route, hashHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import _ from 'lodash'
 
@@ -14,6 +14,8 @@ import Stock from './containers/stock'
 import Deals from './containers/deals'
 import Partners from './containers/partners'
 import User from './containers/user'
+import Login from './containers/login'
+import Home from './containers/home'
 
 const initialState = {
 
@@ -54,12 +56,13 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
     	<Route path="/" component={App}>
-        <IndexRoute component={Stock}/>
+        <IndexRoute component={Home}/>
       	<Route path="/stock" component={Stock}/>
       	<Route path="/deals" component={Deals}/>
       	<Route path="/partners" component={Partners}/>
       	<Route path="/user" component={User}/>
       </Route>
+      <Route path="/login" component={Login}/>
     </Router>
   </Provider>,
   document.getElementById('root')

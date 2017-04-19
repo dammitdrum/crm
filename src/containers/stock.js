@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import Header from './header'
 import Controls from '../components/stock/controls'
 import Table from '../components/stock/table'
 import StockModal from '../components/stock/modal'
@@ -10,10 +9,9 @@ import * as Actions from '../actions/stockActions'
 import Enum from '../Enum'
 
 class Stock extends Component {
-	constructor(props) {
-    super(props)
-    if (!props.loaded) {
-      props.getData()
+  componentWillMount() {
+    if (!this.props.loaded) {
+      this.props.getData()
     } 
   }
   clickCategory(e) {
@@ -112,12 +110,9 @@ class Stock extends Component {
       )
     }
     return (
-      <div>
-        <Header/>
-        <div className='stock container'>
-          <h2 className="main_title">{ data.title }</h2>
-          { content }
-        </div>
+      <div className='stock container'>
+        <h2 className="main_title">{ data.title }</h2>
+        { content }
         <StockModal 
           params={ data.modal }
           item={ data.modal.itemId ? 

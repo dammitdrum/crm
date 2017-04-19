@@ -2,17 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import Header from './header'
 import Controls from '../components/deals/controls'
 import Table from '../components/deals/table'
 import * as Actions from '../actions/dealsActions'
 import Enum from '../Enum'
 
 class Deals extends Component {
-	constructor(props) {
-    super(props)
-    if (!props.loaded) {
-      props.getData()
+	componentWillMount() {
+    if (!this.props.loaded) {
+      this.props.getData()
     } 
   }
   clickCategory(e) {
@@ -84,12 +82,9 @@ class Deals extends Component {
       )
     }
     return (
-      <div>
-        <Header/>
-        <div className='deals container'>
-          <h2 className="main_title">{ data.title }</h2>
-          { content }
-        </div>
+      <div className='deals container'>
+        <h2 className="main_title">{ data.title }</h2>
+        { content }
       </div>
     )
   }
