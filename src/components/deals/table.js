@@ -4,12 +4,12 @@ class Table extends Component {
 	constructor(props) {
 		super(props)
 		this.headInfo =[
-      { text: 'Артикул', code: 'art'},
-      { text: 'Наименование', code: 'name'},
-      { text: 'Цена', code: 'price'},
-      { text: 'Наличие', code: 'quantity'},
-      { text: 'Обязательства', code: 'debt'},
-      { text: 'Заказано', code: 'ordered'}
+      { text: 'Дата создания', code: 'date' },
+      { text: 'Номер', code: 'number' },
+      { text: 'Покупатель', code: 'customer' },
+      { text: 'Кол-во товаров', code: 'items' },
+      { text: 'Сумма', code: 'sum' },
+      { text: 'Менеджер', code: 'manager' }
     ]
 	}
 	getItemClass(item) {
