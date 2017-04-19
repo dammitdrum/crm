@@ -16,6 +16,7 @@ import Partners from './containers/partners'
 import User from './containers/user'
 import Login from './containers/login'
 import Home from './containers/home'
+import NotFound from './containers/notFound'
 
 const initialState = {
 
@@ -63,6 +64,7 @@ ReactDOM.render(
       	<Route path="/user" component={User}/>
       </Route>
       <Route path="/login" component={Login}/>
+      <Route path='*' component={NotFound} />
     </Router>
   </Provider>,
   document.getElementById('root')
