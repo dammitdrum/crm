@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
 class Login extends Component {
-  
   render() {
     return (
       <div className="login container">
@@ -13,7 +12,7 @@ class Login extends Component {
 						<h4><strong>Пароль</strong></h4>
 						<input type="password" required/>
 						<hr/>
-						<button  className="btn btn-success" type="submit">Вход</button>
+						<button  className="btn btn-success" type="submit" onClick={ ::this.props.setAuthTrue }>Вход</button>
 					</form>
 				</div>
       </div>

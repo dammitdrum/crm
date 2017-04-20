@@ -1,18 +1,13 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router'
+import { hashHistory } from 'react-router'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
 import Header from './header'
 
 class App extends Component {
-	
-	componentWillMount() {
-		if (!this.props.isAuth) {
-			this.props.router.push('/login')
-		}
-	}
-  
+  componentWillMount() {
+    
+  }
   render() {
     return (
       <div>

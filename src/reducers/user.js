@@ -1,5 +1,5 @@
 const initialState = {
-  isAuth: true
+  isAuth: false
 }
 
 const user = (state = initialState, action) => {
@@ -7,9 +7,7 @@ const user = (state = initialState, action) => {
   switch (action.type) {
     case 'GET_USER_REQUEST':
       return { ...state, 
-        menu: {
-          loading: true
-        } 
+        isAuth: true
       }
 
     default:
@@ -18,4 +16,3 @@ const user = (state = initialState, action) => {
 }
 
 export default user
-
