@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 class Partners extends Component {
   render() {
     return (
-    	<div className='partners container'>
-    		<h3>This is partners baby!</h3>
+    	<div className='clients container'>
+    		<h3>This is clients page baby!</h3>
     	</div>
     )
   }

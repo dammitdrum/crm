@@ -4,8 +4,7 @@ const initialState = {
   },
   profile: {
     text: 'Админ',
-    path: '/user',
-    active: false
+    path: '/user'
   }
 }
 
@@ -21,9 +20,6 @@ const header = (state = initialState, action) => {
           error: action.payload
         } 
       }
-
-    case '@@router/LOCATION_CHANGE':
-      return { ...state, path: action.payload.pathname }
 
     default:
       return state

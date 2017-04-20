@@ -52,18 +52,17 @@ var Item = new Schema({
     category: { type: String, default: ''}
 });
 
-var Partner = new Schema({
+var Client = new Schema({
     name: String,
     fullname: String,
     contact: String,
-    person: String,
-    type: String
+    person: String
 })
 
 var Deal = new Schema({
     date: { type: Date, default: Date.now },
     number: { type: Number, unique: true, required: true},
-    customer: Partner,
+    client: Client,
     items: [{id: String, number: Number, price: Number}],
     sum: { type: Number, default: 0},
     manager: { type: Object, required: true},
@@ -73,7 +72,7 @@ var Deal = new Schema({
 var UserModel = mongoose.model('User', User);
 var ItemModel = mongoose.model('Item', Item);
 var DealModel = mongoose.model('Deal', Deal);
-var PartnerModel = mongoose.model('Partner', Partner);
+var ClientModel = mongoose.model('Client', Client);
 
 function hash(text) {
     return crypto.createHash('sha1')
@@ -120,8 +119,8 @@ app.post('/logout', function(req, res, next) {
 app.get('/stock/read', function (req, res) {
     readHandler(ItemModel,req,res);
 });
-app.get('/partners/read', function (req, res) {
-    readHandler(PartnerModel,req,res);
+app.get('/clients/read', function (req, res) {
+    readHandler(ClientModel,req,res);
 });
 app.get('/deals/read', function (req, res) {
     readHandler(DealModel,req,res);
@@ -165,8 +164,8 @@ app.post('/deals/create', function (req, res) {
 
    createHandler(deal,res,'deal');
 });
-app.post('/partners/create', function (req, res) {
-    var partner = new PartnerModel({
+app.post('/clients/create', function (req, res) {
+    var Client = new ClientModel({
         name: req.body.name,
         fullname: req.body.fullname,
         contact: req.body.contact,
@@ -174,7 +173,7 @@ app.post('/partners/create', function (req, res) {
         type: req.body.type,
     });
 
-    createHandler(partner,res,'partner');
+    createHandler(client,res,'client');
 });
 app.post('/users/create', function (req, res) {
     var user = new UserModel({
@@ -207,8 +206,8 @@ app.put('/stock/update/:id', function (req, res){
 app.put('/deals/update/:id', function (req, res){
     updateHandler(DealModel,req,res,'deal');
 });
-app.put('/partners/update/:id', function (req, res){
-    updateHandler(PartnerModel,req,res,'partner');
+app.put('/clients/update/:id', function (req, res){
+    updateHandler(clientModel,req,res,'client');
 });
 app.put('/users/update/:id', function (req, res){
     updateHandler(UserModel,req,res,'user');
@@ -243,8 +242,8 @@ app.delete('/stock/delete/:id', function (req, res){
 app.delete('/deals/delete/:id', function (req, res){
     deleteHandler(DealModel,req,res,'deal');
 });
-app.delete('/partners/delete/:id', function (req, res){
-    deleteHandler(PartnerModel,req,res,'partner');
+app.delete('/clients/delete/:id', function (req, res){
+    deleteHandler(ClientModel,req,res,'client');
 });
 app.delete('/users/delete/:id', function (req, res){
     deleteHandler(UserModel,req,res,'user');

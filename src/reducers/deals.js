@@ -1,12 +1,11 @@
-import Enum from '../Enum'
+import Enum from '../utils/Enum'
 
 const initialState = {
   title: 'Сделки',
-  items: [],
+  deals: [],
   searchQuery: '',
   activeCategory: Enum.defaultCatStock,
-  modal: { show: false, mode: 'create'},
-  sortBy: { code: 'price', type: 'asc' },
+  sortBy: { code: 'date', type: 'asc' },
   loading: false,
   loaded: false
 }
@@ -20,7 +19,7 @@ const deals = (state = initialState, action) => {
 
     case 'GET_DEALS_SUCCESS':
       return { ...state,
-        items: payload,
+        deals: payload,
         loading: false,
         loaded: true
       }

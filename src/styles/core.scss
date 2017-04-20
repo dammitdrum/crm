@@ -47,6 +47,10 @@ input {
 h2 {
     margin-bottom: 30px;
 }
+.nav.navbar-nav li a.active {
+    color: #555;
+    background-color: #e7e7e7;
+}
 .tar {
     text-align: right !important;
 }
@@ -193,136 +197,3 @@ h2 {
     padding-top: 100px;
 }
 
-
-.loading {
-    position: fixed;
-    z-index: 1002;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    background: rgb(235,235,235);
-    &.data {
-        background: rgba(255,255,255,0.85);
-        z-index: 1001;
-    }
-    .text {
-        position: absolute;
-        transform: translate(-50%,-50%);
-        left: 50%;
-        top: 50%;
-        font-size: 20px;
-    }
-}
-.cssload-loader {
-    width: 200px;
-    height: 150px;
-    position: absolute;
-    top: 220px;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    margin: auto;
-    text-align: center;
-}
-.cssload-loader .cssload-ball {
-    width: 40px;
-    height: 40px;
-    background-color: #333;
-    border-radius: 50%;
-    display: inline-block;
-    animation: cssload-motion 1.95s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-        -o-animation: cssload-motion 1.95s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-        -ms-animation: cssload-motion 1.95s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-        -webkit-animation: cssload-motion 1.95s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-        -moz-animation: cssload-motion 1.95s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-}
-@keyframes cssload-motion {
-    0% {
-        transform: translateX(0) scale(1);
-    }
-    25% {
-        transform: translateX(-100px) scale(0.3);
-    }
-    50% {
-        transform: translateX(0) scale(1);
-    }
-    75% {
-        transform: translateX(100px) scale(0.3);
-    }
-    100% {
-        transform: translateX(0) scale(1);
-    }
-}
-
-@-o-keyframes cssload-motion {
-    0% {
-        -o-transform: translateX(0) scale(1);
-    }
-    25% {
-        -o-transform: translateX(-100px) scale(0.3);
-    }
-    50% {
-        -o-transform: translateX(0) scale(1);
-    }
-    75% {
-        -o-transform: translateX(100px) scale(0.3);
-    }
-    100% {
-        -o-transform: translateX(0) scale(1);
-    }
-}
-
-@-ms-keyframes cssload-motion {
-    0% {
-        -ms-transform: translateX(0) scale(1);
-    }
-    25% {
-        -ms-transform: translateX(-100px) scale(0.3);
-    }
-    50% {
-        -ms-transform: translateX(0) scale(1);
-    }
-    75% {
-        -ms-transform: translateX(100px) scale(0.3);
-    }
-    100% {
-        -ms-transform: translateX(0) scale(1);
-    }
-}
-
-@-webkit-keyframes cssload-motion {
-    0% {
-        -webkit-transform: translateX(0) scale(1);
-    }
-    25% {
-        -webkit-transform: translateX(-100px) scale(0.3);
-    }
-    50% {
-        -webkit-transform: translateX(0) scale(1);
-    }
-    75% {
-        -webkit-transform: translateX(100px) scale(0.3);
-    }
-    100% {
-        -webkit-transform: translateX(0) scale(1);
-    }
-}
-
-@-moz-keyframes cssload-motion {
-    0% {
-        -moz-transform: translateX(0) scale(1);
-    }
-    25% {
-        -moz-transform: translateX(-100px) scale(0.3);
-    }
-    50% {
-        -moz-transform: translateX(0) scale(1);
-    }
-    75% {
-        -moz-transform: translateX(100px) scale(0.3);
-    }
-    100% {
-        -moz-transform: translateX(0) scale(1);
-    }
-}

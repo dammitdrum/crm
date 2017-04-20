@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import Controls from '../components/deals/controls'
-import Table from '../components/deals/table'
-import * as Actions from '../actions/dealsActions'
-import Enum from '../Enum'
+import Controls from './controls'
+import Table from './table'
+import * as Actions from '../../actions/dealsActions'
+import Enum from '../../utils/Enum'
 
 class Deals extends Component {
 	componentWillMount() {
@@ -32,7 +32,7 @@ class Deals extends Component {
   render() {
     let data = this.props
     let content
-    let items = []
+    let deals = []
     let categories = []
 
     if (data.loading) {
@@ -45,24 +45,14 @@ class Deals extends Component {
 
     // data not empty
     if (data.loaded) {
-      categories = [Enum.defaultCatStock].concat(
-        _.uniqBy(data.items, 'category').map((item) => item.category).sort()
-      )
-      if (data.activeCategory !== Enum.defaultCatStock) {
-        items = _.filter(
-          data.items, 
-          item => item.category === data.activeCategory
-        )
-      } else {
-        items = data.items
-      }
+      deals = data.deals
       if (data.searchQuery) {
-        items = _.filter(
-          items, 
-          item => item.name.toLowerCase().indexOf(data.searchQuery.trim()) !== -1
+        deals = _.filter(
+          deals, 
+          deal => deal.number.toLowerCase().indexOf(data.searchQuery.trim()) !== -1
         )
       }
-      items = _.orderBy(items, [data.sortBy.code], [data.sortBy.type])
+      deals = _.orderBy(deals, [data.sortBy.code], [data.sortBy.type])
       content = (
         <div>
           <Controls 
@@ -75,7 +65,7 @@ class Deals extends Component {
           />
           <Table 
             data={ data }
-            items= { items }
+            deals= { deals }
             onSort={ ::this.onSort }
           />
         </div>
@@ -93,7 +83,7 @@ class Deals extends Component {
 const mapStateToProps = state => (
   {
     title: state.deals.title,
-    items: state.deals.items,
+    deals: state.deals.deals,
     searchQuery: state.deals.searchQuery,
     activeCategory: state.deals.activeCategory,
     loaded: state.deals.loaded,

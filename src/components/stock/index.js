@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import Controls from '../components/stock/controls'
-import Table from '../components/stock/table'
-import StockModal from '../components/stock/modal'
-import * as Actions from '../actions/stockActions'
-import Enum from '../Enum'
+import Controls from './controls'
+import Table from './table'
+import StockModal from './modal'
+import * as Actions from '../../actions/stockActions'
+import Enum from '../../utils/Enum'
 
 class Stock extends Component {
   componentWillMount() {

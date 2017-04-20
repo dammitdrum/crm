@@ -1,4 +1,4 @@
-import Enum from '../Enum'
+import Enum from '../utils/Enum'
 
 const initialState = {
   title: 'Прайс-лист',

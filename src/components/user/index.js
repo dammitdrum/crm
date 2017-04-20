@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../actions/userActions'
-import Header from './header'
+import * as Actions from '../../actions/userActions'
 
 class User extends Component {
   render() {

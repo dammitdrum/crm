@@ -20,7 +20,7 @@ class Categories extends Component {
 				</ul>
 				<span className="search_wrap">
 				  <input type="text" 
-				    placeholder="Искать по названию" 
+				    placeholder="Искать по номеру" 
 				    className="search_field"
 				    onChange={ props.changeSearch }
 				    value={ props.query }

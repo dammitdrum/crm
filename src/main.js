@@ -9,14 +9,14 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import _ from 'lodash'
 
 import './styles/core.scss'
-import App from './containers/App'
-import Stock from './containers/stock'
-import Deals from './containers/deals'
-import Partners from './containers/partners'
-import User from './containers/user'
-import Login from './containers/login'
-import Home from './containers/home'
-import NotFound from './containers/notFound'
+import App from './components/app'
+import Stock from './components/stock/'
+import Deals from './components/deals/'
+import Clients from './components/clients/'
+import User from './components/user/'
+import Login from './components/login'
+import Home from './components/home'
+import NotFound from './components/notFound'
 
 const initialState = {
 
@@ -60,7 +60,7 @@ ReactDOM.render(
         <IndexRoute component={Home}/>
       	<Route path="/stock" component={Stock}/>
       	<Route path="/deals" component={Deals}/>
-      	<Route path="/partners" component={Partners}/>
+      	<Route path="/partners" component={Clients}/>
       	<Route path="/user" component={User}/>
       </Route>
       <Route path="/login" component={Login}/>
