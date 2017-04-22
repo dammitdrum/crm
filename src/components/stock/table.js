@@ -30,7 +30,7 @@ class Table extends Component {
 		if (!props.items.length) {
 			list = (
 				<tr>
-					<td colSpan="8" className="text-center">
+					<td colSpan="8" className="no_res">
 						<strong>Ничего нет
 							{ data.searchQuery ? ' по запросу "' + data.searchQuery.trim() + '" в категории ' + data.activeCategory : ''}
 						</strong>

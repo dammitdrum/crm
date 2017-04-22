@@ -4,7 +4,7 @@ const initialState = {
   title: 'Сделки',
   deals: [],
   searchQuery: '',
-  activeCategory: Enum.defaultCatStock,
+  activeState: Enum.defaultStateDeals,
   sortBy: { code: 'date', type: 'asc' },
   loading: false,
   loaded: false
@@ -27,8 +27,8 @@ const deals = (state = initialState, action) => {
     case 'GET_DEALS_FAIL':
       return { ...state, error: true }
 
-    case 'FILTER_BY_CATEGORY':
-      return { ...state, activeCategory: payload }
+    case 'FILTER_BY_STATE':
+      return { ...state, activeState: payload }
 
     case 'FILTER_BY_SEARCH':
       return { ...state, searchQuery: payload }

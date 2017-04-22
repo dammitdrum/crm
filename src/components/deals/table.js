@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import dateFormat from 'dateformat'
+import Enum from '../../utils/Enum'
 
 class Table extends Component {
 	constructor(props) {
@@ -12,16 +14,18 @@ class Table extends Component {
       { text: 'Менеджер', code: 'manager' }
     ]
 	}
-	getClassByState(state) {
+	getInfoByState(state) {
 		switch (state) {
+			case Enum.defaultStateDeals:
+				return { text: Enum.defaultStateDeals }
 			case 'new':
-				return { td: 'info', span: 'glyphicon-leaf'}
+				return { td: 'info', span: 'glyphicon-leaf', text: 'Новые' }
 			case 'approved':
-				return { td: 'success', span: 'glyphicon-ok'}
+				return { td: 'success', span: 'glyphicon-ok', text: 'Подтвержденные' }
 			case 'closed':
-				return { td: 'warning', span: 'glyphicon-lock'}
+				return { td: 'warning', span: 'glyphicon-lock', text: 'Завершенные' }
 			case 'canceled':
-				return { td: 'danger', span: 'glyphicon-remove'}
+				return { td: 'danger', span: 'glyphicon-remove', text: 'Отмененные' }
 		}
 	}
 	render() {
@@ -31,9 +35,12 @@ class Table extends Component {
 		if (!props.deals.length) {
 			list = (
 				<tr>
-					<td colSpan="7" className="text-center">
+					<td colSpan="7" className="no_res">
 						<strong>Ничего нет
-							{ data.searchQuery ? ' по запросу "' + data.searchQuery.trim() + '" в категории ' + data.activeCategory : ''}
+							{ data.searchQuery ? ' по запросу "' 
+							+ data.searchQuery.trim() 
+							+ '" в "' + this.getInfoByState(data.activeState).text 
+							+ '" сделки' : ''}
 						</strong>
 					</td>
 				</tr>
@@ -41,23 +48,23 @@ class Table extends Component {
 		} else {
 			list = props.deals.map((deal, i) =>
 	      <tr key={ i }>
-	      	<td className={ this.getClassByState(deal.state).td }>
-						<span className={ 'glyphicon ' + this.getClassByState(deal.state).span }></span>
+	      	<td className={ this.getInfoByState(deal.state).td }>
+						<span className={ 'glyphicon ' + this.getInfoByState(deal.state).span }></span>
 					</td>
-					<td>{ deal.date }</td>
+					<td>{ dateFormat(deal.date, 'yyyy.mm.dd HH:MM') }</td>
 					<td>{ '№' + deal.number}</td>
 					<td>{ deal.customer.name }</td>
 					<td>{ deal.items.length + 'поз.'}</td>
-					<td>{ deal.sum }</td>
+					<td>{ '$ ' + deal.sum }</td>
 					<td>{ deal.manager.name }</td>
 	      </tr>
 	    )	
 		}
 		return (
-			<table className='stock_table table table-hover table-striped table-bordered'>
+			<table className='stock_table deals table table-hover table-striped table-bordered'>
 				<thead>
 					<tr className={ data.sortBy.type === 'asc' ? '' : 'dropup'} >
-						<th></th>
+						<th>Статус</th>
 						{
 							this.headInfo.map((item, i) => 
 								<th key={ i } 

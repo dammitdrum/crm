@@ -1,19 +1,37 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
+import Enum from '../../utils/Enum'
 
 class Categories extends Component {
+	getInfoByState(state) {
+		switch (state) {
+			case Enum.defaultStateDeals:
+				return { text: Enum.defaultStateDeals, cssClass: 'glyphicon-list' }
+			case 'new':
+				return { text: 'Новые', cssClass: 'glyphicon-leaf' }
+			case 'approved':
+				return { text: 'Подтвержденные', cssClass: 'glyphicon-ok' }
+			case 'closed':
+				return { text: 'Завершенные', cssClass: 'glyphicon-lock' }
+			case 'canceled':
+				return { text: 'Отмененные', cssClass: 'glyphicon-remove' }
+		}
+	}
 	render() {
 		let props = this.props
-		let cats = props.categories
 		
 		return (
 			<div className="controls">
 				<ul className='nav nav-pills stock_filters'>
 					{
-						cats.map((item, i) =>
+						props.states.map((state, i) =>
 				      <li key={ i } 
-				      	onClick={ props.clickCategory } 
-				      	className={ props.activeCategory === item ? 'active' : '' }>
-				      	<a>{ item }</a>
+				      	onClick={ props.clickState } 
+				      	className={ props.activeState === state ? 'active' : '' }
+				      	data-state={ state }>
+				      	<a>
+				      		{ this.getInfoByState(state).text } <span className={ 'glyphicon ' + this.getInfoByState(state).cssClass }></span>
+				      	</a>
 				      </li>
 				    )	
 					}
@@ -30,9 +48,9 @@ class Categories extends Component {
 				  	<span className="clear_search" onClick={ props.clearSearch }>×</span> : ''
 				  }
 			  </span>
-			  <button className="btn btn-default add_butt pull-right" onClick={ props.openModal }>
-			    <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать товар
-			  </button>
+			  <Link to='/deals/create' className='btn btn-success add_butt pull-right'>
+			  	<span className="glyphicon glyphicon-plus"></span> Новая сделка
+			  </Link>
 			</div>
 		)
 	}

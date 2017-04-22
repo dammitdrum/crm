@@ -68,7 +68,7 @@ class Stock extends Component {
       content = <h3 className='text-center'><strong>Ops...</strong></h3>
     }
 
-    // data not empty
+    // data fetched
     if (data.loaded) {
       categories = [Enum.defaultCatStock].concat(
         _.uniqBy(data.items, 'category').map((item) => item.category).sort()
@@ -134,6 +134,7 @@ const mapStateToProps = state => (
     modal: state.stock.modal,
     loaded: state.stock.loaded,
     loading: state.stock.loading,
+    error: state.stock.error,
     sortBy: state.stock.sortBy
   }
 )

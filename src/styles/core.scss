@@ -79,7 +79,6 @@ h2 {
 }
 .stock_table {
     td {
-        transition: all 0.25s;
         &:first-child {
             text-align: center;
             width: 50px;
@@ -140,7 +139,18 @@ h2 {
     }
     &.table>tbody>tr>td {
         vertical-align: middle;
-        padding: 5px 8px;
+        padding: 8px;
+        &.no_res {
+            text-align: center;
+        }
+    }
+    &.deals {
+        td {
+            &:last-child {
+                text-align: left;
+                width: auto;  
+            }
+        }
     }
 }
 .stock_filters {

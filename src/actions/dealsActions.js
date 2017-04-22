@@ -24,10 +24,10 @@ export function getData() {
 	}
 }
 
-export function filterByCategory(category) {
+export function filterByState(state) {
 	return {
-		type: 'FILTER_BY_CATEGORY',
-		payload: category
+		type: 'FILTER_BY_STATE',
+		payload: state
 	}
 }
 

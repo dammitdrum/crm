@@ -13,9 +13,9 @@ class Deals extends Component {
       this.props.getData()
     } 
   }
-  clickCategory(e) {
-    if (e.target.closest('.active')) return
-    this.props.filterByCategory(e.target.innerText)
+  clickState(e) {
+    if (e.currentTarget.className === 'active') return
+    this.props.filterByState(e.currentTarget.getAttribute('data-state'))
   }
   changeSearch(e) {
     this.props.filterBySearch(e.target.value)
@@ -33,7 +33,7 @@ class Deals extends Component {
     let data = this.props
     let content
     let deals = []
-    let categories = []
+    let states = []
 
     if (data.loading) {
       content = <h3 className='text-center'><strong>loading...</strong></h3>
@@ -43,22 +43,33 @@ class Deals extends Component {
       content = <h3 className='text-center'><strong>Ops...</strong></h3>
     }
 
-    // data not empty
+    // data fetched
     if (data.loaded) {
       deals = data.deals
+      states = [Enum.defaultStateDeals].concat(
+        _.uniqBy(data.deals, 'state').map((deal) => deal.state).sort()
+      )
+      if (data.activeState !== Enum.defaultStateDeals) {
+        deals = _.filter(
+          data.deals, 
+          deal => deal.state === data.activeState
+        )
+      } else {
+        deals = data.deals
+      }
       if (data.searchQuery) {
         deals = _.filter(
           deals, 
-          deal => deal.number.toLowerCase().indexOf(data.searchQuery.trim()) !== -1
+          deal => deal.number.toString().indexOf(data.searchQuery.trim()) !== -1
         )
       }
       deals = _.orderBy(deals, [data.sortBy.code], [data.sortBy.type])
       content = (
         <div>
           <Controls 
-            categories={ categories } 
-            clickCategory={ ::this.clickCategory }
-            activeCategory={ data.activeCategory }
+            states={ states } 
+            clickState={ ::this.clickState }
+            activeState={ data.activeState }
             changeSearch={ ::this.changeSearch }
             clearSearch={ ::this.clearSearch }
             query={ data.searchQuery }
@@ -85,9 +96,10 @@ const mapStateToProps = state => (
     title: state.deals.title,
     deals: state.deals.deals,
     searchQuery: state.deals.searchQuery,
-    activeCategory: state.deals.activeCategory,
+    activeState: state.deals.activeState,
     loaded: state.deals.loaded,
     loading: state.deals.loading,
+    error: state.deals.error,
     sortBy: state.deals.sortBy
   }
 )
@@ -95,7 +107,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     getData:          bindActionCreators(Actions.getData, dispatch),
-    filterByCategory: bindActionCreators(Actions.filterByCategory, dispatch),
+    filterByState: bindActionCreators(Actions.filterByState, dispatch),
     filterBySearch:   bindActionCreators(Actions.filterBySearch, dispatch),
     sortData:         bindActionCreators(Actions.sortData, dispatch)
   }
