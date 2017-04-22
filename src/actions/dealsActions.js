@@ -26,21 +26,21 @@ export function getData() {
 
 export function filterByState(state) {
 	return {
-		type: 'FILTER_BY_STATE',
+		type: 'FILTER_DEALS_BY_STATE',
 		payload: state
 	}
 }
 
 export function filterBySearch(query) {
 	return {
-		type: 'FILTER_BY_SEARCH',
+		type: 'FILTER_DEALS_BY_SEARCH',
 		payload: query
 	}
 }
 
 export function sortData(sortBy) {
 	return {
-		type: 'SORT_DATA',
+		type: 'SORT_DEALS_DATA',
 		payload: sortBy
 	}
 }

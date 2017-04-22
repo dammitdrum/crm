@@ -27,13 +27,13 @@ const deals = (state = initialState, action) => {
     case 'GET_DEALS_FAIL':
       return { ...state, error: true }
 
-    case 'FILTER_BY_STATE':
+    case 'FILTER_DEALS_BY_STATE':
       return { ...state, activeState: payload }
 
-    case 'FILTER_BY_SEARCH':
+    case 'FILTER_DEALS_BY_SEARCH':
       return { ...state, searchQuery: payload }
 
-    case 'SORT_DATA':
+    case 'SORT_DEALS_DATA':
       return { ...state, sortBy: payload }
 
     default:

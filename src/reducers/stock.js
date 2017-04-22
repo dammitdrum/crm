@@ -83,16 +83,16 @@ const stock = (state = initialState, action) => {
 		case 'DELETE_ITEM_FAIL':
 			return { ...state}
 
-		case 'FILTER_BY_CATEGORY':
+		case 'FILTER_STOCK_BY_CATEGORY':
 			return { ...state, activeCategory: payload }
 
-		case 'FILTER_BY_SEARCH':
+		case 'FILTER_STOCK_BY_SEARCH':
 			return { ...state, searchQuery: payload }
 
-		case 'SHOW_MODAL':
+		case 'SHOW_STOCK_MODAL':
 			return { ...state, modal: payload }
 
-		case 'SORT_DATA':
+		case 'SORT_STOCK_DATA':
 			return { ...state, sortBy: payload }
 
 		default:

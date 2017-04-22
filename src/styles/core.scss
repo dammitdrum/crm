@@ -139,7 +139,7 @@ h2 {
     }
     &.table>tbody>tr>td {
         vertical-align: middle;
-        padding: 8px;
+        padding: 5px 8px;
         &.no_res {
             text-align: center;
         }
@@ -150,6 +150,9 @@ h2 {
                 text-align: left;
                 width: auto;  
             }
+        }
+        &.table>tbody>tr>td {
+            padding: 8px;
         }
     }
 }
