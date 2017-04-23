@@ -1,5 +1,7 @@
 const initialState = {
-  isAuth: false
+  isAuth: false,
+  login: 'admin',
+  name: 'Админ'
 }
 
 const user = (state = initialState, action) => {

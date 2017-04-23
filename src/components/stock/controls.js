@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-class Categories extends Component {
+class Controls extends Component {
 	render() {
 		let props = this.props
 		let cats = props.categories
@@ -38,4 +38,4 @@ class Categories extends Component {
 	}
 } 
 
-export default Categories
+export default Controls

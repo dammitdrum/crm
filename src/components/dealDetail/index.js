@@ -1,73 +1,77 @@
 import React, { Component } from 'react'
-//import { connect } from 'react-redux'
-//import { bindActionCreators } from 'redux'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
-import Table from './table'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Link } from 'react-router'
 
+import Controls from './controls'
+import Table from './table'
+import * as Actions from '../../actions/dealDetailActions'
 
 class Deal extends Component {
 	componentWillMount() {
-     
+    if (!this.props.users) {
+      this.props.getUsers()
+    }
+    this.props.setDealState('new')
+    this.props.setDealManagerDefault(this.props.user)
   }
-  
+  setDealState(e) {
+    if (e.currentTarget.classList.contains('active')) return
+    this.props.setDealState(e.currentTarget.getAttribute('data-state'))
+  }
+  setDealManager(e) {
+    this.props.setDealManager(e.currentTarget.getAttribute('data-id'))
+  }
   render() {
-    
+    let props = this.props
+
     return (
       <div className='deal_detail container'>
-        <h3>Создание новой сделки</h3>
+        <h3>{ props.title }</h3>
         <hr/>
         <form name="form" className="modal_form clearfix">
-        <p><strong>Статус продажи</strong></p>
-        <div className="btn-group" role="group">
-          <button className="btn btn-sm btn-default active">Новая <span className="glyphicon glyphicon-leaf"></span></button>
-          <button className="btn btn-sm btn-default">Подтвержденная <span className="glyphicon glyphicon-ok"></span></button>
-          <button className="btn btn-sm btn-default">Завершенная <span className="glyphicon glyphicon-lock"></span></button>
-          <button className="btn btn-sm btn-default">Анулированная <span className="glyphicon glyphicon-remove"></span></button>
-        </div>
+          <Controls 
+            currentState={ props.state }
+            clickStateBtn={ ::this.setDealState }
+            managers={ props.users }
+            currentManager={ props.manager }
+            selectManager={ ::this.setDealManager }
+          />
           <div className="air"></div>
-          <h4>Введите номер продажи</h4>
-          <input className='search_field' type="text" pattern="/^\d+$/" name="number" required/>
-          <div className="air"></div>
-          <div className="pull-left clearfix">
-            <span className="btn btn-default">
-              Выбрать покупателя 
-              &nbsp;<span className="glyphicon glyphicon-menu-hamburger"></span>
-            </span>
-            <strong>&nbsp; Не выбран покупатель </strong>
-          </div>
-          <div className="pull-right">
-            <DropdownButton bsStyle='default' title='Выберите менеджера' id='dropDown'>
-              <MenuItem>Менеджер крутой</MenuItem>
-              <MenuItem>Менеджер еще круче</MenuItem>
-              <MenuItem>Менеджер 1</MenuItem>
-            </DropdownButton>
-          </div>
-          <div className="air"></div>
-          <Table items={[]}/>
+          <Table 
+            items={ props.items }
+          />
           <div className="air"></div>
           <button className="btn btn-lg btn-success pull-right" type="submit">
             Создать продажу <span className="glyphicon glyphicon-cloud-upload"></span>
           </button>
-          <a href="#/deals" className="btn btn-lg btn-default pull-left">
+          <Link to="/deals" className="btn btn-lg btn-default pull-left">
             <span className="glyphicon glyphicon-arrow-left"></span> Отмена
-          </a>
+          </Link>
         </form>
       </div>
     )
   }
 }
 
-/*const mapStateToProps = state => (
+const mapStateToProps = (state) => (
   {
-    title: state.deals.title
+    title: state.dealDetail.title,
+    state: state.dealDetail.state,
+    items: state.dealDetail.items,
+    users: state.dealDetail.users,
+    manager: state.dealDetail.manager,
+    user: state.user
   }
 )
 
 const mapDispatchToProps = dispatch => (
   {
-    getData: bindActionCreators(Actions.getData, dispatch)
+    setDealState: bindActionCreators(Actions.setDealState, dispatch),
+    setDealManager: bindActionCreators(Actions.setDealManager, dispatch),
+    setDealManagerDefault: bindActionCreators(Actions.setDealManagerDefault, dispatch),
+    getUsers: bindActionCreators(Actions.getUsers, dispatch)
   }
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(Deals)*/
-export default Deal
+export default connect(mapStateToProps, mapDispatchToProps)(Deal)

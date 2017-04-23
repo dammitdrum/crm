@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import Enum from '../../utils/Enum'
+import { Link } from 'react-router'
 
-class Categories extends Component {
+class Controls extends Component {
 	getInfoByState(state) {
 		switch (state) {
 			case Enum.defaultStateDeals:
@@ -56,4 +56,4 @@ class Categories extends Component {
 	}
 } 
 
-export default Categories
+export default Controls
