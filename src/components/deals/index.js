@@ -63,7 +63,9 @@ class Deals extends Component {
           deal => deal.number.toString().indexOf(data.searchQuery.trim()) !== -1
         )
       }
-      deals = _.orderBy(deals, [data.sortBy.code], [data.sortBy.type])
+      deals = _.orderBy(deals, (deal) => (
+        deal[data.sortBy.code]['name'] || deal[data.sortBy.code]
+      ), [data.sortBy.type])
       content = (
         <div>
           <Controls 

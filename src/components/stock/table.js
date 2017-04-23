@@ -8,7 +8,7 @@ class Table extends Component {
       { text: 'Наименование', code: 'name' },
       { text: 'Цена', code: 'price' },
       { text: 'Наличие', code: 'quantity' },
-      { text: 'Обязательства', code: 'debt' },
+      { text: 'Резерв', code: 'debt' },
       { text: 'Заказано', code: 'ordered' }
     ]
 	}
@@ -47,7 +47,7 @@ class Table extends Component {
 	      	<td>{ item.quantity }</td>
 	      	<td>{ item.debt }</td>
 	      	<td>{ item.ordered }</td>
-	      	<td>
+	      	<td className='td_btn'>
 	      		<button className="btn btn-sm btn-warning" data-id={ item._id } onClick={ props.openModal }>
 							<span className="glyphicon glyphicon-edit"></span>
 						</button>&nbsp;
