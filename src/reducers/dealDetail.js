@@ -5,6 +5,12 @@ const initialState = {
   state: 'new',
   users: false,
   manager: false,
+  modal: { 
+    show: false, 
+    mode: '',
+    sortBy: { code: 'price', type: 'asc' },
+    searchQuery: ''
+  },
   items: []
 }
 
@@ -34,6 +40,23 @@ const dealDetail = (state = initialState, action) => {
     case 'SET_DEAL_MANAGER_DEFAULT':
       return { ...state, 
         manager: payload 
+      }
+
+    case 'SHOW_DEAL_MODAL':
+      return { ...state, modal: payload }
+
+    case 'SEARCH_DEAL_MODAL':
+      return { ...state, 
+        modal: { ...state.modal,
+          searchQuery: payload
+        }
+      }
+
+    case 'SORT_DEAL_MODAL':
+      return { ...state, 
+        modal: { ...state.modal,
+          sortBy: payload
+        }
       }
 
     default:

@@ -44,3 +44,24 @@ export function setDealManagerDefault(user) {
 		payload: user
 	}
 }
+
+export function showModal(params) {
+	return {
+		type: 'SHOW_DEAL_MODAL',
+		payload: params
+	}
+}
+
+export function searchModal(query) {
+	return {
+		type: 'SEARCH_DEAL_MODAL',
+		payload: query
+	}
+}
+
+export function sortModal(sortBy) {
+	return {
+		type: 'SORT_DEAL_MODAL',
+		payload: sortBy
+	}
+}

@@ -5,7 +5,7 @@ import header from './header'
 import stock from './stock'
 import deals from './deals'
 import dealDetail from './dealDetail'
-import partners from './partners'
+import clients from './clients'
 import user from './user'
 
 export default combineReducers({
@@ -14,6 +14,6 @@ export default combineReducers({
 	stock,
 	deals,
 	dealDetail,
-	partners,
+	clients,
 	user
 })

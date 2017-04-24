@@ -36,7 +36,7 @@ class Controls extends Component {
         <input className='search_field' type="text" pattern="/^\d+$/" name="number" required/>
         <div className="air"></div>
         <div className="pull-left clearfix">
-          <span className="btn btn-default">
+          <span className="btn btn-default" onClick={ props.openModal } data-modal='clients'>
             Выбрать покупателя 
             &nbsp;<span className="glyphicon glyphicon-menu-hamburger"></span>
           </span>
