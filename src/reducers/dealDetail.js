@@ -3,7 +3,6 @@ import Enum from '../utils/Enum'
 const initialState = {
   title: 'Создание новой сделки',
   state: 'new',
-  users: false,
   manager: false,
   modal: { 
     show: false, 
@@ -11,21 +10,14 @@ const initialState = {
     sortBy: { code: 'price', type: 'asc' },
     searchQuery: ''
   },
-  items: []
+  items: [],
+  client: false
 }
 
 const dealDetail = (state = initialState, action) => {
   let payload = action.payload
 
   switch (action.type) {
-
-    case 'GET_USERS_REQUEST':
-      return { ...state }
-
-    case 'GET_USERS_SUCCESS':
-      return { ...state, 
-        users: payload
-      }
 
     case 'SET_DEAL_STATE':
       return { ...state, 
@@ -34,12 +26,7 @@ const dealDetail = (state = initialState, action) => {
 
     case 'SET_DEAL_MANAGER':
       return { ...state, 
-        manager: _.filter(state.users, (user) => user.login === payload)[0]
-      }
-
-    case 'SET_DEAL_MANAGER_DEFAULT':
-      return { ...state, 
-        manager: payload 
+        manager: _.find(payload.list, (manager) => manager.login === payload.id)
       }
 
     case 'SHOW_DEAL_MODAL':
@@ -56,6 +43,23 @@ const dealDetail = (state = initialState, action) => {
       return { ...state, 
         modal: { ...state.modal,
           sortBy: payload
+        }
+      }
+
+    case 'ADD_ITEM_TO_DEAL':
+      state.items.push(payload)
+      return { ...state,
+        items: state.items,
+        modal: { ...state.modal,
+          show: false
+        }
+      }
+
+    case 'SET_CLIENT_TO_DEAL':
+      return { ...state,
+        client: payload,
+        modal: { ...state.modal,
+          show: false
         }
       }
 

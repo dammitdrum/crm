@@ -1,29 +1,5 @@
 import 'whatwg-fetch'
 
-export function getUsers() {
-	return dispatch => {
-		dispatch({
-			type: 'GET_USERS_REQUEST'
-		})
-
-		fetch('/users/read')
-			.then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'GET_USERS_SUCCESS',
-	        payload: res
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'GET_USERS_FAIL',
-	        payload: err
-	      })
-		  })
-	}
-}
-
 export function setDealState(state) {
 	return {
 		type: 'SET_DEAL_STATE',
@@ -31,17 +7,10 @@ export function setDealState(state) {
 	}
 }
 
-export function setDealManager(id) {
+export function setDealManager(id, list) {
 	return {
 		type: 'SET_DEAL_MANAGER',
-		payload: id
-	}
-}
-
-export function setDealManagerDefault(user) {
-	return {
-		type: 'SET_DEAL_MANAGER_DEFAULT',
-		payload: user
+		payload: { id, list }
 	}
 }
 
@@ -63,5 +32,19 @@ export function sortModal(sortBy) {
 	return {
 		type: 'SORT_DEAL_MODAL',
 		payload: sortBy
+	}
+}
+
+export function addItem(item) {
+	return {
+		type: 'ADD_ITEM_TO_DEAL',
+		payload: item
+	}
+}
+
+export function setClient(client) {
+	return {
+		type: 'SET_CLIENT_TO_DEAL',
+		payload: client
 	}
 }

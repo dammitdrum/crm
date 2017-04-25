@@ -23,7 +23,7 @@ class Controls extends Component {
             this.stateBtn.map((btn, i) => 
               <span 
                 key={ i } 
-                className={ 'btn btn-sm btn-default' + (props.currentState === btn.state ? ' active' : '') }
+                className={ 'btn btn-sm btn-default' + (props.dealState === btn.state ? ' active' : '') }
                 onClick={ props.clickStateBtn }
                 data-state={ btn.state }>
                 { btn.text } <span className={ 'glyphicon ' + btn.cssClass }></span>
@@ -40,19 +40,18 @@ class Controls extends Component {
             Выбрать покупателя 
             &nbsp;<span className="glyphicon glyphicon-menu-hamburger"></span>
           </span>
-          <strong>&nbsp; Не выбран покупатель </strong>
+          <strong>&nbsp; {props.client ? props.client.name : 'Не выбран покупатель'}</strong>
         </div>
         {
-          props.managers ? 
+          props.managerList ? 
           <div className="pull-right">
-            Менеджер сделки &nbsp;
             <DropdownButton 
               bsStyle='default' 
               pullRight 
-              title={ props.currentManager ? props.currentManager.name : '' } 
+              title={ props.manager ? props.manager.name : 'Изменить менеджера' } 
               id='dropDown'>
               {
-                props.managers.map((manager, i) => 
+                props.managerList.map((manager, i) => 
                   <MenuItem onClick={ props.selectManager } key={ i } data-id={ manager.login }>{ manager.name }</MenuItem>
                 )
               }

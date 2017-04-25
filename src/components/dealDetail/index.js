@@ -7,12 +7,13 @@ import Controls from './controls'
 import Table from './table'
 import DealModal from './modal'
 import * as Actions from '../../actions/dealDetailActions'
+import { getUsers } from '../../actions/userActions'
 import { getData as getStock} from '../../actions/stockActions'
 import { getData as getClients} from '../../actions/clientsActions'
 
 class Deal extends Component {
 	componentWillMount() {
-    if (!this.props.users) {
+    if (!this.props.user.loaded) {
       this.props.getUsers()
     }
     if (!this.props.stock.loaded) {
@@ -22,14 +23,13 @@ class Deal extends Component {
       this.props.getClients()
     }
     this.props.setDealState('new')
-    this.props.setDealManagerDefault(this.props.user)
   }
   setDealState(e) {
     if (e.currentTarget.classList.contains('active')) return
     this.props.setDealState(e.currentTarget.getAttribute('data-state'))
   }
   setDealManager(e) {
-    this.props.setDealManager(e.currentTarget.getAttribute('data-id'))
+    this.props.setDealManager(e.currentTarget.getAttribute('data-id'), this.props.user.users)
   }
   openModal(e) {
     let mode = e.currentTarget.getAttribute('data-modal')
@@ -60,19 +60,30 @@ class Deal extends Component {
   clearSearchModal() {
     this.props.searchModal('')
   }
+  _findItem(collection, e) {
+    let id = e.currentTarget.getAttribute('data-id')
+    return _.find(collection, item => item._id === id)
+  }
+  addItem(e) {
+    this.props.addItem(this._findItem(this.props.stock.items, e))
+  }
+  setClient(e) {
+    this.props.setClient(this._findItem(this.props.clients.items, e))
+  }
   render() {
     let props = this.props
-    
+    console.log(props.items)
     return (
       <div className='deal_detail container'>
         <h3>{ props.title }</h3>
         <hr/>
         <form name="form" className="modal_form clearfix">
           <Controls 
-            currentState={ props.state }
+            dealState={ props.state }
             clickStateBtn={ ::this.setDealState }
-            managers={ props.users }
-            currentManager={ props.manager }
+            managerList={ props.user.users }
+            manager={ props.manager }
+            client={ props.client }
             selectManager={ ::this.setDealManager }
             openModal={ ::this.openModal }
           />
@@ -90,12 +101,14 @@ class Deal extends Component {
           </Link>
         </form>
         <DealModal 
-          stock={ props.stock }
-          clients={ props.clients }
+          stock={ props.stock.items }
+          clients={ props.clients.items }
           modal={ props.modal }
           onSort={ ::this.onSortModal }
           onSearch={ ::this.searchModal }
           onClearSearch={ ::this.clearSearchModal }
+          onAddItem={ ::this.addItem }
+          onSetClient={ ::this.setClient }
           close={ ::this.closeModal }
         />
       </div>
@@ -108,12 +121,12 @@ const mapStateToProps = (state) => (
     title: state.dealDetail.title,
     state: state.dealDetail.state,
     items: state.dealDetail.items,
-    users: state.dealDetail.users,
     manager: state.dealDetail.manager,
+    client: state.dealDetail.client,
     modal: state.dealDetail.modal,
-    stock: state.stock.items,
-    clients: state.clients.items,
-    user: state.user
+    user: state.user,
+    stock: state.stock,
+    clients: state.clients
   }
 )
 
@@ -121,11 +134,12 @@ const mapDispatchToProps = dispatch => (
   {
     setDealState: bindActionCreators(Actions.setDealState, dispatch),
     setDealManager: bindActionCreators(Actions.setDealManager, dispatch),
-    setDealManagerDefault: bindActionCreators(Actions.setDealManagerDefault, dispatch),
     showModal: bindActionCreators(Actions.showModal, dispatch),
     sortModal: bindActionCreators(Actions.sortModal, dispatch),
     searchModal: bindActionCreators(Actions.searchModal, dispatch),
-    getUsers: bindActionCreators(Actions.getUsers, dispatch),
+    addItem: bindActionCreators(Actions.addItem, dispatch),
+    setClient: bindActionCreators(Actions.setClient, dispatch),
+    getUsers: bindActionCreators(getUsers, dispatch),
     getStock: bindActionCreators(getStock, dispatch),
     getClients: bindActionCreators(getClients, dispatch)
   }

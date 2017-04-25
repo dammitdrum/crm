@@ -9,7 +9,7 @@ class Table extends Component {
 		let props = this.props
 
 		return (
-			<table className='stock_table table table-hover table-striped table-bordered'>
+			<table className='stock_table deals table table-striped table-bordered'>
 				<thead>
 					<tr>
 						<th>#</th>
@@ -29,12 +29,26 @@ class Table extends Component {
 				      	<td>{ i + 1 }</td>
 				      	<td>{ item.art }</td>
 				      	<td>{ item.name }</td>
-				      	<td>$ <input type='text' name="price" className='quant_input' pattern="/^\d+$/" required/></td>
+				      	<td>$&nbsp; 
+				      		<input 
+				      			type='text' 
+				      			name="price" 
+				      			className='quant_input' 
+				      			pattern="/^\d+$/"
+				      			defaultValue={ item.price }
+				      			required/>
+				      	</td>
 				      	<td>{ item.quantity }</td>
 				      	<td>{ item.debt }</td>
 				      	<td>{ item.ordered }</td>
 				      	<td>
-				      		<input type='text' name="quantity" className='quant_input' pattern="/^\d+$/" required/>
+				      		<input 
+				      			type='text' 
+				      			name="quantity" 
+				      			className='quant_input' 
+				      			pattern="/^\d+$/"
+				      			defaultValue='1'
+				      			required/>
 				      		<span className="btn btn-danger btn-sm pull-right remove_butt">
 			            	<span className="glyphicon glyphicon-remove"></span>
 			          	</span>

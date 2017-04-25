@@ -76,6 +76,8 @@ h2 {
     margin-bottom: 0 !important;
     padding: 0;
     text-align: center;
+    line-height: 1.5;
+
 }
 .stock_table {
     td {
@@ -104,6 +106,11 @@ h2 {
     }
     tbody>tr {
         transition: all 0.25s;
+        &.pointer {
+            td {
+                cursor: pointer;
+            }
+        }
         &.deleting {
             background: #ffd9d9;
             td {
@@ -145,10 +152,18 @@ h2 {
         }
     }
     &.deals {
+        th {
+            &:last-child {
+                text-align: left;
+            }
+        }
         td {
             &:last-child {
                 text-align: left;
                 width: auto;  
+            }
+            &.text-center {
+                text-align: center;
             }
         }
         &.table>tbody>tr>td {

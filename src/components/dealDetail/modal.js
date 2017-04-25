@@ -10,11 +10,12 @@ class DealModal extends Component {
 		let modal = props.modal
 		let tableInfo = []
 		let items = props[modal.mode]
-		let title, list
+		let title, list, onSet
 
 		switch (props.modal.mode) {
 			case 'stock':
 				title = 'Выберите товар'
+				onSet = props.onAddItem
 				tableInfo = [
 		      { text: 'Артикул', code: 'art' },
 		      { text: 'Наименование', code: 'name' },
@@ -27,6 +28,7 @@ class DealModal extends Component {
 
 			case 'clients':
 				title = 'Выберите покупателя'
+				onSet = props.onSetClient
 				tableInfo = [
 		     	{ text: 'Наименование', code: 'name' },
 		      { text: 'Полное наименование', code: 'fullname' },
@@ -53,7 +55,7 @@ class DealModal extends Component {
 			)
 		} else {
 			list = items.map((item, i) =>
-	      <tr key={ i } >
+	      <tr key={ i } onClick={ onSet } data-id={ item._id } className='pointer'>
 	      	<td>{ i + 1 }</td>
 	      	{
 	      		tableInfo.map((info, i) =>
@@ -81,7 +83,7 @@ class DealModal extends Component {
 					  	<span className="clear_search" onClick={ props.onClearSearch }>×</span> : ''
 					  }
 				  </span>
-        	<table className='stock_table table table-hover table-striped table-bordered'>
+        	<table className='stock_table deals table table-hover table-striped table-bordered'>
 						<thead>
 							<tr className={ modal.sortBy.type === 'asc' ? '' : 'dropup'} >
 								<th>#</th>
