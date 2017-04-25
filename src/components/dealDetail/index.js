@@ -101,6 +101,7 @@ class Deal extends Component {
   }
   calculate() {
     let sum = 0
+    console.log(this.props.items.length)
     this.props.items.forEach(item => {
       sum += item.price * item.number
     })

@@ -4,7 +4,6 @@ class Table extends Component {
 
 	render() {
 		let props = this.props
-
 		return (
 			<table className='stock_table deals table table-striped table-bordered'>
 				<thead>
@@ -32,7 +31,7 @@ class Table extends Component {
 				      			name="price" 
 				      			className='quant_input' 
 				      			pattern="/^\d+$/"
-				      			defaultValue={ item.price }
+				      			value={ item.price }
 				      			onChange={ props.setPrice }
 				      			required/>
 				      	</td>
@@ -45,7 +44,7 @@ class Table extends Component {
 				      			name="quantity" 
 				      			className='quant_input' 
 				      			pattern="/^\d+$/"
-				      			defaultValue={ item.number }
+				      			value={ item.number }
 				      			onChange={ props.setNumber }
 				      			required/>
 				      		<span 
