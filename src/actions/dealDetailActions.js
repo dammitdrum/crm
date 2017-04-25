@@ -7,10 +7,10 @@ export function setDealState(state) {
 	}
 }
 
-export function setDealManager(id, list) {
+export function setDealManager(manager) {
 	return {
 		type: 'SET_DEAL_MANAGER',
-		payload: { id, list }
+		payload: manager
 	}
 }
 
@@ -42,9 +42,37 @@ export function addItem(item) {
 	}
 }
 
+export function removeItem(id) {
+	return {
+		type: 'REMOVE_ITEM_FROM_DEAL',
+		payload: id
+	}
+}
+
+export function setItemPrice(val, id) {
+	return {
+		type: 'SET_ITEM_PRICE_DEAL',
+		payload: { val, id }
+	}
+}
+
+export function setItemNumber(val, id) {
+	return {
+		type: 'SET_ITEM_NUMBER_DEAL',
+		payload: { val, id }
+	}
+}
+
 export function setClient(client) {
 	return {
 		type: 'SET_CLIENT_TO_DEAL',
 		payload: client
+	}
+}
+
+export function setSum(sum) {
+	return {
+		type: 'SET_SUM_TO_DEAL',
+		payload: sum
 	}
 }

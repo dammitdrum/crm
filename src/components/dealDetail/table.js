@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 
 class Table extends Component {
-	constructor(props) {
-		super(props)
-		
-	}
+
 	render() {
 		let props = this.props
 
@@ -25,17 +22,18 @@ class Table extends Component {
 				<tbody>
 					{
 						props.items.map((item, i) =>
-				      <tr key={ i }>
+				      <tr key={ i } data-id={ item._id }>
 				      	<td>{ i + 1 }</td>
 				      	<td>{ item.art }</td>
 				      	<td>{ item.name }</td>
 				      	<td>$&nbsp; 
 				      		<input 
-				      			type='text' 
+				      			type='number' 
 				      			name="price" 
 				      			className='quant_input' 
 				      			pattern="/^\d+$/"
 				      			defaultValue={ item.price }
+				      			onChange={ props.setPrice }
 				      			required/>
 				      	</td>
 				      	<td>{ item.quantity }</td>
@@ -43,18 +41,29 @@ class Table extends Component {
 				      	<td>{ item.ordered }</td>
 				      	<td>
 				      		<input 
-				      			type='text' 
+				      			type='number' 
 				      			name="quantity" 
 				      			className='quant_input' 
 				      			pattern="/^\d+$/"
-				      			defaultValue='1'
+				      			defaultValue={ item.number }
+				      			onChange={ props.setNumber }
 				      			required/>
-				      		<span className="btn btn-danger btn-sm pull-right remove_butt">
+				      		<span 
+				      			className="btn btn-danger btn-sm pull-right remove_butt"
+				      			onClick={ props.removeItem }>
 			            	<span className="glyphicon glyphicon-remove"></span>
 			          	</span>
 				      	</td>
 				      </tr>
 				    )
+					}
+					{
+						props.items.length ?
+						<tr className="bg_w">
+              <td colSpan="7" className="tar"><strong>Общая сумма:</strong></td>
+              <td><strong>$ { props.sum }</strong></td>
+            </tr>
+            : null
 					}
 					<tr className="not_hover">
 	        	<td colSpan="8" className="text-center">

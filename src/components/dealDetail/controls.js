@@ -40,19 +40,25 @@ class Controls extends Component {
             Выбрать покупателя 
             &nbsp;<span className="glyphicon glyphicon-menu-hamburger"></span>
           </span>
-          <strong>&nbsp; {props.client ? props.client.name : 'Не выбран покупатель'}</strong>
+          <strong>&nbsp; { props.client ? props.client.name : 'Не выбран покупатель' }</strong>
         </div>
         {
           props.managerList ? 
           <div className="pull-right">
+            <span>Менеджер сделки &nbsp;</span>
             <DropdownButton 
               bsStyle='default' 
               pullRight 
-              title={ props.manager ? props.manager.name : 'Изменить менеджера' } 
+              title={ props.manager ? props.manager.name : '' } 
               id='dropDown'>
               {
                 props.managerList.map((manager, i) => 
-                  <MenuItem onClick={ props.selectManager } key={ i } data-id={ manager.login }>{ manager.name }</MenuItem>
+                  <MenuItem 
+                    onClick={ props.selectManager } 
+                    key={ i } 
+                    data-id={ manager.login }>
+                    { manager.name }
+                  </MenuItem>
                 )
               }
             </DropdownButton>

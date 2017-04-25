@@ -23,13 +23,16 @@ class Deal extends Component {
       this.props.getClients()
     }
     this.props.setDealState('new')
+    this.props.setDealManager(this.props.user)
   }
   setDealState(e) {
     if (e.currentTarget.classList.contains('active')) return
     this.props.setDealState(e.currentTarget.getAttribute('data-state'))
   }
   setDealManager(e) {
-    this.props.setDealManager(e.currentTarget.getAttribute('data-id'), this.props.user.users)
+    let login = e.currentTarget.getAttribute('data-id')
+    let manager = _.find(this.props.user.users, (manager) => manager.login === login)
+    this.props.setDealManager(manager)
   }
   openModal(e) {
     let mode = e.currentTarget.getAttribute('data-modal')
@@ -65,14 +68,47 @@ class Deal extends Component {
     return _.find(collection, item => item._id === id)
   }
   addItem(e) {
-    this.props.addItem(this._findItem(this.props.stock.items, e))
+    let stock = _.cloneDeep(this.props.stock.items)
+    let item = this._findItem(stock, e)
+    let addedItem = _.find(this.props.items, i => i._id === item._id)
+    if (addedItem) {
+      let number = addedItem.number
+      let id = addedItem._id
+      this.props.setItemNumber(++number, id)
+    } else {
+      item.number = 1
+      this.props.addItem(item)
+    }
+    this.calculate()
+  }
+  removeItem(e) {
+    let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
+    this.props.removeItem(id)
+    this.calculate()
   }
   setClient(e) {
     this.props.setClient(this._findItem(this.props.clients.items, e))
   }
+  setPrice(e) {
+    let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
+    this.props.setItemPrice(e.target.value, id)
+    this.calculate()
+  }
+  setNumber(e) {
+    let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
+    this.props.setItemNumber(e.target.value, id)
+    this.calculate()
+  }
+  calculate() {
+    let sum = 0
+    this.props.items.forEach(item => {
+      sum += item.price * item.number
+    })
+    this.props.setSum(sum)
+  }
   render() {
-    let props = this.props
-    console.log(props.items)
+    let props = this.props 
+
     return (
       <div className='deal_detail container'>
         <h3>{ props.title }</h3>
@@ -91,6 +127,10 @@ class Deal extends Component {
           <Table 
             items={ props.items }
             openModal={ ::this.openModal }
+            removeItem={ ::this.removeItem }
+            setPrice={ ::this.setPrice }
+            setNumber={ ::this.setNumber }
+            sum={ props.sum }
           />
           <div className="air"></div>
           <button className="btn btn-lg btn-success pull-right" type="submit">
@@ -124,6 +164,7 @@ const mapStateToProps = (state) => (
     manager: state.dealDetail.manager,
     client: state.dealDetail.client,
     modal: state.dealDetail.modal,
+    sum: state.dealDetail.sum,
     user: state.user,
     stock: state.stock,
     clients: state.clients
@@ -132,16 +173,20 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = dispatch => (
   {
-    setDealState: bindActionCreators(Actions.setDealState, dispatch),
-    setDealManager: bindActionCreators(Actions.setDealManager, dispatch),
-    showModal: bindActionCreators(Actions.showModal, dispatch),
-    sortModal: bindActionCreators(Actions.sortModal, dispatch),
-    searchModal: bindActionCreators(Actions.searchModal, dispatch),
-    addItem: bindActionCreators(Actions.addItem, dispatch),
-    setClient: bindActionCreators(Actions.setClient, dispatch),
-    getUsers: bindActionCreators(getUsers, dispatch),
-    getStock: bindActionCreators(getStock, dispatch),
-    getClients: bindActionCreators(getClients, dispatch)
+    setDealState:     bindActionCreators(Actions.setDealState, dispatch),
+    setDealManager:   bindActionCreators(Actions.setDealManager, dispatch),
+    showModal:        bindActionCreators(Actions.showModal, dispatch),
+    sortModal:        bindActionCreators(Actions.sortModal, dispatch),
+    searchModal:      bindActionCreators(Actions.searchModal, dispatch),
+    addItem:          bindActionCreators(Actions.addItem, dispatch),
+    removeItem:       bindActionCreators(Actions.removeItem, dispatch),
+    setClient:        bindActionCreators(Actions.setClient, dispatch),
+    setItemPrice:     bindActionCreators(Actions.setItemPrice, dispatch),
+    setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
+    setSum:           bindActionCreators(Actions.setSum, dispatch),
+    getUsers:         bindActionCreators(getUsers, dispatch),
+    getStock:         bindActionCreators(getStock, dispatch),
+    getClients:       bindActionCreators(getClients, dispatch)
   }
 )
 

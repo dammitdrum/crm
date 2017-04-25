@@ -11,6 +11,7 @@ const initialState = {
     searchQuery: ''
   },
   items: [],
+  sum: 0,
   client: false
 }
 
@@ -26,7 +27,7 @@ const dealDetail = (state = initialState, action) => {
 
     case 'SET_DEAL_MANAGER':
       return { ...state, 
-        manager: _.find(payload.list, (manager) => manager.login === payload.id)
+        manager: payload
       }
 
     case 'SHOW_DEAL_MODAL':
@@ -55,12 +56,45 @@ const dealDetail = (state = initialState, action) => {
         }
       }
 
+    case 'REMOVE_ITEM_FROM_DEAL':
+      return { ...state,
+        items: _.filter(state.items, item => item._id !== payload)
+      }
+
+    case 'SET_ITEM_PRICE_DEAL':
+      state.items.forEach(item => {
+        if (item._id === payload.id) {
+          item.price = +payload.val
+        }
+      })
+      return { ...state,
+        items: state.items
+      }
+
+    case 'SET_ITEM_NUMBER_DEAL':
+      state.items.forEach(item => {
+        if (item._id === payload.id) {
+          item.number = +payload.val
+        }
+      })
+      return { ...state,
+        items: state.items,
+        modal: { ...state.modal,
+          show: false
+        }
+      }
+
     case 'SET_CLIENT_TO_DEAL':
       return { ...state,
         client: payload,
         modal: { ...state.modal,
           show: false
         }
+      }
+
+    case 'SET_SUM_TO_DEAL':
+      return { ...state,
+        sum: payload
       }
 
     default:
