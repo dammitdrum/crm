@@ -69,3 +69,8 @@ export function setClient(client) {
 		payload: client
 	}
 }
+export function setDealSum() {
+	return {
+		type: 'SET_SUM_DEAL'
+	}
+}

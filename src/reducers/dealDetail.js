@@ -11,7 +11,9 @@ const initialState = {
     searchQuery: ''
   },
   items: [],
-  client: false
+  sum: 0,
+  client: false,
+  number: ''
 }
 
 const dealDetail = (state = initialState, action) => {
@@ -89,6 +91,15 @@ const dealDetail = (state = initialState, action) => {
         modal: { ...state.modal,
           show: false
         }
+      }
+
+    case 'SET_SUM_DEAL':
+      let sum = 0
+      state.items.forEach(item => {
+        sum += item.price * item.number
+      })
+      return { ...state,
+        sum: sum
       }
 
     default:

@@ -79,10 +79,12 @@ class Deal extends Component {
       item.number = 1
       this.props.addItem(item)
     }
+    this.props.setDealSum()
   }
   removeItem(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     this.props.removeItem(id)
+    this.props.setDealSum()
   }
   setClient(e) {
     this.props.setClient(this._findItem(this.props.clients.items, e))
@@ -90,17 +92,16 @@ class Deal extends Component {
   setPrice(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     this.props.setItemPrice(e.target.value, id)
+    this.props.setDealSum()
   }
   setNumber(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     this.props.setItemNumber(e.target.value, id)
+    this.props.setDealSum()
   }
   render() {
-    let props = this.props 
-    let sum = 0
-    props.items.forEach(item => {
-      sum += item.price * item.number
-    })
+    let props = this.props
+    
     return (
       <div className='deal_detail container'>
         <h3>{ props.title }</h3>
@@ -122,7 +123,7 @@ class Deal extends Component {
             removeItem={ ::this.removeItem }
             setPrice={ ::this.setPrice }
             setNumber={ ::this.setNumber }
-            sum={ sum }
+            sum={ props.sum }
           />
           <div className="air"></div>
           <button className="btn btn-lg btn-success pull-right" type="submit">
@@ -176,6 +177,7 @@ const mapDispatchToProps = dispatch => (
     setClient:        bindActionCreators(Actions.setClient, dispatch),
     setItemPrice:     bindActionCreators(Actions.setItemPrice, dispatch),
     setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
+    setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
     getUsers:         bindActionCreators(getUsers, dispatch),
     getStock:         bindActionCreators(getStock, dispatch),
     getClients:       bindActionCreators(getClients, dispatch)

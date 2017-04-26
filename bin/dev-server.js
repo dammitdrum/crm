@@ -156,7 +156,7 @@ app.post('/stock/create', function (req, res) {
 app.post('/deals/create', function (req, res) {
     var deal = new DealModel({
         number: req.body.number,
-        customer: req.body.customer,
+        client: req.body.client,
         items: req.body.items,
         sum: req.body.sum,
         manager: req.body.manager
