@@ -11,7 +11,6 @@ const initialState = {
     searchQuery: ''
   },
   items: [],
-  sum: 0,
   client: false
 }
 
@@ -22,7 +21,7 @@ const dealDetail = (state = initialState, action) => {
 
     case 'SET_DEAL_STATE':
       return { ...state, 
-        state: payload 
+        state: payload
       }
 
     case 'SET_DEAL_MANAGER':
@@ -41,7 +40,7 @@ const dealDetail = (state = initialState, action) => {
       }
 
     case 'SORT_DEAL_MODAL':
-      return { ...state, 
+      return { ...state,
         modal: { ...state.modal,
           sortBy: payload
         }
@@ -50,7 +49,7 @@ const dealDetail = (state = initialState, action) => {
     case 'ADD_ITEM_TO_DEAL':
       state.items.push(payload)
       return { ...state,
-        items: state.items,
+        items: state.items.concat(),
         modal: { ...state.modal,
           show: false
         }
@@ -58,7 +57,7 @@ const dealDetail = (state = initialState, action) => {
 
     case 'REMOVE_ITEM_FROM_DEAL':
       return { ...state,
-        items: _.filter(state.items, item => item._id !== payload)
+        items: state.items.filter(item => item._id !== payload)
       }
 
     case 'SET_ITEM_PRICE_DEAL':
@@ -68,7 +67,7 @@ const dealDetail = (state = initialState, action) => {
         }
       })
       return { ...state,
-        items: state.items
+        items: state.items.concat()
       }
 
     case 'SET_ITEM_NUMBER_DEAL':
@@ -78,7 +77,7 @@ const dealDetail = (state = initialState, action) => {
         }
       })
       return { ...state,
-        items: state.items,
+        items: state.items.concat(),
         modal: { ...state.modal,
           show: false
         }
@@ -90,11 +89,6 @@ const dealDetail = (state = initialState, action) => {
         modal: { ...state.modal,
           show: false
         }
-      }
-
-    case 'SET_SUM_TO_DEAL':
-      return { ...state,
-        sum: payload
       }
 
     default:

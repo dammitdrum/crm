@@ -79,12 +79,10 @@ class Deal extends Component {
       item.number = 1
       this.props.addItem(item)
     }
-    this.calculate()
   }
   removeItem(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     this.props.removeItem(id)
-    this.calculate()
   }
   setClient(e) {
     this.props.setClient(this._findItem(this.props.clients.items, e))
@@ -92,24 +90,17 @@ class Deal extends Component {
   setPrice(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     this.props.setItemPrice(e.target.value, id)
-    this.calculate()
   }
   setNumber(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     this.props.setItemNumber(e.target.value, id)
-    this.calculate()
-  }
-  calculate() {
-    let sum = 0
-    console.log(this.props.items.length)
-    this.props.items.forEach(item => {
-      sum += item.price * item.number
-    })
-    this.props.setSum(sum)
   }
   render() {
     let props = this.props 
-
+    let sum = 0
+    props.items.forEach(item => {
+      sum += item.price * item.number
+    })
     return (
       <div className='deal_detail container'>
         <h3>{ props.title }</h3>
@@ -131,7 +122,7 @@ class Deal extends Component {
             removeItem={ ::this.removeItem }
             setPrice={ ::this.setPrice }
             setNumber={ ::this.setNumber }
-            sum={ props.sum }
+            sum={ sum }
           />
           <div className="air"></div>
           <button className="btn btn-lg btn-success pull-right" type="submit">
@@ -165,6 +156,7 @@ const mapStateToProps = (state) => (
     manager: state.dealDetail.manager,
     client: state.dealDetail.client,
     modal: state.dealDetail.modal,
+    reCalculate: state.dealDetail.reCalculate,
     sum: state.dealDetail.sum,
     user: state.user,
     stock: state.stock,
@@ -184,7 +176,6 @@ const mapDispatchToProps = dispatch => (
     setClient:        bindActionCreators(Actions.setClient, dispatch),
     setItemPrice:     bindActionCreators(Actions.setItemPrice, dispatch),
     setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
-    setSum:           bindActionCreators(Actions.setSum, dispatch),
     getUsers:         bindActionCreators(getUsers, dispatch),
     getStock:         bindActionCreators(getStock, dispatch),
     getClients:       bindActionCreators(getClients, dispatch)

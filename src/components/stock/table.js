@@ -41,12 +41,11 @@ class Table extends Component {
 			list = props.items.map((item, i) =>
 	      <tr key={ i } className={ this.getItemClass(item) }>
 	      	<td>{ i + 1 }</td>
-	      	<td>{ item.art }</td>
-	      	<td>{ item.name }</td>
-	      	<td>$ { item.price }</td>
-	      	<td>{ item.quantity }</td>
-	      	<td>{ item.debt }</td>
-	      	<td>{ item.ordered }</td>
+	      	{
+	      		this.headInfo.map((info, i) =>
+	      			<td key={ i }>{ info.code === 'price' ? '$' : '' } { item[info.code] }</td>
+	      		)
+	      	}
 	      	<td className='td_btn'>
 	      		<button className="btn btn-sm btn-warning" data-id={ item._id } onClick={ props.openModal }>
 							<span className="glyphicon glyphicon-edit"></span>
