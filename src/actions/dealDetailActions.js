@@ -63,14 +63,22 @@ export function setItemNumber(val, id) {
 	}
 }
 
-export function setClient(client) {
+export function setDealClient(client) {
 	return {
 		type: 'SET_CLIENT_TO_DEAL',
 		payload: client
 	}
 }
+
 export function setDealSum() {
 	return {
 		type: 'SET_SUM_DEAL'
+	}
+}
+
+export function setDealNumber(number) {
+	return {
+		type: 'SET_NUMBER_TO_DEAL',
+		payload: number
 	}
 }

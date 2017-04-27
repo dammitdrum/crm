@@ -33,7 +33,13 @@ class Controls extends Component {
         </div>
         <div className="air"></div>
         <h4>Введите номер сделки</h4>
-        <input className='search_field' type="text" pattern="/^\d+$/" name="number" required/>
+        <input 
+          className='search_field' 
+          type="text"
+          name="number" 
+          value={ props.number }
+          onChange={ props.changeNumber }
+          required/>
         <div className="air"></div>
         <div className="pull-left clearfix">
           <span className="btn btn-default" onClick={ props.openModal } data-modal='clients'>

@@ -102,6 +102,11 @@ const dealDetail = (state = initialState, action) => {
         sum: sum
       }
 
+    case 'SET_NUMBER_TO_DEAL':
+      return { ...state,
+        number: payload
+      }
+
     default:
       return state
   }

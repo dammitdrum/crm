@@ -86,18 +86,21 @@ class Deal extends Component {
     this.props.removeItem(id)
     this.props.setDealSum()
   }
-  setClient(e) {
-    this.props.setClient(this._findItem(this.props.clients.items, e))
+  setDealClient(e) {
+    this.props.setDealClient(this._findItem(this.props.clients.items, e))
   }
-  setPrice(e) {
+  setItemPrice(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     this.props.setItemPrice(e.target.value, id)
     this.props.setDealSum()
   }
-  setNumber(e) {
+  setItemNumber(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     this.props.setItemNumber(e.target.value, id)
     this.props.setDealSum()
+  }
+  setDealNumber(e) {
+    this.props.setDealNumber(e.target.value)
   }
   render() {
     let props = this.props
@@ -115,14 +118,16 @@ class Deal extends Component {
             client={ props.client }
             selectManager={ ::this.setDealManager }
             openModal={ ::this.openModal }
+            number={ props.number }
+            changeNumber={ ::this.setDealNumber }
           />
           <div className="air"></div>
           <Table 
             items={ props.items }
             openModal={ ::this.openModal }
             removeItem={ ::this.removeItem }
-            setPrice={ ::this.setPrice }
-            setNumber={ ::this.setNumber }
+            setPrice={ ::this.setItemPrice }
+            setNumber={ ::this.setItemNumber }
             sum={ props.sum }
           />
           <div className="air"></div>
@@ -141,7 +146,7 @@ class Deal extends Component {
           onSearch={ ::this.searchModal }
           onClearSearch={ ::this.clearSearchModal }
           onAddItem={ ::this.addItem }
-          onSetClient={ ::this.setClient }
+          onSetClient={ ::this.setDealClient }
           close={ ::this.closeModal }
         />
       </div>
@@ -159,6 +164,7 @@ const mapStateToProps = (state) => (
     modal: state.dealDetail.modal,
     reCalculate: state.dealDetail.reCalculate,
     sum: state.dealDetail.sum,
+    number: state.dealDetail.number,
     user: state.user,
     stock: state.stock,
     clients: state.clients
@@ -174,9 +180,10 @@ const mapDispatchToProps = dispatch => (
     searchModal:      bindActionCreators(Actions.searchModal, dispatch),
     addItem:          bindActionCreators(Actions.addItem, dispatch),
     removeItem:       bindActionCreators(Actions.removeItem, dispatch),
-    setClient:        bindActionCreators(Actions.setClient, dispatch),
+    setDealClient:    bindActionCreators(Actions.setDealClient, dispatch),
     setItemPrice:     bindActionCreators(Actions.setItemPrice, dispatch),
     setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
+    setDealNumber:    bindActionCreators(Actions.setDealNumber, dispatch),
     setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
     getUsers:         bindActionCreators(getUsers, dispatch),
     getStock:         bindActionCreators(getStock, dispatch),
