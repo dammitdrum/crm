@@ -104,24 +104,18 @@ class Deal extends Component {
     this.props.setDealNumber(e.target.value)
   }
   submitDeal() {
-    let parsedDeal = {}
-    let deal = this.props.dealDetail
+    let deal = _.cloneDeep(this.props.dealDetail)
 
-    parsedDeal.items = []
+    let items = []
     deal.items.forEach(item => {
-      let newItem = {}
-      newItem.id = item._id
-      newItem.number = item.number
-      newItem.price = item.price
-      parsedDeal.items.push(newItem)
+      items.push({
+        id: item._id,
+        number: item.number,
+        price: item.price,
+      })
     })
-    parsedDeal.client = deal.client
-    parsedDeal.manager = deal.manager
-    parsedDeal.number = deal.number
-    parsedDeal.state = deal.state
-    parsedDeal.sum = deal.sum
-    
-    this.props.createDeal(parsedDeal)
+    deal.items = items
+    this.props.createDeal(deal)
   }
   render() {
     let props = this.props
