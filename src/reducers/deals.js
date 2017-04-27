@@ -27,6 +27,15 @@ const deals = (state = initialState, action) => {
     case 'GET_DEALS_FAIL':
       return { ...state, error: true }
 
+    case 'CREATE_DEAL_SUCCESS':
+      state.deals.push(payload)
+      return { ...state,
+        deals: state.deals.concat()
+      }
+
+    case 'CREATE_DEAL_FAIL':
+      return { ...state }
+
     case 'FILTER_DEALS_BY_STATE':
       return { ...state, activeState: payload }
 

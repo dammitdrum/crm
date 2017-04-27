@@ -159,7 +159,8 @@ app.post('/deals/create', function (req, res) {
         client: req.body.client,
         items: req.body.items,
         sum: req.body.sum,
-        manager: req.body.manager
+        manager: req.body.manager,
+        state: req.body.state
     });
 
    createHandler(deal,res,'deal');

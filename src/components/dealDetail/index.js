@@ -7,6 +7,7 @@ import Controls from './controls'
 import Table from './table'
 import DealModal from './modal'
 import * as Actions from '../../actions/dealDetailActions'
+import { createDeal } from '../../actions/dealsActions'
 import { getUsers } from '../../actions/userActions'
 import { getData as getStock} from '../../actions/stockActions'
 import { getData as getClients} from '../../actions/clientsActions'
@@ -102,6 +103,26 @@ class Deal extends Component {
   setDealNumber(e) {
     this.props.setDealNumber(e.target.value)
   }
+  submitDeal() {
+    let parsedDeal = {}
+    let deal = this.props.dealDetail
+
+    parsedDeal.items = []
+    deal.items.forEach(item => {
+      let newItem = {}
+      newItem.id = item._id
+      newItem.number = item.number
+      newItem.price = item.price
+      parsedDeal.items.push(newItem)
+    })
+    parsedDeal.client = deal.client
+    parsedDeal.manager = deal.manager
+    parsedDeal.number = deal.number
+    parsedDeal.state = deal.state
+    parsedDeal.sum = deal.sum
+    
+    this.props.createDeal(parsedDeal)
+  }
   render() {
     let props = this.props
     
@@ -109,7 +130,7 @@ class Deal extends Component {
       <div className='deal_detail container'>
         <h3>{ props.title }</h3>
         <hr/>
-        <form name="form" className="modal_form clearfix">
+        <div className="modal_form clearfix">
           <Controls 
             dealState={ props.state }
             clickStateBtn={ ::this.setDealState }
@@ -131,13 +152,13 @@ class Deal extends Component {
             sum={ props.sum }
           />
           <div className="air"></div>
-          <button className="btn btn-lg btn-success pull-right" type="submit">
+          <button className="btn btn-lg btn-success pull-right" onClick={ ::this.submitDeal }>
             Создать продажу <span className="glyphicon glyphicon-cloud-upload"></span>
           </button>
           <Link to="/deals" className="btn btn-lg btn-default pull-left">
             <span className="glyphicon glyphicon-arrow-left"></span> Отмена
           </Link>
-        </form>
+        </div>
         <DealModal 
           stock={ props.stock.items }
           clients={ props.clients.items }
@@ -165,6 +186,7 @@ const mapStateToProps = (state) => (
     reCalculate: state.dealDetail.reCalculate,
     sum: state.dealDetail.sum,
     number: state.dealDetail.number,
+    dealDetail: state.dealDetail,
     user: state.user,
     stock: state.stock,
     clients: state.clients
@@ -185,6 +207,7 @@ const mapDispatchToProps = dispatch => (
     setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
     setDealNumber:    bindActionCreators(Actions.setDealNumber, dispatch),
     setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
+    createDeal:       bindActionCreators(createDeal, dispatch),
     getUsers:         bindActionCreators(getUsers, dispatch),
     getStock:         bindActionCreators(getStock, dispatch),
     getClients:       bindActionCreators(getClients, dispatch)

@@ -8,7 +8,7 @@ class Table extends Component {
 		this.headInfo =[
       { text: 'Дата создания', code: 'date' },
       { text: 'Номер', code: 'number' },
-      { text: 'Покупатель', code: 'customer' },
+      { text: 'Покупатель', code: 'client' },
       { text: 'Кол-во товаров', code: 'items' },
       { text: 'Сумма', code: 'sum' },
       { text: 'Менеджер', code: 'manager' }
@@ -53,7 +53,7 @@ class Table extends Component {
 					</td>
 					<td>{ dateFormat(deal.date, 'yyyy.mm.dd HH:MM') }</td>
 					<td>{ '№' + deal.number}</td>
-					<td>{ deal.customer.name }</td>
+					<td>{ deal.client.name }</td>
 					<td>{ deal.items.length + 'поз.'}</td>
 					<td>{ '$ ' + deal.sum }</td>
 					<td>{ deal.manager.name }</td>
