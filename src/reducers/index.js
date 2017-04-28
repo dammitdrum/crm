@@ -7,6 +7,7 @@ import deals from './deals'
 import dealDetail from './dealDetail'
 import clients from './clients'
 import user from './user'
+import app from './app'
 
 export default combineReducers({
 	routing: routerReducer,
@@ -15,5 +16,6 @@ export default combineReducers({
 	deals,
 	dealDetail,
 	clients,
-	user
+	user,
+	app
 })

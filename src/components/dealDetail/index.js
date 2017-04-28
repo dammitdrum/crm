@@ -8,22 +8,21 @@ import Table from './table'
 import DealModal from './modal'
 import * as Actions from '../../actions/dealDetailActions'
 import { createDeal } from '../../actions/dealsActions'
-import { getUsers } from '../../actions/userActions'
-import { getData as getStock} from '../../actions/stockActions'
-import { getData as getClients} from '../../actions/clientsActions'
 
 class Deal extends Component {
 	componentWillMount() {
-    if (!this.props.user.loaded) {
-      this.props.getUsers()
-    }
-    if (!this.props.stock.loaded) {
-      this.props.getStock()
-    }
-    if (!this.props.clients.loaded) {
-      this.props.getClients()
-    }
-    this.props.setDealState('new')
+    let dealNumber = this.props.routeParams.id
+    let deal = _.find(this.props.deals.deals, deal => deal.number === +dealNumber)
+    let items = this.props.stock.items
+    deal.items.forEach(dealItem => {
+      let obj = Object.assign(
+        {},
+        _.find(items, item => item._id === dealItem.id),
+        dealItem
+      )
+      console.log(obj)
+    })
+    this.props.loadDeal(deal)
     this.props.setDealManager(this.props.user)
   }
   setDealState(e) {
@@ -183,12 +182,14 @@ const mapStateToProps = (state) => (
     dealDetail: state.dealDetail,
     user: state.user,
     stock: state.stock,
+    deals: state.deals,
     clients: state.clients
   }
 )
 
 const mapDispatchToProps = dispatch => (
   {
+    loadDeal:         bindActionCreators(Actions.loadDeal, dispatch),
     setDealState:     bindActionCreators(Actions.setDealState, dispatch),
     setDealManager:   bindActionCreators(Actions.setDealManager, dispatch),
     showModal:        bindActionCreators(Actions.showModal, dispatch),
@@ -201,10 +202,7 @@ const mapDispatchToProps = dispatch => (
     setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
     setDealNumber:    bindActionCreators(Actions.setDealNumber, dispatch),
     setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
-    createDeal:       bindActionCreators(createDeal, dispatch),
-    getUsers:         bindActionCreators(getUsers, dispatch),
-    getStock:         bindActionCreators(getStock, dispatch),
-    getClients:       bindActionCreators(getClients, dispatch)
+    createDeal:       bindActionCreators(createDeal, dispatch)
   }
 )
 

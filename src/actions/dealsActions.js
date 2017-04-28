@@ -1,29 +1,5 @@
 import 'whatwg-fetch'
 
-export function getData() {
-	return dispatch => {
-		dispatch({
-			type: 'GET_DEALS_REQUEST'
-		})
-
-		fetch('/deals/read')
-			.then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'GET_DEALS_SUCCESS',
-	        payload: res
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'GET_DEALS_FAIL',
-	        payload: err
-	      })
-		  })
-	}
-}
-
 export function createDeal(deal) {
 	return dispatch => {
 		fetch('/deals/create', {

@@ -47,7 +47,7 @@ class Table extends Component {
 			)
 		} else {
 			list = props.deals.map((deal, i) =>
-	      <tr key={ i }>
+	      <tr key={ i } data-id={ deal.number } onClick={ props.openDeal } className='pointer'>
 	      	<td className={ this.getInfoByState(deal.state).td }>
 						<span className={ 'glyphicon ' + this.getInfoByState(deal.state).span }></span>
 					</td>

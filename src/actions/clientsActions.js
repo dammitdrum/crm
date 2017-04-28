@@ -1,29 +1,5 @@
 import 'whatwg-fetch'
 
-export function getData() {
-	return dispatch => {
-		dispatch({
-			type: 'GET_CLIENTS_REQUEST'
-		})
-
-		fetch('/clients/read')
-			.then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'GET_CLIENTS_SUCCESS',
-	        payload: res
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'GET_CLIENTS_FAIL',
-	        payload: err
-	      })
-		  })
-	}
-}
-
 export function filterByCategory(category) {
 	return {
 		type: 'FILTER_STOCK_BY_CATEGORY',

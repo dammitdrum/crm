@@ -1,5 +1,12 @@
 import 'whatwg-fetch'
 
+export function loadDeal(deal) {
+	return {
+		type: 'LOAD_DEAL_DETAIL',
+		payload: deal
+	}
+}
+
 export function setDealState(state) {
 	return {
 		type: 'SET_DEAL_STATE',

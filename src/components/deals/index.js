@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { hashHistory } from 'react-router'
 
 import Controls from './controls'
 import Table from './table'
@@ -9,15 +10,13 @@ import Enum from '../../utils/Enum'
 
 class Deals extends Component {
 	componentWillMount() {
-    if (!this.props.loaded) {
-      this.props.getData()
-    } 
+    
   }
-  clickState(e) {
+  filterByState(e) {
     if (e.currentTarget.className === 'active') return
     this.props.filterByState(e.currentTarget.getAttribute('data-state'))
   }
-  changeSearch(e) {
+  filterBySearch(e) {
     this.props.filterBySearch(e.target.value)
   }
   clearSearch() {
@@ -29,64 +28,61 @@ class Deals extends Component {
     type = code !== this.props.sortBy.code ? 'asc' : type
     this.props.sortData({ code, type })
   }
+  openDeal(e) {
+    let id = e.currentTarget.getAttribute('data-id')
+    hashHistory.push('/deals/edit/' + id)
+  }
   render() {
-    let data = this.props
+    let props = this.props
     let content
     let deals = []
     let states = []
 
-    if (data.loading) {
-      content = <h3 className='text-center'><strong>loading...</strong></h3>
-    }
-
-    if (data.error) {
-      content = <h3 className='text-center'><strong>Ops...</strong></h3>
-    }
-
     // data fetched
-    if (data.loaded) {
-      deals = data.deals
+    if (props.loaded) {
+      deals = props.deals
       states = [Enum.defaultStateDeals].concat(
-        _.uniqBy(data.deals, 'state').map((deal) => deal.state).sort()
+        _.uniqBy(props.deals, 'state').map((deal) => deal.state).sort()
       )
-      if (data.activeState !== Enum.defaultStateDeals) {
+      if (props.activeState !== Enum.defaultStateDeals) {
         deals = _.filter(
           data.deals, 
-          deal => deal.state === data.activeState
+          deal => deal.state === props.activeState
         )
       } else {
-        deals = data.deals
+        deals = props.deals
       }
-      if (data.searchQuery) {
+      if (props.searchQuery) {
         deals = _.filter(
           deals, 
-          deal => deal.number.toString().indexOf(data.searchQuery.trim()) !== -1
+          deal => deal.number.toString().indexOf(props.searchQuery.trim()) !== -1
         )
       }
       deals = _.orderBy(deals, (deal) => (
-        deal[data.sortBy.code]['name'] || deal[data.sortBy.code]
-      ), [data.sortBy.type])
+        deal[props.sortBy.code]['name'] || deal[props.sortBy.code]
+      ), [props.sortBy.type])
       content = (
         <div>
           <Controls 
             states={ states } 
-            clickState={ ::this.clickState }
-            activeState={ data.activeState }
-            changeSearch={ ::this.changeSearch }
+            clickState={ ::this.filterByState }
+            activeState={ props.activeState }
+            changeSearch={ ::this.filterBySearch }
             clearSearch={ ::this.clearSearch }
-            query={ data.searchQuery }
+            query={ props.searchQuery }
           />
           <Table 
-            data={ data }
+            data={ props }
             deals= { deals }
             onSort={ ::this.onSort }
+            openDeal={ ::this.openDeal }
           />
         </div>
       )
     }
     return (
       <div className='deals container'>
-        <h2 className="main_title">{ data.title }</h2>
+        <h2 className="main_title">{ props.title }</h2>
         { content }
       </div>
     )
@@ -108,8 +104,7 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    getData:          bindActionCreators(Actions.getData, dispatch),
-    filterByState: bindActionCreators(Actions.filterByState, dispatch),
+    filterByState:    bindActionCreators(Actions.filterByState, dispatch),
     filterBySearch:   bindActionCreators(Actions.filterBySearch, dispatch),
     sortData:         bindActionCreators(Actions.sortData, dispatch)
   }

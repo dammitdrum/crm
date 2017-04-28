@@ -62,6 +62,7 @@ ReactDOM.render(
       	<Route path="/stock" component={Stock}/>
       	<Route path="/deals" component={Deals}/>
         <Route path="/deals/create" component={DealDetail}/>
+        <Route path="/deals/edit/:id" component={DealDetail}/>
       	<Route path="/partners" component={Clients}/>
       	<Route path="/user" component={User}/>
       </Route>

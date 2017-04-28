@@ -10,9 +10,7 @@ import Enum from '../../utils/Enum'
 
 class Stock extends Component {
   componentWillMount() {
-    if (!this.props.loaded) {
-      this.props.getData()
-    } 
+    
   }
   clickCategory(e) {
     if (e.target.closest('.active')) return
@@ -59,14 +57,6 @@ class Stock extends Component {
     let content
     let items = []
     let categories = []
-
-    if (data.loading) {
-      content = <h3 className='text-center'><strong>loading...</strong></h3>
-    }
-
-    if (data.error) {
-      content = <h3 className='text-center'><strong>Ops...</strong></h3>
-    }
 
     // data fetched
     if (data.loaded) {
@@ -141,7 +131,6 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    getData:          bindActionCreators(Actions.getData, dispatch),
     filterByCategory: bindActionCreators(Actions.filterByCategory, dispatch),
     filterBySearch:   bindActionCreators(Actions.filterBySearch, dispatch),
     showModal:        bindActionCreators(Actions.showModal, dispatch),

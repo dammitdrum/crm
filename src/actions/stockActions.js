@@ -1,29 +1,5 @@
 import 'whatwg-fetch'
 
-export function getData() {
-	return dispatch => {
-		dispatch({
-			type: 'GET_STOCK_REQUEST'
-		})
-
-		fetch('/stock/read')
-			.then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'GET_STOCK_SUCCESS',
-	        payload: res
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'GET_STOCK_FAIL',
-	        payload: err
-	      })
-		  })
-	}
-}
-
 export function createItem(item) {
 	return dispatch => {
 		fetch('/stock/create', {

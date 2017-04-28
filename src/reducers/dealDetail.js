@@ -21,6 +21,9 @@ const dealDetail = (state = initialState, action) => {
 
   switch (action.type) {
 
+    case 'LOAD_DEAL_DETAIL':
+      return Object.assign({}, state, payload ? payload : initialState)
+
     case 'SET_DEAL_STATE':
       return { ...state, 
         state: payload
