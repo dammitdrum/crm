@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Link } from 'react-router'
+import { Link, hashHistory } from 'react-router'
 
 import Controls from './controls'
 import Table from './table'
@@ -105,7 +105,6 @@ class Deal extends Component {
   }
   submitDeal() {
     let deal = _.cloneDeep(this.props.dealDetail)
-
     let items = []
     deal.items.forEach(item => {
       items.push({
@@ -116,6 +115,7 @@ class Deal extends Component {
     })
     deal.items = items
     this.props.createDeal(deal)
+    hashHistory.push('/deals')
   }
   render() {
     let props = this.props
