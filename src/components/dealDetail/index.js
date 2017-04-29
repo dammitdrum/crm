@@ -12,16 +12,18 @@ import { createDeal } from '../../actions/dealsActions'
 class Deal extends Component {
 	componentWillMount() {
     let dealNumber = this.props.routeParams.id
-    let deal = _.find(this.props.deals.deals, deal => deal.number === +dealNumber)
+    let deal = _.cloneDeep(_.find(this.props.deals.deals, deal => deal.number === +dealNumber))
     let items = this.props.stock.items
+    let dealItems = []
     deal.items.forEach(dealItem => {
       let obj = Object.assign(
         {},
         _.find(items, item => item._id === dealItem.id),
         dealItem
       )
-      console.log(obj)
+      dealItems.push(obj)
     })
+    deal.items = dealItems
     this.props.loadDeal(deal)
     this.props.setDealManager(this.props.user)
   }
@@ -44,7 +46,7 @@ class Deal extends Component {
       searchQuery: ''
     })
   }
-  closeModal() {
+  closeModal() { 
     this.props.showModal({
       ...this.props.modal,
       show: false
