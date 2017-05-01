@@ -2,7 +2,7 @@ import Enum from '../utils/Enum'
 
 const initialState = {
   title: 'Сделки',
-  deals: [],
+  items: [],
   searchQuery: '',
   activeState: Enum.defaultStateDeals,
   sortBy: { code: 'date', type: 'asc' },
@@ -19,7 +19,7 @@ const deals = (state = initialState, action) => {
 
     case 'GET_DEALS_SUCCESS':
       return { ...state,
-        deals: payload,
+        items: payload,
         loading: false,
         loaded: true
       }
@@ -28,12 +28,22 @@ const deals = (state = initialState, action) => {
       return { ...state, error: true }
 
     case 'CREATE_DEAL_SUCCESS':
-      state.deals.push(payload)
+      state.items.push(payload)
       return { ...state,
-        deals: state.deals.concat()
+        items: state.items.concat()
       }
 
     case 'CREATE_DEAL_FAIL':
+      return { ...state }
+
+    case 'UPDATE_DEAL_SUCCESS':
+      let updated = state.items.filter(item => item._id !== payload._id)
+      updated.push(payload)
+      return { ...state,
+        items: updated
+      }
+
+    case 'UPDATE_DEAL_FAIL':
       return { ...state }
 
     case 'FILTER_DEALS_BY_STATE':

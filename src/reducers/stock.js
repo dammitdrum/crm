@@ -42,10 +42,10 @@ const stock = (state = initialState, action) => {
 			return { ...state}
 
 		case 'UPDATE_ITEM_SUCCESS':
-			let updateItems = state.items.filter(item => item._id !== payload._id)
-			updateItems.push({ ...payload, updating: true })
+			let updated = state.items.filter(item => item._id !== payload._id)
+			updated.push({ ...payload, updating: true })
 			return { ...state, 
-				items: updateItems,
+				items: updated,
 				modal: {
 					show: false,
 					mode: 'edit'

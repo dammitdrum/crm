@@ -26,6 +26,32 @@ export function createDeal(deal) {
 	}
 }
 
+export function saveDeal(deal) {
+	return dispatch => {
+		fetch('/deals/update/' + deal._id, {
+			method: 'PUT',
+			headers: {
+				'Accept': 'application/json',
+		    'Content-Type': 'application/json'
+		  },
+			body: JSON.stringify(deal)
+		}).then(function(res) {
+		    return res.json()
+		  }).then(function(res) {
+		    dispatch({
+	        type: 'UPDATE_DEAL_SUCCESS',
+	        payload: res.item
+	      })
+		  }).catch(function(err) {
+		  	console.log(err)
+		    dispatch({
+	        type: 'UPDATE_DEAL_FAIL',
+	        payload: err
+	      })
+		  })
+	}
+}
+
 export function filterByState(state) {
 	return {
 		type: 'FILTER_DEALS_BY_STATE',

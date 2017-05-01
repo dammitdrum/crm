@@ -92,7 +92,7 @@ class Deals extends Component {
 const mapStateToProps = state => (
   {
     title: state.deals.title,
-    deals: state.deals.deals,
+    deals: state.deals.items,
     searchQuery: state.deals.searchQuery,
     activeState: state.deals.activeState,
     loaded: state.deals.loaded,

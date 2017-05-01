@@ -7,25 +7,20 @@ import Controls from './controls'
 import Table from './table'
 import DealModal from './modal'
 import * as Actions from '../../actions/dealDetailActions'
-import { createDeal } from '../../actions/dealsActions'
+import { createDeal, saveDeal } from '../../actions/dealsActions'
 
 class Deal extends Component {
 	componentWillMount() {
-    let dealNumber = this.props.routeParams.id
-    let deal = _.cloneDeep(_.find(this.props.deals.deals, deal => deal.number === +dealNumber))
-    let items = this.props.stock.items
-    let dealItems = []
-    deal.items.forEach(dealItem => {
-      let obj = Object.assign(
-        {},
-        _.find(items, item => item._id === dealItem.id),
-        dealItem
-      )
-      dealItems.push(obj)
-    })
-    deal.items = dealItems
-    this.props.loadDeal(deal)
-    this.props.setDealManager(this.props.user)
+    let dealNumber = this.props.routeParams.id, deal
+    if (dealNumber) {
+      deal = _.cloneDeep(_.find(this.props.deals.items, deal => deal.number === +dealNumber))
+      let stock = this.props.stock.items
+      deal.items = deal.items.map(dealItem => {
+        return Object.assign({}, _.find(stock, item => item._id === dealItem.id), dealItem)
+      })
+    }
+    this.props.loadDeal(deal ? deal : null)
+    this.props.setDealManager(deal ? deal.manager : this.props.user)
   }
   setDealState(e) {
     if (e.currentTarget.classList.contains('active')) return
@@ -104,28 +99,35 @@ class Deal extends Component {
   setDealNumber(e) {
     this.props.setDealNumber(e.target.value)
   }
-  submitDeal() {
+  submitDeal(e) {
     let deal = _.cloneDeep(this.props.dealDetail)
-    let items = []
-    deal.items.forEach(item => {
-      items.push({
+    deal.items = deal.items.map(item => {
+      return {
         id: item._id,
         number: item.number,
         price: item.price,
-      })
+      }
     })
-    deal.items = items
-    this.props.createDeal(deal)
+    if (this.props.routeParams.id) {
+      this.props.saveDeal(deal)
+    } else {
+      this.props.createDeal(deal)
+    }
     hashHistory.push('/deals')
   }
   render() {
     let props = this.props
-    
+    let id = props.routeParams.id
+    let btnInfo = {
+      cssClass: id ? 'btn-warning' : 'btn-success',
+      text: id ? 'Сохранить сделку' : 'Создать сделку'
+    }
+
     return (
       <div className='deal_detail container'>
         <h3>{ props.title }</h3>
         <hr/>
-        <div className="modal_form clearfix">
+        <div className='modal_form clearfix'>
           <Controls 
             dealState={ props.state }
             clickStateBtn={ ::this.setDealState }
@@ -137,7 +139,7 @@ class Deal extends Component {
             number={ props.number }
             changeNumber={ ::this.setDealNumber }
           />
-          <div className="air"></div>
+          <div className='air'></div>
           <Table 
             items={ props.items }
             openModal={ ::this.openModal }
@@ -146,12 +148,12 @@ class Deal extends Component {
             setNumber={ ::this.setItemNumber }
             sum={ props.sum }
           />
-          <div className="air"></div>
-          <button className="btn btn-lg btn-success pull-right" onClick={ ::this.submitDeal }>
-            Создать продажу <span className="glyphicon glyphicon-cloud-upload"></span>
+          <div className='air'></div>
+          <button className={'btn btn-lg pull-right ' + btnInfo.cssClass} onClick={ ::this.submitDeal }>
+            { btnInfo.text } <span className='glyphicon glyphicon-cloud-upload'></span>
           </button>
-          <Link to="/deals" className="btn btn-lg btn-default pull-left">
-            <span className="glyphicon glyphicon-arrow-left"></span> Отмена
+          <Link to='/deals' className='btn btn-lg btn-default pull-left'>
+            <span className='glyphicon glyphicon-arrow-left'></span> Отмена
           </Link>
         </div>
         <DealModal 
@@ -204,7 +206,8 @@ const mapDispatchToProps = dispatch => (
     setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
     setDealNumber:    bindActionCreators(Actions.setDealNumber, dispatch),
     setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
-    createDeal:       bindActionCreators(createDeal, dispatch)
+    createDeal:       bindActionCreators(createDeal, dispatch),
+    saveDeal:         bindActionCreators(saveDeal, dispatch),
   }
 )
 
