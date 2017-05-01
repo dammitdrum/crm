@@ -1,5 +1,56 @@
 import 'whatwg-fetch'
 
+export function onLogin(data) {
+	return dispatch => {
+		fetch('/login', {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+		    'Content-Type': 'application/json'
+		  },
+		  credentials: 'same-origin',
+			body: JSON.stringify(data)
+		}).then(function(res) {
+		    return res.json()
+		  }).then(function(res) {
+		    dispatch({
+	        type: 'LOGIN_SUCCESS',
+	        payload: res.user
+	      })
+		  }).catch(function(err) {
+		  	console.log(err)
+		    dispatch({
+	        type: 'LOGIN_FAIL',
+	        payload: err
+	      })
+		  })
+	}
+}
+
+export function auth(data) {
+	return dispatch => {
+		dispatch({
+			type: 'AUTH_REQUEST'
+		})
+
+		fetch('/auth', {
+			method: 'POST',
+			credentials: 'same-origin'
+		}).then(function(res) {
+		    return res.json()
+		  }).then(function(res) {
+	  		dispatch({
+	        type: 'AUTH_SUCCESS',
+	        payload: res.user
+	      })
+		  }).catch(function(err) {
+		    dispatch({
+	        type: 'AUTH_FAIL'
+	      })
+		  })
+	}
+}
+
 export function loadData() {
 	return dispatch => {
 		dispatch({
@@ -53,5 +104,6 @@ export function loadData() {
 		  })
 	}
 }
+
 
 

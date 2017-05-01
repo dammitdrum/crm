@@ -9,18 +9,20 @@ const crypto = require('crypto')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
+const MONGO_URL = 'mongodb://dbuser:password@ds035766.mlab.com:35766/crmdb'
+
 app.use(bodyParser.json());
 app.use(session({
     secret: 'dammitdrum',
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ 
-        url: 'mongodb://dbuser:password@ds053156.mlab.com:53156/crmusers',
+        url: MONGO_URL,
     })
 }))
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://dbuser:password@ds035766.mlab.com:35766/crmdb');
+mongoose.connect(MONGO_URL);
 var db = mongoose.connection;
 db.on('error', function (err) {
     console.log('connection error:', err.message);

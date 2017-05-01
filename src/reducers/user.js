@@ -1,9 +1,9 @@
+
 const initialState = {
-  isAuth: false,
-  login: 'admin',
-  name: 'Админ',
-  users: [],
-  loaded: false
+  login: '',
+  name: '',
+  access: '',
+  users: []
 }
 
 const user = (state = initialState, action) => {
@@ -11,19 +11,27 @@ const user = (state = initialState, action) => {
   
   switch (action.type) {
 
-    case 'GET_USERS_REQUEST':
-      return { ...state }
-
     case 'GET_USERS_SUCCESS':
       return { ...state, 
-        users: payload,
-        loaded: true
+        users: payload
       }
 
-    case 'GET_USER_REQUEST':
+    case 'LOGIN_SUCCESS':
       return { ...state, 
-        isAuth: true
+        login: payload.login,
+        name: payload.name,
+        access: payload.access
       }
+
+    case 'AUTH_SUCCESS':
+      return { ...state,
+        login: payload.login,
+        name: payload.name,
+        access: payload.access
+      }
+
+    case 'LOGOUT_SUCCESS':
+      return Object.assign({}, state, initialState)
 
     default:
       return state

@@ -46,6 +46,10 @@ input {
 }
 h2 {
     margin-bottom: 30px;
+    &.mgt {
+        margin-top: 100px;
+        font-size: 35px;
+    }
 }
 .nav.navbar-nav li a.active {
     color: #555;
@@ -222,5 +226,9 @@ h2 {
 }
 .login {
     padding-top: 100px;
+}
+
+.btn.mgb-5 {
+    margin-bottom: 5px;
 }
 
