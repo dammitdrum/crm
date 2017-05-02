@@ -51,53 +51,53 @@ class Stock extends Component {
     }
   }
   render() {
-    let data = this.props
+    let props = this.props
     let content
     let items = []
     let categories = []
 
     categories = [Enum.defaultCatStock].concat(
-      _.uniqBy(data.items, 'category').map((item) => item.category).sort()
+      _.uniqBy(props.items, 'category').map((item) => item.category).sort()
     )
-    if (data.activeCategory !== Enum.defaultCatStock) {
+    if (props.activeCategory !== Enum.defaultCatStock) {
       items = _.filter(
-        data.items, 
-        item => item.category === data.activeCategory
+        props.items, 
+        item => item.category === props.activeCategory
       )
     } else {
-      items = data.items
+      items = props.items
     }
-    if (data.searchQuery) {
+    if (props.searchQuery) {
       items = _.filter(
         items, 
-        item => item.name.toLowerCase().indexOf(data.searchQuery.trim()) !== -1
+        item => item.name.toLowerCase().indexOf(props.searchQuery.trim()) !== -1
       )
     }
-    items = _.orderBy(items, [data.sortBy.code], [data.sortBy.type])
+    items = _.orderBy(items, [props.sortBy.code], [props.sortBy.type])
 
     return (
       <div className='stock container'>
-        <h2 className="main_title">{ data.title }</h2>
+        <h2 className="main_title">{ props.title }</h2>
         <Controls 
-          categories={ categories } 
+          categories={ categories }
           clickCategory={ ::this.clickCategory }
-          activeCategory={ data.activeCategory }
+          activeCategory={ props.activeCategory }
           changeSearch={ ::this.changeSearch }
           openModal={ ::this.openModal }
           clearSearch={ ::this.clearSearch }
-          query={ data.searchQuery }
+          query={ props.searchQuery }
         />
         <Table 
-          data={ data }
+          data={ props }
           items= { items }
           onSort={ ::this.onSort }
           onDelete={ ::this.onDelete }
           openModal={ ::this.openModal }
         />
         <StockModal 
-          params={ data.modal }
-          item={ data.modal.itemId ? 
-            data.items.filter(item => item._id === data.modal.itemId)[0] : null }
+          params={ props.modal }
+          item={ props.modal.itemId ? 
+            props.items.filter(item => item._id === props.modal.itemId)[0] : null }
           close={ ::this.closeModal }
           submit={ ::this.submitModal }
         />
