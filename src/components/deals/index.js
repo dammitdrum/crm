@@ -34,56 +34,48 @@ class Deals extends Component {
   }
   render() {
     let props = this.props
-    let content
     let deals = []
     let states = []
 
-    // data fetched
-    if (props.loaded) {
-      deals = props.deals
-      states = [Enum.defaultStateDeals].concat(
-        _.uniqBy(props.deals, 'state').map((deal) => deal.state).sort()
+    deals = props.deals
+    states = [Enum.defaultStateDeals].concat(
+      _.uniqBy(props.deals, 'state').map((deal) => deal.state).sort()
+    )
+    if (props.activeState !== Enum.defaultStateDeals) {
+      deals = _.filter(
+        props.deals, 
+        deal => deal.state === props.activeState
       )
-      if (props.activeState !== Enum.defaultStateDeals) {
-        deals = _.filter(
-          data.deals, 
-          deal => deal.state === props.activeState
-        )
-      } else {
-        deals = props.deals
-      }
-      if (props.searchQuery) {
-        deals = _.filter(
-          deals, 
-          deal => deal.number.toString().indexOf(props.searchQuery.trim()) !== -1
-        )
-      }
-      deals = _.orderBy(deals, (deal) => (
-        deal[props.sortBy.code]['name'] || deal[props.sortBy.code]
-      ), [props.sortBy.type])
-      content = (
-        <div>
-          <Controls 
-            states={ states } 
-            clickState={ ::this.filterByState }
-            activeState={ props.activeState }
-            changeSearch={ ::this.filterBySearch }
-            clearSearch={ ::this.clearSearch }
-            query={ props.searchQuery }
-          />
-          <Table 
-            data={ props }
-            deals= { deals }
-            onSort={ ::this.onSort }
-            openDeal={ ::this.openDeal }
-          />
-        </div>
+    } else {
+      deals = props.deals
+    }
+    if (props.searchQuery) {
+      deals = _.filter(
+        deals, 
+        deal => deal.number.toString().indexOf(props.searchQuery.trim()) !== -1
       )
     }
+    deals = _.orderBy(deals, (deal) => (
+      deal[props.sortBy.code]['name'] || deal[props.sortBy.code]
+    ), [props.sortBy.type])
+
     return (
       <div className='deals container'>
         <h2 className="main_title">{ props.title }</h2>
-        { content }
+        <Controls 
+          states={ states } 
+          clickState={ ::this.filterByState }
+          activeState={ props.activeState }
+          changeSearch={ ::this.filterBySearch }
+          clearSearch={ ::this.clearSearch }
+          query={ props.searchQuery }
+        />
+        <Table 
+          data={ props }
+          deals= { deals }
+          onSort={ ::this.onSort }
+          openDeal={ ::this.openDeal }
+        />
       </div>
     )
   }
@@ -95,9 +87,6 @@ const mapStateToProps = state => (
     deals: state.deals.items,
     searchQuery: state.deals.searchQuery,
     activeState: state.deals.activeState,
-    loaded: state.deals.loaded,
-    loading: state.deals.loading,
-    error: state.deals.error,
     sortBy: state.deals.sortBy
   }
 )

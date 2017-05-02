@@ -16,11 +16,19 @@ class Deal extends Component {
       deal = _.cloneDeep(_.find(this.props.deals.items, deal => deal.number === +dealNumber))
       let stock = this.props.stock.items
       deal.items = deal.items.map(dealItem => {
-        return Object.assign({}, _.find(stock, item => item._id === dealItem.id), dealItem)
+        return Object.assign({}, 
+          _.find(stock, item => item._id === dealItem.id), 
+          { price: dealItem.price, number: dealItem.number }
+        )
       })
     }
     this.props.loadDeal(deal ? deal : null)
     this.props.setDealManager(deal ? deal.manager : this.props.user)
+  }
+  componentDidUpdate() {
+    if (this.props.redirect) {
+      hashHistory.push('/deals')
+    }
   }
   setDealState(e) {
     if (e.currentTarget.classList.contains('active')) return
@@ -113,7 +121,6 @@ class Deal extends Component {
     } else {
       this.props.createDeal(deal)
     }
-    hashHistory.push('/deals')
   }
   render() {
     let props = this.props
@@ -183,6 +190,7 @@ const mapStateToProps = (state) => (
     reCalculate: state.dealDetail.reCalculate,
     sum: state.dealDetail.sum,
     number: state.dealDetail.number,
+    redirect: state.dealDetail.redirect,
     dealDetail: state.dealDetail,
     user: state.user,
     stock: state.stock,

@@ -16,6 +16,9 @@ export function createDeal(deal) {
 	        type: 'CREATE_DEAL_SUCCESS',
 	        payload: res.item
 	      })
+	      dispatch({
+	        type: 'RESET_REDIRECT'
+	      })
 		  }).catch(function(err) {
 		  	console.log(err)
 		    dispatch({
@@ -41,6 +44,9 @@ export function saveDeal(deal) {
 		    dispatch({
 	        type: 'UPDATE_DEAL_SUCCESS',
 	        payload: res.item
+	      })
+	      dispatch({
+	        type: 'RESET_REDIRECT'
 	      })
 		  }).catch(function(err) {
 		  	console.log(err)

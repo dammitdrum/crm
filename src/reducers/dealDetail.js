@@ -13,7 +13,8 @@ const initialState = {
   items: [],
   sum: 0,
   client: false,
-  number: ''
+  number: '',
+  redirect: false
 }
 
 const dealDetail = (state = initialState, action) => {
@@ -108,6 +109,21 @@ const dealDetail = (state = initialState, action) => {
     case 'SET_NUMBER_TO_DEAL':
       return { ...state,
         number: payload
+      }
+
+    case 'CREATE_DEAL_SUCCESS':
+      return { ...state,
+        redirect: true
+      }
+
+    case 'UPDATE_DEAL_SUCCESS':
+      return { ...state,
+        redirect: true
+      }
+
+    case 'RESET_REDIRECT':
+      return { ...state,
+        redirect: false
       }
 
     default:

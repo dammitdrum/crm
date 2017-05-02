@@ -74,8 +74,10 @@ class Stock extends Component {
       )
     }
     items = _.orderBy(items, [data.sortBy.code], [data.sortBy.type])
-    content = (
-      <div>
+
+    return (
+      <div className='stock container'>
+        <h2 className="main_title">{ data.title }</h2>
         <Controls 
           categories={ categories } 
           clickCategory={ ::this.clickCategory }
@@ -92,13 +94,6 @@ class Stock extends Component {
           onDelete={ ::this.onDelete }
           openModal={ ::this.openModal }
         />
-      </div>
-    )
-
-    return (
-      <div className='stock container'>
-        <h2 className="main_title">{ data.title }</h2>
-        { content }
         <StockModal 
           params={ data.modal }
           item={ data.modal.itemId ? 
