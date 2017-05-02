@@ -26,9 +26,9 @@ export function createItem(item) {
 	}
 }
 
-export function updateItem(item, id) {
+export function updateItem(item) {
 	return dispatch => {
-		fetch('/stock/update/'+id, {
+		fetch('/stock/update/' + item._id, {
 			method: 'PUT',
 			headers: {
 				'Accept': 'application/json',
@@ -45,7 +45,7 @@ export function updateItem(item, id) {
 	      setTimeout(() => {
 	      	dispatch({
 		        type: 'STOP_FLASH_UPDATE_ITEM',
-		        payload: id
+		        payload: item._id
 		      })
 	      }, 2000)
 		  }).catch(function(err) {
@@ -101,6 +101,13 @@ export function showModal(params) {
 	return {
 		type: 'SHOW_STOCK_MODAL',
 		payload: params
+	}
+}
+
+export function changeModalItem(item) {
+	return {
+		type: 'CHANGE_MODAL_ITEM',
+		payload: item
 	}
 }
 

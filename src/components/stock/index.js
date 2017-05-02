@@ -19,11 +19,15 @@ class Stock extends Component {
   }
   openModal(e) {
     let itemId = e.currentTarget.getAttribute('data-id')
+    let item = itemId ? _.find(this.props.items, item => item._id === itemId) : this.props.modal.item
     let mode = itemId ? 'edit' : 'create'
-    this.props.showModal({ show: true, mode, itemId })
+    this.props.showModal({ show: true, mode, item: item })
   }
   closeModal() {
-    this.props.showModal({ show: false, mode: this.props.modal.mode})
+    this.props.showModal({
+      ...this.props.modal,
+      show: false
+    })
   }
   clearSearch() {
     this.props.filterBySearch('')
@@ -34,25 +38,23 @@ class Stock extends Component {
     type = code !== this.props.sortBy.code ? 'asc' : type
     this.props.sortData({ code, type })
   }
+  onChangeModal(e) {
+    this.props.changeModalItem({
+      ...this.props.modal.item,
+      [e.target.getAttribute('name')]: e.target.value
+    })
+  }
   onDelete(e) {
     let id = e.currentTarget.getAttribute('data-id')
     this.props.deleteItem(id)
   }
   submitModal(e) {
-    e.preventDefault()
-    let modalData = {}
-    e.target.querySelectorAll('input[name]').forEach(field => {
-      modalData[field.getAttribute('name')] = field.value
-    })
-    if (this.props.modal.itemId) {
-      this.props.updateItem(modalData, this.props.modal.itemId)
-    } else {
-      this.props.createItem(modalData)
-    }
+    let item = this.props.modal.item
+    item._id ?
+      this.props.updateItem(item) : this.props.createItem(item)
   }
   render() {
     let props = this.props
-    let content
     let items = []
     let categories = []
 
@@ -96,9 +98,9 @@ class Stock extends Component {
         />
         <StockModal 
           params={ props.modal }
-          item={ props.modal.itemId ? 
-            props.items.filter(item => item._id === props.modal.itemId)[0] : null }
+          item={ props.modal.item }
           close={ ::this.closeModal }
+          onChange={ ::this.onChangeModal }
           submit={ ::this.submitModal }
         />
       </div>
@@ -125,6 +127,7 @@ const mapDispatchToProps = dispatch => (
     sortData:         bindActionCreators(Actions.sortData, dispatch),
     createItem:       bindActionCreators(Actions.createItem, dispatch),
     updateItem:       bindActionCreators(Actions.updateItem, dispatch),
+    changeModalItem:  bindActionCreators(Actions.changeModalItem, dispatch),
     deleteItem:       bindActionCreators(Actions.deleteItem, dispatch)
   }
 )

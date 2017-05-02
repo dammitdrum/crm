@@ -5,7 +5,16 @@ const initialState = {
   items: [],
   searchQuery: '',
   activeCategory: Enum.defaultCatStock,
-  modal: { show: false, mode: 'create'},
+  modal: { 
+  	show: false, 
+  	mode: 'create',
+  	item: {
+  		art: '',
+  		name: '',
+  		price: '',
+  		category: ''
+  	}
+  },
   sortBy: { code: 'price', type: 'asc' },
   loading: false,
   loaded: false
@@ -46,9 +55,8 @@ const stock = (state = initialState, action) => {
 			updated.push({ ...payload, updating: true })
 			return { ...state, 
 				items: updated,
-				modal: {
-					show: false,
-					mode: 'edit'
+				modal: { ...state.modal,
+          show: false
 				}
 			}
 
@@ -90,7 +98,16 @@ const stock = (state = initialState, action) => {
 			return { ...state, searchQuery: payload }
 
 		case 'SHOW_STOCK_MODAL':
-			return { ...state, modal: payload }
+			return { ...state,
+				modal: payload
+			}
+
+		case 'CHANGE_MODAL_ITEM':
+			return { ...state,
+				modal: { ...state.modal,
+          item: payload
+        }
+			}
 
 		case 'SORT_STOCK_DATA':
 			return { ...state, sortBy: payload }
