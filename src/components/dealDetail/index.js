@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link, hashHistory } from 'react-router'
+import { Overlay, Popover } from 'react-bootstrap'
 
 import Controls from './controls'
 import Table from './table'
@@ -122,6 +123,9 @@ class Deal extends Component {
       this.props.createDeal(deal)
     }
   }
+  validate(name) {
+
+  }
   render() {
     let props = this.props
     let id = props.routeParams.id
@@ -129,12 +133,13 @@ class Deal extends Component {
       cssClass: id ? 'btn-warning' : 'btn-success',
       text: id ? 'Сохранить сделку' : 'Создать сделку'
     }
+    
 
     return (
       <div className='deal_detail container'>
         <h3>{ props.title }</h3>
         <hr/>
-        <div className='modal_form clearfix'>
+        <div className='modal_form clearfix' ref='client'>
           <Controls 
             dealState={ props.state }
             clickStateBtn={ ::this.setDealState }
@@ -174,6 +179,16 @@ class Deal extends Component {
           onSetClient={ ::this.setDealClient }
           close={ ::this.closeModal }
         />
+        <Overlay
+          show={ props.validator.show }
+          //target={ Document.querySelector('[data-validate="'+props.validator.elems[0].name+'"]') }
+          placement="right"
+          container={ this.refs.client }
+          containerPadding={ 20 }>
+          <Popover id="popover-contained" title="Popover bottom">
+            <strong>Holy guacamole!</strong> Check this info.
+          </Popover>
+        </Overlay>
       </div>
     )
   }
@@ -191,6 +206,7 @@ const mapStateToProps = (state) => (
     sum: state.dealDetail.sum,
     number: state.dealDetail.number,
     redirect: state.dealDetail.redirect,
+    validator: state.dealDetail.validator,
     dealDetail: state.dealDetail,
     user: state.user,
     stock: state.stock,

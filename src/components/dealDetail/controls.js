@@ -42,7 +42,11 @@ class Controls extends Component {
           required/>
         <div className="air"></div>
         <div className="pull-left clearfix">
-          <span className="btn btn-default" onClick={ props.openModal } data-modal='clients'>
+          <span 
+            className="btn btn-default" 
+            onClick={ props.openModal } 
+            data-modal='clients' 
+            ref='client'>
             Выбрать покупателя 
             &nbsp;<span className="glyphicon glyphicon-menu-hamburger"></span>
           </span>

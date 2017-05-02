@@ -14,7 +14,17 @@ const initialState = {
   sum: 0,
   client: false,
   number: '',
-  redirect: false
+  redirect: false,
+  validator: {
+    show: true,
+    elems: [
+      {
+        name: 'client',
+        valid: false,
+        message: 'Необходимо выбрать покупателя'
+      }
+    ]
+  }
 }
 
 const dealDetail = (state = initialState, action) => {
