@@ -90,10 +90,10 @@ export function setDealNumber(number) {
 	}
 }
 
-export function showValidate(validator) {
+export function validateDeal(config) {
 	return {
-		type: 'SHOW_VALIDATE',
-		payload: validator
+		type: 'VALIDATE_DEAL',
+		payload: config
 	}
 }
 

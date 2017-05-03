@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux'
 import { Link, hashHistory } from 'react-router'
 import { Overlay, Popover } from 'react-bootstrap'
 
+import Validator from '../../utils/validator'
+
 import Controls from './controls'
 import Table from './table'
 import DealModal from './modal'
@@ -12,6 +14,8 @@ import { createDeal, saveDeal } from '../../actions/dealsActions'
 
 class Deal extends Component {
 	componentWillMount() {
+    this.validator = new Validator(this.props.validateDeal)
+
     let dealNumber = this.props.routeParams.id, deal
     if (dealNumber) {
       deal = _.cloneDeep(_.find(this.props.deals.items, deal => deal.number === +dealNumber))
@@ -30,6 +34,7 @@ class Deal extends Component {
     if (this.props.redirect) {
       hashHistory.push('/deals')
     }
+    //this.validator.setValid('number', this.props.number.length < 1)
   }
   setDealState(e) {
     if (e.currentTarget.classList.contains('active')) return
@@ -94,6 +99,7 @@ class Deal extends Component {
   }
   setDealClient(e) {
     this.props.setDealClient(this._findItem(this.props.clients.items, e))
+    this.validator.setValid(this.props.validateConfig, 'client', true)
   }
   setItemPrice(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
@@ -107,24 +113,11 @@ class Deal extends Component {
   }
   setDealNumber(e) {
     this.props.setDealNumber(e.target.value)
-    
-    let propName = 'number'
-    let props = this.props.validator.props
-    props = props.map(prop => {
-      if (prop.name === propName) {
-        prop.valid = true 
-      }
-    })
-    this.props.showValidate({
-      props,
-      popover: {
-        ...this.props.validator.popover,
-        show: false,
-      }
-    })
-    
+    this.validator.setValid(this.props.validateConfig, 'number', e.target.value)
   }
   submitDeal(e) {
+    if (!this.validator.validate(this.props.validateConfig)) return
+
     let deal = _.cloneDeep(this.props.dealDetail)
     deal.items = deal.items.map(item => {
       return {
@@ -139,23 +132,6 @@ class Deal extends Component {
       this.props.createDeal(deal)
     }
   }
-  validate() {
-    let props = this.props
-    props.validator.props.forEach(prop => {
-      if (!prop.valid) {
-        props.showValidate({
-          ...props.validator,
-          popover: {
-            show: true,
-            side: prop.side,
-            title: prop.title,
-            message: prop.message,
-            name: prop.name
-          }
-        })
-      }
-    })
-  }
   render() {
     let props = this.props
     let id = props.routeParams.id
@@ -166,7 +142,7 @@ class Deal extends Component {
     
     return (
       <div className='deal_detail container'>
-        <h3 onClick={ ::this.validate }>{ props.title }</h3>
+        <h3>{ props.title }</h3>
         <hr/>
         <div className='modal_form clearfix'>
           <Controls 
@@ -209,14 +185,14 @@ class Deal extends Component {
           close={ ::this.closeModal }
         />
         <Overlay
-          show={ props.validator.popover.show }
-          placement={ props.validator.popover.side || 'top' }
-          container={ document.querySelector('[data-valid-wrap="'+props.validator.popover.name+'"]') }
-          target={ document.querySelector('[data-valid="'+props.validator.popover.name+'"]') }>
+          show={ props.validateConfig.popover.show }
+          placement={ props.validateConfig.popover.side || 'top' }
+          container={ document.querySelector('[data-valid-wrap="'+props.validateConfig.popover.name+'"]') }
+          target={ document.querySelector('[data-valid="'+props.validateConfig.popover.name+'"]') }>
           <Popover 
             id="popover-contained" 
-            title={ props.validator.popover.title }>
-            { props.validator.popover.message }
+            title={ props.validateConfig.popover.title }>
+            { props.validateConfig.popover.message }
           </Popover>
         </Overlay>
       </div>
@@ -236,7 +212,7 @@ const mapStateToProps = (state) => (
     sum: state.dealDetail.sum,
     number: state.dealDetail.number,
     redirect: state.dealDetail.redirect,
-    validator: state.dealDetail.validator,
+    validateConfig: state.dealDetail.validateConfig,
     dealDetail: state.dealDetail,
     user: state.user,
     stock: state.stock,
@@ -260,7 +236,7 @@ const mapDispatchToProps = dispatch => (
     setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
     setDealNumber:    bindActionCreators(Actions.setDealNumber, dispatch),
     setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
-    showValidate:     bindActionCreators(Actions.showValidate, dispatch),
+    validateDeal:     bindActionCreators(Actions.validateDeal, dispatch),
     createDeal:       bindActionCreators(createDeal, dispatch),
     saveDeal:         bindActionCreators(saveDeal, dispatch),
   }

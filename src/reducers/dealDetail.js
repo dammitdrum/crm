@@ -15,24 +15,25 @@ const initialState = {
   client: false,
   number: '',
   redirect: false,
-  validator: {
+  validateConfig: {
     popover: {
       show: false
     },
     props: [
+      {
+        name: 'number',
+        valid: false,
+        side: 'right',
+        title: 'Только цифры!',
+        message: 'Необходимо ввести номер сделки',
+        regExp: /^[0-9]+$/g
+      },
       {
         name: 'client',
         valid: false,
         side: 'right',
         title: 'Не выполнено!',
         message: 'Необходимо выбрать покупателя'
-      },
-      {
-        name: 'number',
-        valid: false,
-        side: 'right',
-        title: 'Не указано!',
-        message: 'Необходимо ввести номер сделки'
       }
     ]
   }
@@ -147,9 +148,9 @@ const dealDetail = (state = initialState, action) => {
         redirect: false
       }
 
-    case 'SHOW_VALIDATE':
+    case 'VALIDATE_DEAL':
       return { ...state,
-        validator: payload
+        validateConfig: payload
       }
 
     default:
