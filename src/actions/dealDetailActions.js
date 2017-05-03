@@ -90,3 +90,10 @@ export function setDealNumber(number) {
 	}
 }
 
+export function showValidate(validator) {
+	return {
+		type: 'SHOW_VALIDATE',
+		payload: validator
+	}
+}
+

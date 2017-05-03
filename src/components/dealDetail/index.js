@@ -107,6 +107,22 @@ class Deal extends Component {
   }
   setDealNumber(e) {
     this.props.setDealNumber(e.target.value)
+    
+    let propName = 'number'
+    let props = this.props.validator.props
+    props = props.map(prop => {
+      if (prop.name === propName) {
+        prop.valid = true 
+      }
+    })
+    this.props.showValidate({
+      props,
+      popover: {
+        ...this.props.validator.popover,
+        show: false,
+      }
+    })
+    
   }
   submitDeal(e) {
     let deal = _.cloneDeep(this.props.dealDetail)
@@ -123,8 +139,22 @@ class Deal extends Component {
       this.props.createDeal(deal)
     }
   }
-  validate(name) {
-
+  validate() {
+    let props = this.props
+    props.validator.props.forEach(prop => {
+      if (!prop.valid) {
+        props.showValidate({
+          ...props.validator,
+          popover: {
+            show: true,
+            side: prop.side,
+            title: prop.title,
+            message: prop.message,
+            name: prop.name
+          }
+        })
+      }
+    })
   }
   render() {
     let props = this.props
@@ -134,12 +164,11 @@ class Deal extends Component {
       text: id ? 'Сохранить сделку' : 'Создать сделку'
     }
     
-
     return (
       <div className='deal_detail container'>
-        <h3>{ props.title }</h3>
+        <h3 onClick={ ::this.validate }>{ props.title }</h3>
         <hr/>
-        <div className='modal_form clearfix' ref='client'>
+        <div className='modal_form clearfix'>
           <Controls 
             dealState={ props.state }
             clickStateBtn={ ::this.setDealState }
@@ -180,13 +209,14 @@ class Deal extends Component {
           close={ ::this.closeModal }
         />
         <Overlay
-          show={ props.validator.show }
-          //target={ Document.querySelector('[data-validate="'+props.validator.elems[0].name+'"]') }
-          placement="right"
-          container={ this.refs.client }
-          containerPadding={ 20 }>
-          <Popover id="popover-contained" title="Popover bottom">
-            <strong>Holy guacamole!</strong> Check this info.
+          show={ props.validator.popover.show }
+          placement={ props.validator.popover.side || 'top' }
+          container={ document.querySelector('[data-valid-wrap="'+props.validator.popover.name+'"]') }
+          target={ document.querySelector('[data-valid="'+props.validator.popover.name+'"]') }>
+          <Popover 
+            id="popover-contained" 
+            title={ props.validator.popover.title }>
+            { props.validator.popover.message }
           </Popover>
         </Overlay>
       </div>
@@ -230,6 +260,7 @@ const mapDispatchToProps = dispatch => (
     setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
     setDealNumber:    bindActionCreators(Actions.setDealNumber, dispatch),
     setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
+    showValidate:     bindActionCreators(Actions.showValidate, dispatch),
     createDeal:       bindActionCreators(createDeal, dispatch),
     saveDeal:         bindActionCreators(saveDeal, dispatch),
   }

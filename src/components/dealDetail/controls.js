@@ -32,21 +32,24 @@ class Controls extends Component {
           }
         </div>
         <div className="air"></div>
-        <h4>Введите номер сделки</h4>
-        <input 
-          className='search_field' 
-          type="text"
-          name="number" 
-          value={ props.number }
-          onChange={ props.changeNumber }
-          required/>
+        <div className='positioned' data-valid-wrap='number'>
+          <h4>Введите номер сделки</h4>
+          <input 
+            className='search_field' 
+            type="text"
+            name="number" 
+            value={ props.number }
+            onChange={ props.changeNumber }
+            data-valid='number'
+            required/>
+        </div>
         <div className="air"></div>
-        <div className="pull-left clearfix">
+        <div className="pull-left positioned clearfix" data-valid-wrap='client'>
           <span 
             className="btn btn-default" 
             onClick={ props.openModal } 
-            data-modal='clients' 
-            ref='client'>
+            data-modal='clients'
+            data-valid='client'>
             Выбрать покупателя 
             &nbsp;<span className="glyphicon glyphicon-menu-hamburger"></span>
           </span>

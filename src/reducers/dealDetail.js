@@ -16,12 +16,23 @@ const initialState = {
   number: '',
   redirect: false,
   validator: {
-    show: true,
-    elems: [
+    popover: {
+      show: false
+    },
+    props: [
       {
         name: 'client',
         valid: false,
+        side: 'right',
+        title: 'Не выполнено!',
         message: 'Необходимо выбрать покупателя'
+      },
+      {
+        name: 'number',
+        valid: false,
+        side: 'right',
+        title: 'Не указано!',
+        message: 'Необходимо ввести номер сделки'
       }
     ]
   }
@@ -134,6 +145,11 @@ const dealDetail = (state = initialState, action) => {
     case 'RESET_REDIRECT':
       return { ...state,
         redirect: false
+      }
+
+    case 'SHOW_VALIDATE':
+      return { ...state,
+        validator: payload
       }
 
     default:
