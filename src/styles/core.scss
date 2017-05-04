@@ -51,6 +51,12 @@ h2 {
         font-size: 35px;
     }
 }
+.popover {
+    z-index: 60;
+}
+.popover-title {
+    font-weight: 700;
+}
 .positioned {
     position: relative;
 }

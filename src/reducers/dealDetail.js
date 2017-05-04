@@ -1,4 +1,6 @@
+import _ from 'lodash'
 import Enum from '../utils/Enum'
+import config from '../config/validateDealDetail'
 
 const initialState = {
   title: 'Создание новой сделки',
@@ -15,28 +17,7 @@ const initialState = {
   client: false,
   number: '',
   redirect: false,
-  validateConfig: {
-    popover: {
-      show: false
-    },
-    props: [
-      {
-        name: 'number',
-        valid: false,
-        side: 'right',
-        title: 'Только цифры!',
-        message: 'Необходимо ввести номер сделки',
-        regExp: /^[0-9]+$/g
-      },
-      {
-        name: 'client',
-        valid: false,
-        side: 'right',
-        title: 'Не выполнено!',
-        message: 'Необходимо выбрать покупателя'
-      }
-    ]
-  }
+  validateConfig: _.cloneDeep(config)
 }
 
 const dealDetail = (state = initialState, action) => {
@@ -45,7 +26,8 @@ const dealDetail = (state = initialState, action) => {
   switch (action.type) {
 
     case 'LOAD_DEAL_DETAIL':
-      return Object.assign({}, state, payload ? payload : initialState)
+      let init = { ...initialState, validateConfig: _.cloneDeep(config) }
+      return Object.assign({}, state, payload ? payload : init)
 
     case 'SET_DEAL_STATE':
       return { ...state, 
