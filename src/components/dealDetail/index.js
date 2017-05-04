@@ -17,15 +17,6 @@ class Deal extends Component {
 	componentWillMount() {
     this.validator = new Validator(this.props.validateDeal, validateConfig)
     let dealNumber = this.props.routeParams.id, dealData
-    let validInit = {
-      validateState: {
-        number: dealNumber !== undefined,
-        client: dealNumber !== undefined
-      },
-      popover: {
-        show: false
-      }
-    }
     if (dealNumber) {
       dealData = _.cloneDeep(_.find(this.props.deals.items, deal => deal.number === +dealNumber))
       let stock = this.props.stock.items
@@ -35,9 +26,8 @@ class Deal extends Component {
           { price: dealItem.price, number: dealItem.number }
         )
       })
-      Object.assign(dealData, validInit)
     }
-    this.props.loadDeal(dealData ? dealData : validInit)
+    this.props.loadDeal(dealData ? dealData : null)
     this.props.setDealManager(dealData ? dealData.manager : this.props.user)
   }
   componentDidUpdate() {
@@ -194,14 +184,14 @@ class Deal extends Component {
           close={ ::this.closeModal }
         />
         <Overlay
-          show={ props.popover.show }
-          placement={ props.popover.side || 'top' }
-          container={ document.querySelector('[data-valid-wrap="'+props.popover.name+'"]') }
-          target={ document.querySelector('[data-valid="'+props.popover.name+'"]') }>
+          show={ props.validateMess.show }
+          placement={ props.validateMess.side || 'top' }
+          container={ document.querySelector('[data-valid-wrap="'+props.validateMess.name+'"]') }
+          target={ document.querySelector('[data-valid="'+props.validateMess.name+'"]') }>
           <Popover 
             id="popover-contained" 
-            title={ props.popover.title }>
-            { props.popover.message }
+            title={ props.validateMess.title }>
+            { props.validateMess.message }
           </Popover>
         </Overlay>
       </div>
@@ -222,7 +212,7 @@ const mapStateToProps = (state) => (
     number: state.dealDetail.number,
     redirect: state.dealDetail.redirect,
     validateState: state.dealDetail.validateState,
-    popover: state.dealDetail.popover,
+    validateMess: state.dealDetail.validateMess,
     dealDetail: state.dealDetail,
     user: state.user,
     stock: state.stock,

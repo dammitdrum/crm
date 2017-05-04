@@ -5,7 +5,7 @@ const initialState = {
   items: [],
   searchQuery: '',
   activeState: Enum.defaultStateDeals,
-  sortBy: { code: 'date', type: 'asc' },
+  sortBy: { code: 'date', type: 'desc' },
   loading: false,
   loaded: false
 }

@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Overlay, Popover } from 'react-bootstrap'
+
+import Validator from '../../utils/validator'
+import validateConfig from '../../config/validateStock'
 
 import Controls from './controls'
 import Table from './table'
@@ -9,7 +13,9 @@ import * as Actions from '../../actions/stockActions'
 import Enum from '../../utils/Enum'
 
 class Stock extends Component {
-  
+  componentWillMount() {
+    this.validator = new Validator(this.props.validate, validateConfig)
+  }
   clickCategory(e) {
     if (e.target.closest('.active')) return
     this.props.filterByCategory(e.target.innerText)
@@ -39,10 +45,13 @@ class Stock extends Component {
     this.props.sortData({ code, type })
   }
   onChangeModal(e) {
+    let name = e.target.getAttribute('name')
+    let val = e.target.value
     this.props.changeModalItem({
       ...this.props.modal.item,
-      [e.target.getAttribute('name')]: e.target.value
+      [name]: val
     })
+    this.validator.setValid(this.props.validateState, name, val)
   }
   onDelete(e) {
     let id = e.currentTarget.getAttribute('data-id')
@@ -50,6 +59,10 @@ class Stock extends Component {
   }
   submitModal(e) {
     let item = this.props.modal.item
+    validateConfig.forEach(prop => {
+      this.validator.setValid(this.props.validateState, prop.name, item[prop.name])
+    })
+    if (!this.validator.validate(this.props.validateState)) return
     item._id ?
       this.props.updateItem(item) : this.props.createItem(item)
   }
@@ -103,6 +116,17 @@ class Stock extends Component {
           onChange={ ::this.onChangeModal }
           submit={ ::this.submitModal }
         />
+        <Overlay
+          show={ props.validateMess.show }
+          placement={ props.validateMess.side || 'top' }
+          container={ document.querySelector('[data-valid-wrap="'+props.validateMess.name+'"]') }
+          target={ document.querySelector('[data-valid="'+props.validateMess.name+'"]') }>
+          <Popover 
+            id="popover-contained" 
+            title={ props.validateMess.title }>
+            { props.validateMess.message }
+          </Popover>
+        </Overlay>
       </div>
     )
   }
@@ -115,7 +139,9 @@ const mapStateToProps = state => (
     searchQuery: state.stock.searchQuery,
     activeCategory: state.stock.activeCategory,
     modal: state.stock.modal,
-    sortBy: state.stock.sortBy
+    sortBy: state.stock.sortBy,
+    validateState: state.stock.validateState,
+    validateMess: state.stock.validateMess
   }
 )
 
@@ -128,7 +154,8 @@ const mapDispatchToProps = dispatch => (
     createItem:       bindActionCreators(Actions.createItem, dispatch),
     updateItem:       bindActionCreators(Actions.updateItem, dispatch),
     changeModalItem:  bindActionCreators(Actions.changeModalItem, dispatch),
-    deleteItem:       bindActionCreators(Actions.deleteItem, dispatch)
+    deleteItem:       bindActionCreators(Actions.deleteItem, dispatch),
+    validate:         bindActionCreators(Actions.validate, dispatch),
   }
 )
 

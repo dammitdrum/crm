@@ -32,7 +32,7 @@ class Controls extends Component {
           }
         </div>
         <div className="air"></div>
-        <div className='positioned' data-valid-wrap='number'>
+        <div className='pos' data-valid-wrap='number'>
           <h4>Введите номер сделки</h4>
           <input 
             className='search_field' 
@@ -44,7 +44,7 @@ class Controls extends Component {
             required/>
         </div>
         <div className="air"></div>
-        <div className="pull-left positioned clearfix" data-valid-wrap='client'>
+        <div className="pull-left pos clearfix" data-valid-wrap='client'>
           <span 
             className="btn btn-default" 
             onClick={ props.openModal } 

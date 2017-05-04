@@ -19,7 +19,7 @@ const initialState = {
     number: false,
     client: false
   },
-  popover: {
+  validateMess: {
     show: false
   }
 }
@@ -30,7 +30,15 @@ const dealDetail = (state = initialState, action) => {
   switch (action.type) {
 
     case 'LOAD_DEAL_DETAIL':
-      return Object.assign({}, state, payload.number ? payload : Object.assign({}, initialState, payload))
+      let deal = payload ? payload : initialState
+      return Object.assign({}, state, {
+          ...deal,
+          validateState: {
+            number: !!payload,
+            client: !!payload
+          }
+        }
+      )
 
     case 'SET_DEAL_STATE':
       return { ...state, 
@@ -136,7 +144,7 @@ const dealDetail = (state = initialState, action) => {
     case 'VALIDATE_DEAL':
       return { ...state,
         validateState: payload.validateState,
-        popover: payload.popover
+        validateMess: payload.validateMess
       }
 
     default:

@@ -9,15 +9,24 @@ const initialState = {
   	show: false, 
   	mode: 'create',
   	item: {
-  		art: '',
   		name: '',
+  		art: '',
   		price: '',
   		category: ''
   	}
   },
   sortBy: { code: 'price', type: 'asc' },
   loading: false,
-  loaded: false
+  loaded: false,
+  validateState: {
+    name: false,
+    art: false,
+    price: false,
+    category: false,
+  },
+  validateMess: {
+    show: false
+  }
 }
 
 const stock = (state = initialState, action) => {
@@ -111,6 +120,12 @@ const stock = (state = initialState, action) => {
 
 		case 'SORT_STOCK_DATA':
 			return { ...state, sortBy: payload }
+
+		case 'VALIDATE_STOCK':
+      return { ...state,
+        validateState: payload.validateState,
+        validateMess: payload.validateMess
+      }
 
 		default:
       return state

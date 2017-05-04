@@ -36,14 +36,14 @@ class StockModal extends Component {
 	        <Modal.Body>
 	        	{
 	        		this.fields.map((field, i) => 
-	        			<div key={ i } className="input_field">
+	        			<div key={ i } className="input_field pos" data-valid-wrap={ field.name }>
 				        	<p className='title'>{ field.text }</p>
 								  <input type='text' className='input' 
 								  	name={ field.name }
 								  	data-mess={ field.mess }
 								  	onChange={ props.onChange }
 								  	value={ props.item[field.name] }
-								  	required/>
+								  	data-valid={ field.name }/>
 								</div>
 	        		)
 	        	}
