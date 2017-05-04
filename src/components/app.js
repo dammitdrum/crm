@@ -14,7 +14,7 @@ class App extends Component {
   }
   componentDidUpdate() {
     if (!this.props.loaded && this.props.isAuth && !this.props.loading) {
-      this.props.loadData();
+      this.props.loadData()
     }
     if (this.props.toLogin) {
       hashHistory.push('/login')
