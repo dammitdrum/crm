@@ -1,47 +1,44 @@
 
 class Validator {
-	constructor(action) {
-		this.action = action
+	constructor(action, config) {
+    this.action = action
+		this.config = config
 	}
-	setValid(data, propName, value) {
-    let props = data.props, popover
-    props = props.map(prop => {
-      if (prop.name === propName) {
-      	if (prop.regExp) {
-          let reg = new RegExp(prop.regExp, 'g')
-      		value = reg.test(value)
-      	} 
-        prop.valid = value
-        popover = this._setPopover(prop, !value)
+	setValid(state, propName, value) {
+    let popover
+    _.forIn(state, (val, prop) => {
+      if (prop === propName) {
+        let config = this._getConfig(propName)
+        if (config.regExp) {
+          let reg = new RegExp(config.regExp, 'g')
+          value = reg.test(value)
+        }
+        state[prop] = value
+        this.action(state, this._setPopover(config, !value))
       }
-      return prop
-    })
-    this.action({
-      props,
-      popover: popover
     })
 	}
-	validate(data) {
+	validate(state) {
 		let res = true
-    data.props.forEach(prop => {
+    _.forIn(state, (val, prop) => {
     	if (!res) return
-      if (!prop.valid) {
-        this.action({
-          ...data,
-          popover: this._setPopover(prop, true)
-        })
+      if (!val) {
+        this.action(state, this._setPopover(this._getConfig(prop), true))
         res = false
       }
     })
     return res
 	}
-  _setPopover(prop, show) {
+  _getConfig(name) {
+    return _.find(this.config, item => item.name === name)
+  }
+  _setPopover(config, show) {
     return {
       show: show,
-      side: prop.side,
-      title: prop.title,
-      message: prop.message,
-      name: prop.name
+      side: config.side,
+      title: config.title,
+      message: config.message,
+      name: config.name
     }
   }
 }

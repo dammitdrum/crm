@@ -5,6 +5,7 @@ import { Link, hashHistory } from 'react-router'
 import { Overlay, Popover } from 'react-bootstrap'
 
 import Validator from '../../utils/validator'
+import validateConfig from '../../config/validateDealDetail'
 
 import Controls from './controls'
 import Table from './table'
@@ -14,27 +15,35 @@ import { createDeal, saveDeal } from '../../actions/dealsActions'
 
 class Deal extends Component {
 	componentWillMount() {
-    this.validator = new Validator(this.props.validateDeal)
-
-    let dealNumber = this.props.routeParams.id, deal
+    this.validator = new Validator(this.props.validateDeal, validateConfig)
+    let dealNumber = this.props.routeParams.id, dealData
+    let validInit = {
+      validateState: {
+        number: dealNumber !== undefined,
+        client: dealNumber !== undefined
+      },
+      popover: {
+        show: false
+      }
+    }
     if (dealNumber) {
-      deal = _.cloneDeep(_.find(this.props.deals.items, deal => deal.number === +dealNumber))
+      dealData = _.cloneDeep(_.find(this.props.deals.items, deal => deal.number === +dealNumber))
       let stock = this.props.stock.items
-      deal.items = deal.items.map(dealItem => {
+      dealData.items = dealData.items.map(dealItem => {
         return Object.assign({}, 
           _.find(stock, item => item._id === dealItem.id), 
           { price: dealItem.price, number: dealItem.number }
         )
       })
+      Object.assign(dealData, validInit)
     }
-    this.props.loadDeal(deal ? deal : null)
-    this.props.setDealManager(deal ? deal.manager : this.props.user)
+    this.props.loadDeal(dealData ? dealData : validInit)
+    this.props.setDealManager(dealData ? dealData.manager : this.props.user)
   }
   componentDidUpdate() {
     if (this.props.redirect) {
       hashHistory.push('/deals')
     }
-    //this.validator.setValid('number', this.props.number.length < 1)
   }
   setDealState(e) {
     if (e.currentTarget.classList.contains('active')) return
@@ -99,7 +108,7 @@ class Deal extends Component {
   }
   setDealClient(e) {
     this.props.setDealClient(this._findItem(this.props.clients.items, e))
-    this.validator.setValid(this.props.validateConfig, 'client', true)
+    this.validator.setValid(this.props.validateState, 'client', true)
   }
   setItemPrice(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
@@ -113,10 +122,10 @@ class Deal extends Component {
   }
   setDealNumber(e) {
     this.props.setDealNumber(e.target.value)
-    this.validator.setValid(this.props.validateConfig, 'number', e.target.value)
+    this.validator.setValid(this.props.validateState, 'number', e.target.value)
   }
   submitDeal(e) {
-    if (!this.validator.validate(this.props.validateConfig)) return
+    if (!this.validator.validate(this.props.validateState)) return
 
     let deal = _.cloneDeep(this.props.dealDetail)
     deal.items = deal.items.map(item => {
@@ -185,14 +194,14 @@ class Deal extends Component {
           close={ ::this.closeModal }
         />
         <Overlay
-          show={ props.validateConfig.popover.show }
-          placement={ props.validateConfig.popover.side || 'top' }
-          container={ document.querySelector('[data-valid-wrap="'+props.validateConfig.popover.name+'"]') }
-          target={ document.querySelector('[data-valid="'+props.validateConfig.popover.name+'"]') }>
+          show={ props.popover.show }
+          placement={ props.popover.side || 'top' }
+          container={ document.querySelector('[data-valid-wrap="'+props.popover.name+'"]') }
+          target={ document.querySelector('[data-valid="'+props.popover.name+'"]') }>
           <Popover 
             id="popover-contained" 
-            title={ props.validateConfig.popover.title }>
-            { props.validateConfig.popover.message }
+            title={ props.popover.title }>
+            { props.popover.message }
           </Popover>
         </Overlay>
       </div>
@@ -212,7 +221,8 @@ const mapStateToProps = (state) => (
     sum: state.dealDetail.sum,
     number: state.dealDetail.number,
     redirect: state.dealDetail.redirect,
-    validateConfig: state.dealDetail.validateConfig,
+    validateState: state.dealDetail.validateState,
+    popover: state.dealDetail.popover,
     dealDetail: state.dealDetail,
     user: state.user,
     stock: state.stock,

@@ -90,10 +90,13 @@ export function setDealNumber(number) {
 	}
 }
 
-export function validateDeal(config) {
+export function validateDeal(state, popover) {
 	return {
 		type: 'VALIDATE_DEAL',
-		payload: config
+		payload: {
+			validateState: state,
+			popover: popover
+		}
 	}
 }
 
