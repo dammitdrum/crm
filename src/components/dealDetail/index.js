@@ -15,7 +15,7 @@ import { createDeal, saveDeal } from '../../actions/dealsActions'
 
 class Deal extends Component {
 	componentWillMount() {
-    this.validator = new Validator(this.props.validateDeal, validateConfig)
+    this.validator = new Validator(this.props.validate, validateConfig)
     let dealNumber = this.props.routeParams.id, dealData
     if (dealNumber) {
       dealData = _.cloneDeep(_.find(this.props.deals.items, deal => deal.number === +dealNumber))
@@ -97,8 +97,9 @@ class Deal extends Component {
     this.props.setDealSum()
   }
   setDealClient(e) {
-    this.props.setDealClient(this._findItem(this.props.clients.items, e))
-    this.validator.setValid(this.props.validateState, 'client', true)
+    let client = this._findItem(this.props.clients.items, e)
+    this.props.setDealClient(client)
+    this.validator.validate({client: client})
   }
   setItemPrice(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
@@ -112,11 +113,10 @@ class Deal extends Component {
   }
   setDealNumber(e) {
     this.props.setDealNumber(e.target.value)
-    this.validator.setValid(this.props.validateState, 'number', e.target.value)
+    this.validator.validate({number: e.target.value})
   }
   submitDeal(e) {
-    if (!this.validator.validate(this.props.validateState)) return
-
+    if (!this.validator.validate({number: this.props.number, client: this.props.client})) return
     let deal = _.cloneDeep(this.props.dealDetail)
     deal.items = deal.items.map(item => {
       return {
@@ -211,7 +211,6 @@ const mapStateToProps = (state) => (
     sum: state.dealDetail.sum,
     number: state.dealDetail.number,
     redirect: state.dealDetail.redirect,
-    validateState: state.dealDetail.validateState,
     validateMess: state.dealDetail.validateMess,
     dealDetail: state.dealDetail,
     user: state.user,
@@ -236,7 +235,7 @@ const mapDispatchToProps = dispatch => (
     setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
     setDealNumber:    bindActionCreators(Actions.setDealNumber, dispatch),
     setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
-    validateDeal:     bindActionCreators(Actions.validateDeal, dispatch),
+    validate:         bindActionCreators(Actions.validate, dispatch),
     createDeal:       bindActionCreators(createDeal, dispatch),
     saveDeal:         bindActionCreators(saveDeal, dispatch),
   }

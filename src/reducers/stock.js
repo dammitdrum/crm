@@ -18,12 +18,6 @@ const initialState = {
   sortBy: { code: 'price', type: 'asc' },
   loading: false,
   loaded: false,
-  validateState: {
-    name: false,
-    art: false,
-    price: false,
-    category: false,
-  },
   validateMess: {
     show: false
   }
@@ -50,9 +44,8 @@ const stock = (state = initialState, action) => {
 			state.items.push(payload)
 			return { ...state, 
 				items: state.items.concat(),
-				modal: {
-					show: false,
-					mode: 'create'
+				modal: { ...state.modal,
+          show: false
 				}
 			}
 
@@ -108,7 +101,20 @@ const stock = (state = initialState, action) => {
 
 		case 'SHOW_STOCK_MODAL':
 			return { ...state,
-				modal: payload
+				modal: { 
+			  	show: payload.show, 
+			  	mode: payload.mode,
+			  	item: payload.item ? payload.item :
+			  		{
+				  		name: '',
+				  		art: '',
+				  		price: '',
+				  		category: ''
+				  	}
+			  },
+			  validateMess: {
+			    show: false
+			  }
 			}
 
 		case 'CHANGE_MODAL_ITEM':
@@ -121,10 +127,9 @@ const stock = (state = initialState, action) => {
 		case 'SORT_STOCK_DATA':
 			return { ...state, sortBy: payload }
 
-		case 'VALIDATE_STOCK':
+		case 'VALIDATE_ITEM':
       return { ...state,
-        validateState: payload.validateState,
-        validateMess: payload.validateMess
+        validateMess: payload
       }
 
 		default:

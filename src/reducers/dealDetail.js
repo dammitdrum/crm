@@ -15,10 +15,6 @@ const initialState = {
   client: false,
   number: '',
   redirect: false,
-  validateState: {
-    number: false,
-    client: false
-  },
   validateMess: {
     show: false
   }
@@ -30,15 +26,7 @@ const dealDetail = (state = initialState, action) => {
   switch (action.type) {
 
     case 'LOAD_DEAL_DETAIL':
-      let deal = payload ? payload : initialState
-      return Object.assign({}, state, {
-          ...deal,
-          validateState: {
-            number: !!payload,
-            client: !!payload
-          }
-        }
-      )
+      return Object.assign({}, state, payload ? payload : initialState)
 
     case 'SET_DEAL_STATE':
       return { ...state, 
@@ -143,8 +131,7 @@ const dealDetail = (state = initialState, action) => {
 
     case 'VALIDATE_DEAL':
       return { ...state,
-        validateState: payload.validateState,
-        validateMess: payload.validateMess
+        validateMess: payload
       }
 
     default:

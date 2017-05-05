@@ -4,41 +4,40 @@ class Validator {
     this.action = action
 		this.config = config
 	}
-	setValid(state, propName, value) {
-    let popover
+  validate(state) {
+    let res = true
     _.forIn(state, (val, prop) => {
-      if (prop === propName) {
-        let config = this._getConfig(propName)
-        if (config.regExp) {
-          let reg = new RegExp(config.regExp, 'g')
-          value = reg.test(value)
-        }
-        state[prop] = value
-        this.action(state, this._setPopover(config, !value))
-      }
-    })
-	}
-	validate(state) {
-		let res = true
-    _.forIn(state, (val, prop) => {
-    	if (!res) return
-      if (!val) {
-        this.action(state, this._setPopover(this._getConfig(prop), true))
+      if (!res) return
+      if (!this._check(val, prop)) {
+        this.action(this._setPopover(this._getConfig(prop), true))
         res = false
+      } else {
+        this.action(this._setPopover(null, false))
       }
     })
     return res
-	}
+  }
+  _check(val, prop) {
+    let config = this._getConfig(prop)
+    let res = false
+    if (config.regExp) {
+      let reg = new RegExp(config.regExp, 'g')
+      res = reg.test(val)
+    } else {
+      res = !!val
+    }
+    return res
+  }
   _getConfig(name) {
     return _.find(this.config, item => item.name === name)
   }
   _setPopover(config, show) {
     return {
       show: show,
-      side: config.side,
-      title: config.title,
-      message: config.message,
-      name: config.name
+      side: config ? config.side : '',
+      title: config ? config.title : '',
+      message: config ? config.message : '',
+      name: config ? config.name : ''
     }
   }
 }

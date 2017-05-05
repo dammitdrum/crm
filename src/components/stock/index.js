@@ -25,7 +25,7 @@ class Stock extends Component {
   }
   openModal(e) {
     let itemId = e.currentTarget.getAttribute('data-id')
-    let item = itemId ? _.find(this.props.items, item => item._id === itemId) : this.props.modal.item
+    let item = itemId ? _.find(this.props.items, item => item._id === itemId) : null
     let mode = itemId ? 'edit' : 'create'
     this.props.showModal({ show: true, mode, item: item })
   }
@@ -51,7 +51,7 @@ class Stock extends Component {
       ...this.props.modal.item,
       [name]: val
     })
-    this.validator.setValid(this.props.validateState, name, val)
+    this.validator.validate({ [name]: val })
   }
   onDelete(e) {
     let id = e.currentTarget.getAttribute('data-id')
@@ -59,10 +59,7 @@ class Stock extends Component {
   }
   submitModal(e) {
     let item = this.props.modal.item
-    validateConfig.forEach(prop => {
-      this.validator.setValid(this.props.validateState, prop.name, item[prop.name])
-    })
-    if (!this.validator.validate(this.props.validateState)) return
+    if (!this.validator.validate(item)) return
     item._id ?
       this.props.updateItem(item) : this.props.createItem(item)
   }
@@ -140,7 +137,6 @@ const mapStateToProps = state => (
     activeCategory: state.stock.activeCategory,
     modal: state.stock.modal,
     sortBy: state.stock.sortBy,
-    validateState: state.stock.validateState,
     validateMess: state.stock.validateMess
   }
 )

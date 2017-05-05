@@ -118,12 +118,9 @@ export function sortData(sortBy) {
 	}
 }
 
-export function validate(state, mess) {
+export function validate(mess) {
 	return {
-		type: 'VALIDATE_STOCK',
-		payload: {
-			validateState: state,
-			validateMess: mess
-		}
+		type: 'VALIDATE_ITEM',
+		payload: mess
 	}
 }
