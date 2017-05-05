@@ -124,6 +124,11 @@ const dealDetail = (state = initialState, action) => {
         redirect: true
       }
 
+    case 'DELETE_DEAL_SUCCESS':
+      return { ...state,
+        redirect: true
+      }
+
     case 'RESET_REDIRECT':
       return { ...state,
         redirect: false

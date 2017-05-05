@@ -46,6 +46,14 @@ const deals = (state = initialState, action) => {
     case 'UPDATE_DEAL_FAIL':
       return { ...state }
 
+    case 'DELETE_DEAL_SUCCESS':
+      return { ...state, 
+        items: state.items.filter(item => item._id !== payload)
+      }
+
+    case 'DELETE_DEAL_FAIL':
+      return { ...state}
+
     case 'FILTER_DEALS_BY_STATE':
       return { ...state, activeState: payload }
 

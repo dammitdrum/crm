@@ -11,14 +11,15 @@ import Controls from './controls'
 import Table from './table'
 import DealModal from './modal'
 import * as Actions from '../../actions/dealDetailActions'
-import { createDeal, saveDeal } from '../../actions/dealsActions'
+import { createDeal, saveDeal, deleteDeal } from '../../actions/dealsActions'
 
 class Deal extends Component {
 	componentWillMount() {
     this.validator = new Validator(this.props.validate, validateConfig)
     let dealNumber = this.props.routeParams.id, dealData
     if (dealNumber) {
-      dealData = _.cloneDeep(_.find(this.props.deals.items, deal => deal.number === +dealNumber))
+      this.originalDeal = _.find(this.props.deals.items, deal => deal.number === +dealNumber)
+      dealData = _.cloneDeep(this.originalDeal)
       let stock = this.props.stock.items
       dealData.items = dealData.items.map(dealItem => {
         return Object.assign({}, 
@@ -115,7 +116,7 @@ class Deal extends Component {
     this.props.setDealNumber(e.target.value)
     this.validator.validate({number: e.target.value})
   }
-  submitDeal(e) {
+  submitDeal() {
     if (!this.validator.validate({number: this.props.number, client: this.props.client})) return
     let deal = _.cloneDeep(this.props.dealDetail)
     deal.items = deal.items.map(item => {
@@ -130,6 +131,9 @@ class Deal extends Component {
     } else {
       this.props.createDeal(deal)
     }
+  }
+  deleteDeal() {
+    this.props.deleteDeal(this.originalDeal._id)
   }
   render() {
     let props = this.props
@@ -165,9 +169,16 @@ class Deal extends Component {
             sum={ props.sum }
           />
           <div className='air'></div>
-          <button className={'btn btn-lg pull-right ' + btnInfo.cssClass} onClick={ ::this.submitDeal }>
+          {
+            this.originalDeal && this.originalDeal.state === 'canceled' ?
+            <button className={'btn btn-lg pull-right btn-danger'} onClick={ ::this.deleteDeal }>
+            Удалить сделку <span className='glyphicon glyphicon-trash'></span>
+            </button>
+            :
+            <button className={'btn btn-lg pull-right ' + btnInfo.cssClass} onClick={ ::this.submitDeal }>
             { btnInfo.text } <span className='glyphicon glyphicon-cloud-upload'></span>
-          </button>
+            </button>
+          }
           <Link to='/deals' className='btn btn-lg btn-default pull-left'>
             <span className='glyphicon glyphicon-arrow-left'></span> Отмена
           </Link>
@@ -238,6 +249,7 @@ const mapDispatchToProps = dispatch => (
     validate:         bindActionCreators(Actions.validate, dispatch),
     createDeal:       bindActionCreators(createDeal, dispatch),
     saveDeal:         bindActionCreators(saveDeal, dispatch),
+    deleteDeal:       bindActionCreators(deleteDeal, dispatch),
   }
 )
 

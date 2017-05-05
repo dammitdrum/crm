@@ -58,6 +58,29 @@ export function saveDeal(deal) {
 	}
 }
 
+export function deleteDeal(id) {
+	return dispatch => {
+
+		fetch('/deals/delete/'+id, {
+			method: 'DELETE'
+		}).then(function() {
+		    dispatch({
+	        type: 'DELETE_DEAL_SUCCESS',
+	        payload: id
+	      })
+	      dispatch({
+	        type: 'RESET_REDIRECT'
+	      })
+		  }).catch(function(err) {
+		  	console.log(err)
+		    dispatch({
+	        type: 'DELETE_DEAL_FAIL',
+	        payload: err
+	      })
+		  })
+	}
+}
+
 export function filterByState(state) {
 	return {
 		type: 'FILTER_DEALS_BY_STATE',
