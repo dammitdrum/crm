@@ -1,4 +1,5 @@
 import Enum from '../utils/Enum'
+import _ from 'lodash'
 
 const initialState = {
   title: 'Создание новой сделки',
@@ -26,7 +27,7 @@ const dealDetail = (state = initialState, action) => {
   switch (action.type) {
 
     case 'LOAD_DEAL_DETAIL':
-      return Object.assign({}, state, payload ? payload : {...initialState, items: []})
+      return _.cloneDeep(Object.assign({}, state, payload ? payload : initialState))
 
     case 'SET_DEAL_STATE':
       return { ...state, 
