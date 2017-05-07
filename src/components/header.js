@@ -31,7 +31,7 @@ class Header extends Component {
             </ul>
             <ul className="nav navbar-nav navbar-right" > 
               <li>
-                <Link to={ props.profile.path } activeClassName='active'>{ props.profile.text }</Link>
+                <Link to='/user' activeClassName='active'>{ props.user.name }</Link>
               </li>
             </ul>
   		 	</div>
@@ -43,7 +43,7 @@ class Header extends Component {
 const mapStateToProps = state => (
   {
     menu: state.header.menu,
-    profile: state.header.profile,
+    user: state.user,
     path: state.header.path
   }
 )

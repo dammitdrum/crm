@@ -26,7 +26,7 @@ class User extends Component {
             <p></p>
             <button className='btn btn-info' onClick={ ::this.logout }>Выйти</button>
             {
-              props.access === 'admin' ?
+              props.users.length ?
               <div>
                 <hr/>
                 <button className='btn-default btn' onClick={ ::this.createUser }>

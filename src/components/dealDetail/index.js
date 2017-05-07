@@ -5,7 +5,7 @@ import { Link, hashHistory } from 'react-router'
 import { Overlay, Popover } from 'react-bootstrap'
 
 import Validator from '../../utils/validator'
-import validateConfig from '../../config/validateDealDetail'
+import validateConfig from '../../config/validate/deal'
 
 import Controls from './controls'
 import Table from './table'

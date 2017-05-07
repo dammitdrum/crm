@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux'
 import { Overlay, Popover } from 'react-bootstrap'
 
 import Validator from '../../utils/validator'
-import validateConfig from '../../config/validateStock'
+import validateConfig from '../../config/validate/stock'
+import accessConfig from '../../config/access/stock'
 
 import Controls from './controls'
 import Table from './table'
@@ -67,6 +68,7 @@ class Stock extends Component {
     let props = this.props
     let items = []
     let categories = []
+    let access = accessConfig[props.access]
 
     categories = [Enum.defaultCatStock].concat(
       _.uniqBy(props.items, 'category').map((item) => item.category).sort()
@@ -91,6 +93,7 @@ class Stock extends Component {
       <div className='stock container'>
         <h2 className="main_title">{ props.title }</h2>
         <Controls 
+          access={ access.controls }
           categories={ categories }
           clickCategory={ ::this.clickCategory }
           activeCategory={ props.activeCategory }
@@ -100,6 +103,7 @@ class Stock extends Component {
           query={ props.searchQuery }
         />
         <Table 
+          access={ access.table }
           data={ props }
           items= { items }
           onSort={ ::this.onSort }
@@ -107,6 +111,7 @@ class Stock extends Component {
           openModal={ ::this.openModal }
         />
         <StockModal 
+          access={ access.modal }
           params={ props.modal }
           item={ props.modal.item }
           close={ ::this.closeModal }
@@ -137,7 +142,8 @@ const mapStateToProps = state => (
     activeCategory: state.stock.activeCategory,
     modal: state.stock.modal,
     sortBy: state.stock.sortBy,
-    validateMess: state.stock.validateMess
+    validateMess: state.stock.validateMess,
+    access: state.user.access
   }
 )
 

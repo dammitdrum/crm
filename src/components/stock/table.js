@@ -30,7 +30,7 @@ class Table extends Component {
 		if (!props.items.length) {
 			list = (
 				<tr>
-					<td colSpan="8" className="no_res">
+					<td colSpan={ props.access < 120 ? 8 : 7} className="no_res">
 						<strong>Ничего нет
 							{ data.searchQuery ? ' по запросу "' + data.searchQuery.trim() + '" в категории ' + data.activeCategory : ''}
 						</strong>
@@ -46,14 +46,24 @@ class Table extends Component {
 	      			<td key={ i }>{ info.code === 'price' ? '$' : '' } { item[info.code] }</td>
 	      		)
 	      	}
-	      	<td className='td_btn'>
-	      		<button className="btn btn-sm btn-warning" data-id={ item._id } onClick={ props.openModal }>
-							<span className="glyphicon glyphicon-edit"></span>
-						</button>&nbsp;
-						<button className="btn btn-sm btn-danger" data-id={ item._id } onClick={ props.onDelete }>
-							<span className="glyphicon glyphicon-remove"></span>
-						</button>
-	      	</td>
+      		{
+      			props.access < 110 ?
+      			<td className='td_btn'>
+	      			<button className="btn btn-sm btn-warning" data-id={ item._id } onClick={ props.openModal }>
+								<span className="glyphicon glyphicon-edit"></span>
+							</button>&nbsp;
+							<button className="btn btn-sm btn-danger" data-id={ item._id } onClick={ props.onDelete }>
+								<span className="glyphicon glyphicon-remove"></span>
+							</button>
+						</td>
+      			: props.access < 120 ?
+      			<td className='td_btn'>
+	      			<button className="btn btn-sm btn-warning" data-id={ item._id } onClick={ props.openModal }>
+								<span className="glyphicon glyphicon-edit"></span>
+							</button>&nbsp;
+						</td>
+      			: null
+      		}
 	      </tr>
 	    )	
 		}
@@ -74,7 +84,14 @@ class Table extends Component {
 								</th>
 							)
 						}
-						<th>Ред./Уд.</th>
+						{
+							props.access < 110 ?
+							<th>Ред./Уд.</th>
+							: props.access < 120 ?
+							<th>Ред.</th>
+							: null
+						}
+						
 					</tr>
 				</thead>
 				<tbody>{list}</tbody>
