@@ -1,3 +1,4 @@
+import _ from 'lodash'
 
 const initialState = {
   login: '',
@@ -10,10 +11,9 @@ const user = (state = initialState, action) => {
   let payload = action.payload
   
   switch (action.type) {
-
     case 'GET_USERS_SUCCESS':
       return { ...state, 
-        users: payload
+        users: state.access === 'superAdmin' ? payload : false
       }
 
     case 'LOGIN_SUCCESS':
@@ -31,7 +31,7 @@ const user = (state = initialState, action) => {
       }
 
     case 'LOGOUT_SUCCESS':
-      return Object.assign({}, state, initialState)
+      return _.cloneDeep(Object.assign({}, state, initialState))
 
     default:
       return state

@@ -2,6 +2,10 @@ import 'whatwg-fetch'
 
 export function onLogin(data) {
 	return dispatch => {
+		dispatch({
+      type: 'RESET_DATA'
+    })
+    
 		fetch('/login', {
 			method: 'POST',
 			headers: {

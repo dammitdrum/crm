@@ -1,3 +1,4 @@
+import _ from 'lodash'
 
 const initialState = {
   isAuth: false,
@@ -10,6 +11,8 @@ const app = (state = initialState, action) => {
   let payload = action.payload
 
   switch (action.type) {
+    case 'RESET_DATA':
+      return _.cloneDeep(Object.assign({}, state, initialState))
 
     case 'LOGIN_SUCCESS':
       return { ...state,

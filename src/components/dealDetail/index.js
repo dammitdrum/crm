@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link, hashHistory } from 'react-router'
 import { Overlay, Popover } from 'react-bootstrap'
-
 import Validator from '../../utils/validator'
 import validateConfig from '../../config/validate/deal'
-
+import accessConfig from '../../config/access/dealDetail'
 import Controls from './controls'
 import Table from './table'
 import DealModal from './modal'
@@ -135,20 +134,45 @@ class Deal extends Component {
   deleteDeal() {
     this.props.deleteDeal(this.originalDeal._id)
   }
+  _getAccess(access) {
+    let k = 1
+    let state = this.originalDeal ? this.originalDeal.state : 'new'
+    switch (state) {
+      case 'approved':
+        k = 2
+        break
+      case 'closed':
+        k = 3
+        break
+      case 'canceled':
+        k = 4
+        break
+    }
+    if (access === 120) {
+      if (this.originalDeal && this.originalDeal.manager.login !== this.props.user.login) {
+        access = 500
+      }
+    }
+    return access * k
+  }
   render() {
     let props = this.props
     let id = props.routeParams.id
+    let title = this.originalDeal ? 'Редактирование сделки' : 'Создание новой сделки'
     let btnInfo = {
       cssClass: id ? 'btn-warning' : 'btn-success',
       text: id ? 'Сохранить сделку' : 'Создать сделку'
     }
+    let access = accessConfig[props.user.access]
+    let accessComponent = this._getAccess(access.component)
     
     return (
       <div className='deal_detail container'>
-        <h3>{ props.title }</h3>
+        <h3>{ title }</h3>
         <hr/>
         <div className='modal_form clearfix'>
           <Controls 
+            access={ this._getAccess(access.controls) }
             dealState={ props.state }
             clickStateBtn={ ::this.setDealState }
             managerList={ props.user.users }
@@ -161,6 +185,7 @@ class Deal extends Component {
           />
           <div className='air'></div>
           <Table 
+            access={ this._getAccess(access.table) }
             items={ props.items }
             openModal={ ::this.openModal }
             removeItem={ ::this.removeItem }
@@ -170,14 +195,14 @@ class Deal extends Component {
           />
           <div className='air'></div>
           {
-            this.originalDeal && this.originalDeal.state === 'canceled' ?
+            accessComponent === 400 ?
             <button className={'btn btn-lg pull-right btn-danger'} onClick={ ::this.deleteDeal }>
             Удалить сделку <span className='glyphicon glyphicon-trash'></span>
             </button>
-            :
+            : accessComponent < 330 ?
             <button className={'btn btn-lg pull-right ' + btnInfo.cssClass} onClick={ ::this.submitDeal }>
             { btnInfo.text } <span className='glyphicon glyphicon-cloud-upload'></span>
-            </button>
+            </button> : null
           }
           <Link to='/deals' className='btn btn-lg btn-default pull-left'>
             <span className='glyphicon glyphicon-arrow-left'></span> Отмена

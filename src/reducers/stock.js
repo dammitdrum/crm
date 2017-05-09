@@ -1,4 +1,5 @@
 import Enum from '../utils/Enum'
+import _ from 'lodash'
 
 const initialState = {
   title: 'Прайс-лист',
@@ -27,6 +28,9 @@ const stock = (state = initialState, action) => {
 	let payload = action.payload
 
 	switch (action.type) {
+		case 'RESET_DATA':
+      return _.cloneDeep(Object.assign({}, state, initialState))
+
 		case 'GET_STOCK_REQUEST':
 			return { ...state, loading: true }
 

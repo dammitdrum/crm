@@ -25,34 +25,45 @@ class Table extends Component {
 				      	<td>{ i + 1 }</td>
 				      	<td>{ item.art }</td>
 				      	<td>{ item.name }</td>
-				      	<td>$&nbsp; 
-				      		<input 
-				      			type='number' 
-				      			name="price" 
-				      			className='quant_input' 
-				      			pattern="/^\d+$/"
-				      			value={ item.price }
-				      			onChange={ props.setPrice }
-				      			required/>
-				      	</td>
+				      	{
+				      		props.access < 330 ?
+				      		<td>$&nbsp; 
+					      		<input 
+					      			type='number' 
+					      			name="price" 
+					      			className='quant_input' 
+					      			pattern="/^\d+$/"
+					      			value={ item.price }
+					      			onChange={ props.setPrice }
+					      			required/>
+					      	</td>
+					      	:
+					      	<td>$ { item.price }</td>
+				      	}
+				      	
 				      	<td>{ item.quantity }</td>
 				      	<td>{ item.debt }</td>
 				      	<td>{ item.ordered }</td>
-				      	<td>
-				      		<input 
-				      			type='number' 
-				      			name="quantity" 
-				      			className='quant_input' 
-				      			pattern="/^\d+$/"
-				      			value={ item.number }
-				      			onChange={ props.setNumber }
-				      			required/>
-				      		<span 
-				      			className="btn btn-danger btn-sm pull-right remove_butt"
-				      			onClick={ props.removeItem }>
-			            	<span className="glyphicon glyphicon-remove"></span>
-			          	</span>
-				      	</td>
+				      	{
+				      		props.access < 330 ?
+				      		<td>
+					      		<input 
+					      			type='number' 
+					      			name="quantity" 
+					      			className='quant_input' 
+					      			pattern="/^\d+$/"
+					      			value={ item.number }
+					      			onChange={ props.setNumber }
+					      			required/>
+					      		<span 
+					      			className="btn btn-danger btn-sm pull-right remove_butt"
+					      			onClick={ props.removeItem }>
+				            	<span className="glyphicon glyphicon-remove"></span>
+				          	</span>
+					      	</td>
+					      	:
+					      	<td>{ item.number }</td>
+				      	}
 				      </tr>
 				    )
 					}
@@ -64,13 +75,17 @@ class Table extends Component {
             </tr>
             : null
 					}
-					<tr className="not_hover">
-	        	<td colSpan="8" className="text-center">
-	        	<span className="btn btn-default" onClick={ props.openModal } data-modal='stock'>
-							Добавить товар <span className="glyphicon glyphicon-plus"></span>
-						</span>
-	          </td>
-	        </tr>
+					{
+	       		props.access < 330 ?
+	       		<tr className="not_hover">
+		        	<td colSpan="8" className="text-center">
+		        		<span className="btn btn-default" onClick={ props.openModal } data-modal='stock'>
+									Добавить товар <span className="glyphicon glyphicon-plus"></span>
+								</span>
+		          </td>
+		        </tr>
+		        : null
+	        }
 				</tbody>
 			</table>
 		)

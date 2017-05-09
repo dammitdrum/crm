@@ -2,7 +2,6 @@ import Enum from '../utils/Enum'
 import _ from 'lodash'
 
 const initialState = {
-  title: 'Создание новой сделки',
   state: 'new',
   manager: false,
   modal: { 
