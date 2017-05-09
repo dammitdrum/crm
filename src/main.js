@@ -63,7 +63,7 @@ ReactDOM.render(
       	<Route path="/deals" component={Deals}/>
         <Route path="/deals/create" component={DealDetail}/>
         <Route path="/deals/edit/:id" component={DealDetail}/>
-      	<Route path="/partners" component={Clients}/>
+      	<Route path="/clients" component={Clients}/>
       	<Route path="/user" component={User}/>
       </Route>
       <Route path="/login" component={Login}/>

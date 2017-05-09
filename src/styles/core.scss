@@ -98,7 +98,7 @@ h2 {
             text-align: center;
             width: 50px;
         }
-        &:last-child {
+        &.td_btn {
             text-align: center;
             width: 100px;  
         }
@@ -110,7 +110,7 @@ h2 {
         &.pointer {
             cursor: pointer;
         }
-        &:last-child {
+        &.th_btn {
             text-align: center;
         }
         &:first-child {
@@ -211,6 +211,11 @@ h2 {
   }
   .ng-valid.ng-touched {
     border-color: limegreen;
+  }
+  &.long {
+    input {
+        width: 70%;
+    }
   }
 }
 .modal-footer {

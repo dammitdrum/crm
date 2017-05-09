@@ -52,7 +52,9 @@ class Stock extends Component {
       ...this.props.modal.item,
       [name]: val
     })
-    this.validator.validate({ [name]: val })
+    if (_.find(validateConfig, prop => prop.name === name)) {
+      this.validator.validate({ [name]: val })
+    }
   }
   onDelete(e) {
     let id = e.currentTarget.getAttribute('data-id')
@@ -91,7 +93,7 @@ class Stock extends Component {
 
     return (
       <div className='stock container'>
-        <h2 className="main_title">{ props.title }</h2>
+        <h2 className="main_title">Прайс-лист</h2>
         <Controls 
           access={ access.controls }
           categories={ categories }
@@ -136,7 +138,6 @@ class Stock extends Component {
 
 const mapStateToProps = state => (
   {
-    title: state.stock.title,
     items: state.stock.items,
     searchQuery: state.stock.searchQuery,
     activeCategory: state.stock.activeCategory,

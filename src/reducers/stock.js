@@ -2,7 +2,6 @@ import Enum from '../utils/Enum'
 import _ from 'lodash'
 
 const initialState = {
-  title: 'Прайс-лист',
   items: [],
   searchQuery: '',
   activeCategory: Enum.defaultCatStock,
@@ -17,8 +16,6 @@ const initialState = {
   	}
   },
   sortBy: { code: 'price', type: 'asc' },
-  loading: false,
-  loaded: false,
   validateMess: {
     show: false
   }
@@ -31,14 +28,9 @@ const stock = (state = initialState, action) => {
 		case 'RESET_DATA':
       return _.cloneDeep(Object.assign({}, state, initialState))
 
-		case 'GET_STOCK_REQUEST':
-			return { ...state, loading: true }
-
 		case 'GET_STOCK_SUCCESS':
 			return { ...state,
-				items: payload,
-				loading: false,
-				loaded: true
+				items: payload
 			}
 
 		case 'GET_STOCK_FAIL':

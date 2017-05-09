@@ -55,8 +55,8 @@ var Item = new Schema({
 });
 
 var Client = new Schema({
-    name: String,
-    fullname: String,
+    name: { type: String, required: true},
+    fullName: { type: String, required: true},
     contact: String,
     person: String
 })
@@ -168,12 +168,11 @@ app.post('/deals/create', function (req, res) {
    createHandler(deal,res,'deal');
 });
 app.post('/clients/create', function (req, res) {
-    var Client = new ClientModel({
+    var client = new ClientModel({
         name: req.body.name,
-        fullname: req.body.fullname,
+        fullName: req.body.fullName,
         contact: req.body.contact,
-        person: req.body.person,
-        type: req.body.type,
+        person: req.body.person
     });
 
     createHandler(client,res,'client');
@@ -210,7 +209,7 @@ app.put('/deals/update/:id', function (req, res){
     updateHandler(DealModel,req,res,'deal');
 });
 app.put('/clients/update/:id', function (req, res){
-    updateHandler(clientModel,req,res,'client');
+    updateHandler(ClientModel,req,res,'client');
 });
 app.put('/users/update/:id', function (req, res){
     updateHandler(UserModel,req,res,'user');

@@ -4,24 +4,11 @@ class Table extends Component {
 	constructor(props) {
 		super(props)
 		this.headInfo =[
-      { text: 'Артикул', code: 'art' },
-      { text: 'Наименование', code: 'name' },
-      { text: 'Цена', code: 'price' },
-      { text: 'Наличие', code: 'quantity' },
-      { text: 'Резерв', code: 'debt' },
-      { text: 'Заказано', code: 'ordered' }
+      { text: 'Краткое название', code: 'name' },
+      { text: 'Полное название', code: 'fullName' },
+      { text: 'Контакты', code: 'contact' },
+      { text: 'Контактные лица', code: 'person' }
     ]
-	}
-	getItemClass(item) {
-		if (item.deleting) {
-			return 'deleting'
-		}
-		if (item.creating) {
-			return 'creating'
-		}
-		if (item.updating) {
-			return 'updating'
-		}
 	}
 	render() {
 		let props = this.props
@@ -30,16 +17,16 @@ class Table extends Component {
 		if (!props.items.length) {
 			list = (
 				<tr>
-					<td colSpan={ props.access < 120 ? 8 : 7} className="no_res">
+					<td colSpan={ props.access < 120 ? 6 : 5 } className="no_res">
 						<strong>Ничего нет
-							{ data.searchQuery ? ' по запросу "' + data.searchQuery.trim() + '" в категории ' + data.activeCategory : ''}
+							{ data.searchQuery ? ' по запросу "' + data.searchQuery.trim() + '"': '' }
 						</strong>
 					</td>
 				</tr>
 			)
 		} else {
 			list = props.items.map((item, i) =>
-	      <tr key={ i } className={ this.getItemClass(item) }>
+	      <tr key={ i }>
 	      	<td>{ i + 1 }</td>
 	      	{
 	      		this.headInfo.map((info, i) =>
@@ -68,7 +55,7 @@ class Table extends Component {
 	    )	
 		}
 		return (
-			<table className='stock_table table table-hover table-striped table-bordered'>
+			<table className='table stock_table table-hover table-striped table-bordered'>
 				<thead>
 					<tr className={ data.sortBy.type === 'asc' ? '' : 'dropup'} >
 						<th>#</th>

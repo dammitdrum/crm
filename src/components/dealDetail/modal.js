@@ -31,7 +31,7 @@ class DealModal extends Component {
 				onSet = props.onSetClient
 				tableInfo = [
 		     	{ text: 'Наименование', code: 'name' },
-		      { text: 'Полное наименование', code: 'fullname' },
+		      { text: 'Полное наименование', code: 'fullName' },
 		      { text: 'Контакты', code: 'contact' },
 		      { text: 'Контактное лицо', code: 'person' }
 		    ]
