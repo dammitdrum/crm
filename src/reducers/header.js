@@ -1,10 +1,6 @@
 const initialState = {
   menu: {
     links: []
-  },
-  profile: {
-    text: 'Админ',
-    path: '/user'
   }
 }
 

@@ -43,8 +43,7 @@ class Header extends Component {
 const mapStateToProps = state => (
   {
     menu: state.header.menu,
-    user: state.user,
-    path: state.header.path
+    user: state.user
   }
 )
 
