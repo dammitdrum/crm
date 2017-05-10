@@ -4,6 +4,18 @@ const initialState = {
   login: '',
   name: '',
   access: '',
+  modal: { 
+    show: false, 
+    mode: 'create',
+    user: {
+      name: '',
+      login: '',
+      password: ''
+    }
+  },
+  validateMess: {
+    show: false
+  },
   users: []
 }
 
@@ -32,6 +44,68 @@ const user = (state = initialState, action) => {
 
     case 'LOGOUT_SUCCESS':
       return _.cloneDeep(Object.assign({}, state, initialState))
+
+    case 'CREATE_USER_SUCCESS':
+      state.users.push(payload)
+      return { ...state, 
+        users: state.users.concat(),
+        modal: { ...state.modal,
+          show: false
+        }
+      }
+
+    case 'CREATE_USER_FAIL':
+      return { ...state}
+
+    case 'UPDATE_USER_SUCCESS':
+      let updated = state.users.filter(user => user._id !== payload._id)
+      updated.push(payload)
+      return { ...state, 
+        users: updated,
+        modal: { ...state.modal,
+          show: false
+        }
+      }
+
+    case 'UPDATE_USER_FAIL':
+      return { ...state}
+
+    case 'DELETE_USER_SUCCESS':
+      return { ...state, 
+        items: state.users.filter(user => user._id !== payload)
+      }
+
+    case 'DELETE_USER_FAIL':
+      return { ...state}
+
+    case 'SHOW_USER_MODAL':
+      return { ...state,
+        modal: { 
+          show: payload.show, 
+          mode: payload.mode,
+          user: payload.user ? payload.user :
+            {
+              name: '',
+              login: '',
+              password: ''
+            }
+        },
+        validateMess: {
+          show: false
+        }
+      }
+
+    case 'CHANGE_USER_MODAL':
+      return { ...state,
+        modal: { ...state.modal,
+          user: payload
+        }
+      }
+
+    case 'VALIDATE_USER':
+      return { ...state,
+        validateMess: payload
+      }
 
     default:
       return state

@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
 
-class StockModal extends Component {
+class UserModal extends Component {
 	componentWillMount() {
 		this.fields = [
-      { text: 'Наименование', name: 'name' },
-      { text: 'Артикул', name: 'art' },
-      { text: 'Цена', name: 'price' },
-      { text: 'Категория', name: 'category' }
+      { text: 'Имя пользователя', name: 'name' },
+      { text: 'Логин', name: 'login' },
+      { text: 'Пароль для пользователя', name: 'password' }
     ]
 	}
 	render() {
@@ -16,15 +15,15 @@ class StockModal extends Component {
 
 		switch (props.params.mode) {
 			case 'create':
-				title = 'Создание нового товара'
+				title = 'Создание нового пользователя'
 				btnClass = 'btn-success'
-				btnText = 'Создать товар'
+				btnText = 'Создать пользователя'
 				break
 
 			case 'edit':
-				title = 'Редактирование товара'
+				title = 'Редактирование пользователя'
 				btnClass = 'btn-warning'
-				btnText = 'Сохранить товар'
+				btnText = 'Сохранить'
 				break
 		}
 		return (
@@ -36,20 +35,29 @@ class StockModal extends Component {
 	        <Modal.Body>
 	        	{
 	        		this.fields.map((field, i) => 
-	        			<div key={ i } className="input_field pos" data-valid-wrap={ field.name }>
+	        			<div key={ i } className='input_field pos' data-valid-wrap={ field.name }>
 				        	<p className='title'>{ field.text }</p>
 								  <input type='text' className='input' 
 								  	name={ field.name }
 								  	onChange={ props.onChange }
-								  	value={ props.item[field.name] }
+								  	value={ props.user[field.name] }
 								  	data-valid={ field.name }/>
 								</div>
 	        		)
 	        	}
+	        	<p>Уровень доступа</p>
+				    <label>
+				      <input type='radio' name='access' value='manager'/>
+				      Менеджер
+				    </label>
+				    <label>
+				      <input type='radio' name='access' value='admin'/>
+				      Администратор
+				    </label>
 	        </Modal.Body>
 	        <Modal.Footer>
 	          <button className={ 'btn ' + btnClass } onClick={ props.submit }>
-	          	{ btnText } <span className="glyphicon glyphicon-cloud-upload"></span>
+	          	{ btnText } <span className='glyphicon glyphicon-cloud-upload'></span>
 	          </button>
 	        </Modal.Footer>
       	</div>
@@ -58,4 +66,4 @@ class StockModal extends Component {
 	}
 } 
 
-export default StockModal
+export default UserModal
