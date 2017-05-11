@@ -12,7 +12,9 @@ const initialState = {
   		name: '',
   		art: '',
   		price: '',
-  		category: ''
+  		category: '',
+  		quantity: 0,
+  		ordered: 0
   	}
   },
   sortBy: { code: 'price', type: 'asc' },

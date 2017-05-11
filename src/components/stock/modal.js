@@ -7,7 +7,9 @@ class StockModal extends Component {
       { text: 'Наименование', name: 'name' },
       { text: 'Артикул', name: 'art' },
       { text: 'Цена', name: 'price' },
-      { text: 'Категория', name: 'category' }
+      { text: 'Категория', name: 'category' },
+      { text: 'Кол-во в наличии', name: 'quantity' },
+      { text: 'Заказано', name: 'ordered' }
     ]
 	}
 	render() {

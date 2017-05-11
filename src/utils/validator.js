@@ -20,6 +20,9 @@ class Validator {
   _check(val, prop) {
     let config = this._getConfig(prop)
     let res = false
+    if (!config) {
+      return true
+    }
     if (config.regExp) {
       let reg = new RegExp(config.regExp, 'g')
       res = reg.test(val)

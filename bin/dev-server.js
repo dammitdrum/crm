@@ -151,6 +151,8 @@ app.post('/stock/create', function (req, res) {
         name: req.body.name,
         price: req.body.price,
         category: req.body.category,
+        quantity: req.body.quantity,
+        ordered: req.body.ordered
     });
 
     createHandler(item,res,'item');

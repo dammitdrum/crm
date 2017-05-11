@@ -27,6 +27,20 @@ const config = [
     message: 'Необходимо ввести наименование',
     regExp: '^.{3,}$'
   },
+  {
+    name: 'quantity',
+    side: 'right',
+    title: 'Только цифры(целое число)',
+    message: 'Необходимо ввести кол-во в наличии',
+    regExp: '^\\d+$'
+  },
+  {
+    name: 'ordered',
+    side: 'right',
+    title: 'Только цифры(целое число)',
+    message: 'Необходимо ввести заказанное кол-во',
+    regExp: '^\\d+$'
+  }
 ]
 
 export default config 

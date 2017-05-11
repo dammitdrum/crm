@@ -44,7 +44,7 @@ class User extends Component {
   }
   submitModal(e) {
     let user = this.props.modal.user
-    if (!this.validator.validate({ name: user.name, login: user.login })) return
+    if (!this.validator.validate(user)) return
     user._id ?
       this.props.updateUser(user) : this.props.createUser(user)
   }

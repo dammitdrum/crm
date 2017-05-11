@@ -113,7 +113,6 @@ class Stock extends Component {
           openModal={ ::this.openModal }
         />
         <StockModal 
-          access={ access.modal }
           params={ props.modal }
           item={ props.modal.item }
           close={ ::this.closeModal }
