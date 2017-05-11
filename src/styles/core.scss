@@ -206,16 +206,23 @@ h2 {
   p {
       margin-bottom: 4px;
   }
-  input {
+  input[type="text"] {
       margin-bottom: 5px;
+      height: 25px;
+      &:focus {
+        border-color: #777;
+      }
   }
   .ng-valid.ng-touched {
     border-color: limegreen;
   }
   &.long {
-    input {
+    input[type="text"] {
         width: 70%;
     }
+  }
+  .input_field {
+    margin-bottom: 6px;
   }
 }
 .modal-footer {

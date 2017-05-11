@@ -3,16 +3,16 @@ import { Modal } from 'react-bootstrap'
 
 class UserModal extends Component {
 	componentWillMount() {
-		this.fields = [
-      { text: 'Имя пользователя', name: 'name' },
-      { text: 'Логин', name: 'login' },
-      { text: 'Пароль для пользователя', name: 'password' }
-    ]
+		
 	}
 	render() {
 		const props = this.props
 		let title, btnClass, btnText
-
+		let fields = [
+      { text: 'Имя пользователя', name: 'name' },
+      { text: 'Логин', name: 'login' },
+      { text: 'Пароль для пользователя', name: 'password' }
+    ]
 		switch (props.params.mode) {
 			case 'create':
 				title = 'Создание нового пользователя'
@@ -24,17 +24,18 @@ class UserModal extends Component {
 				title = 'Редактирование пользователя'
 				btnClass = 'btn-warning'
 				btnText = 'Сохранить'
+				fields.pop()
 				break
 		}
 		return (
-			<Modal bsSize='sm' show={ props.params.show } onHide={ props.close }>
+			<Modal show={ props.params.show } onHide={ props.close }>
         <Modal.Header closeButton>
-          <h4 className='modal-title'>{ title }</h4>
+          <h3 className='modal-title'>{ title }</h3>
         </Modal.Header>
-        <div className='modal_form'  >
+        <div className='modal_form long'  >
 	        <Modal.Body>
 	        	{
-	        		this.fields.map((field, i) => 
+	        		fields.map((field, i) => 
 	        			<div key={ i } className='input_field pos' data-valid-wrap={ field.name }>
 				        	<p className='title'>{ field.text }</p>
 								  <input type='text' className='input' 
@@ -47,12 +48,21 @@ class UserModal extends Component {
 	        	}
 	        	<p>Уровень доступа</p>
 				    <label>
-				      <input type='radio' name='access' value='manager'/>
-				      Менеджер
+				      <input 
+				      	type='radio' 
+				      	name='access' 
+				      	value='manager' 
+				      	onChange={ props.onChange } 
+				      	checked={ props.user.access === 'manager' }/> Менеджер
 				    </label>
+				    <br/>
 				    <label>
-				      <input type='radio' name='access' value='admin'/>
-				      Администратор
+				      <input 
+				      	type='radio' 
+				      	name='access' 
+				      	value='admin' 
+				      	onChange={ props.onChange }
+				      	checked={ props.user.access === 'admin' }/> Администратор
 				    </label>
 	        </Modal.Body>
 	        <Modal.Footer>

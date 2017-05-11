@@ -101,12 +101,7 @@ const stock = (state = initialState, action) => {
 			  	show: payload.show, 
 			  	mode: payload.mode,
 			  	item: payload.item ? payload.item :
-			  		{
-				  		name: '',
-				  		art: '',
-				  		price: '',
-				  		category: ''
-				  	}
+			  		{ ...initialState.modal.item }
 			  },
 			  validateMess: {
 			    show: false

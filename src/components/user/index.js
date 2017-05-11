@@ -19,7 +19,6 @@ class User extends Component {
     let userId = e.currentTarget.getAttribute('data-id')
     let user = userId ? _.find(this.props.users, user => user._id === userId) : null
     let mode = userId ? 'edit' : 'create'
-    console.log({ show: true, mode, user: user })
     this.props.showModal({ show: true, mode, user: user })
   }
   closeModal() {
@@ -31,7 +30,7 @@ class User extends Component {
   onChangeModal(e) {
     let name = e.target.getAttribute('name')
     let val = e.target.value
-    this.props.changeModalItem({
+    this.props.changeUserModal({
       ...this.props.modal.user,
       [name]: val
     })
@@ -41,13 +40,48 @@ class User extends Component {
   }
   onDelete(e) {
     let id = e.currentTarget.getAttribute('data-id')
-    this.props.deleteItem(id)
+    this.props.deleteUser(id)
   }
   submitModal(e) {
     let user = this.props.modal.user
-    if (!this.validator.validate(user)) return
+    if (!this.validator.validate({ name: user.name, login: user.login })) return
     user._id ?
       this.props.updateUser(user) : this.props.createUser(user)
+  }
+  getItemList(user, i) {
+    if (user.access === 'superAdmin') {
+      return
+    }
+    return (
+      <div className='row' key={ i }>
+        <div className='col-sm-10'>
+          <div className='panel panel-info'>
+            <div className='panel-heading'> 
+              <h3 className='panel-title'>{ user.name }</h3> 
+            </div> 
+            <div className='panel-body'> 
+              <p>Логин: <strong>{ user.login }</strong></p>
+              <p>Уровень доступа: <strong>{ user.access }</strong></p>
+            </div>
+          </div>
+        </div>
+        <div className='offset-sm-1 col-sm-1'>
+          <button 
+            className='btn btn-sm btn-warning mgb-5' 
+            onClick={ ::this.openModal }
+            data-id={ user._id }>
+            <span className='glyphicon glyphicon-pencil'></span>
+          </button>
+          <br/>
+          <button 
+            className='btn btn-sm btn-danger' 
+            onClick={ ::this.onDelete }
+            data-id={ user._id }>
+            <span className='glyphicon glyphicon-remove'></span>
+          </button>
+        </div>
+      </div>
+    )
   }
   render() {
     let props = this.props
@@ -75,38 +109,13 @@ class User extends Component {
                 <p></p>
                 {
                   props.users.map((user, i) => 
-                    <div className='row' key={ i }>
-                      <div className='col-sm-10'>
-                        <div className='panel panel-info'>
-                          <div className='panel-heading'> 
-                            <h3 className='panel-title'>{ user.name }</h3> 
-                          </div> 
-                          <div className='panel-body'> 
-                            <p>Логин: <strong>{ user.login }</strong></p>
-                            <p>Уровень доступа: <strong>{ user.access }</strong></p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className='offset-sm-1 col-sm-1'>
-                        <button 
-                          className='btn btn-sm btn-warning mgb-5' 
-                          onClick={ ::this.openModal }
-                          data-id={ user._id }>
-                          <span className='glyphicon glyphicon-pencil'></span>
-                        </button>
-                        <br/>
-                        <button className='btn btn-sm btn-danger' onClick={ ::this.onDelete }>
-                          <span className='glyphicon glyphicon-remove'></span>
-                        </button>
-                      </div>
-                    </div>
+                    this.getItemList(user, i)
                   )
                 }
               </div>
               : ''
             }
             <UserModal 
-              access={ access.modal }
               params={ props.modal }
               user={ props.modal.user }
               close={ ::this.closeModal }

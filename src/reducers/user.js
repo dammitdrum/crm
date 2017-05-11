@@ -10,7 +10,8 @@ const initialState = {
     user: {
       name: '',
       login: '',
-      password: ''
+      password: '',
+      access: 'manager'
     }
   },
   validateMess: {
@@ -72,7 +73,7 @@ const user = (state = initialState, action) => {
 
     case 'DELETE_USER_SUCCESS':
       return { ...state, 
-        items: state.users.filter(user => user._id !== payload)
+        users: state.users.filter(user => user._id !== payload)
       }
 
     case 'DELETE_USER_FAIL':
@@ -84,11 +85,7 @@ const user = (state = initialState, action) => {
           show: payload.show, 
           mode: payload.mode,
           user: payload.user ? payload.user :
-            {
-              name: '',
-              login: '',
-              password: ''
-            }
+            { ...initialState.modal.user }
         },
         validateMess: {
           show: false
