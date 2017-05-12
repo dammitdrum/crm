@@ -19,7 +19,7 @@ class Controls extends Component {
         {
           props.access < 330 ?
           <div className="air">
-            <p><strong>Изменить статус сделки:</strong></p>
+            <h4>Изменить статус сделки:</h4>
             <div className="btn-group" role="group">
               {
                 this.stateBtn.map((btn, i) => 

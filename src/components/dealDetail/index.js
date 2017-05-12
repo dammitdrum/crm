@@ -84,7 +84,8 @@ class Deal extends Component {
     if (addedItem) {
       let number = addedItem.number
       let id = addedItem._id
-      this.props.setItemNumber(++number, id)
+      if (item.quantity != number) ++number
+      this.props.setItemNumber(number, id)
     } else {
       item.number = 1
       this.props.addItem(item)
@@ -108,6 +109,8 @@ class Deal extends Component {
   }
   setItemNumber(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
+    let item = _.find(this.props.stock.items, item => item._id === id)
+    if (item.quantity < e.target.value) return
     this.props.setItemNumber(e.target.value, id)
     this.props.setDealSum()
   }

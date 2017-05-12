@@ -118,11 +118,14 @@ h2 {
         }
     }
     tbody>tr {
-        transition: all 0.25s;
         &.pointer {
             td {
                 cursor: pointer;
             }
+        }
+        &.disabled {
+            opacity: 0.4;
+            background: #eee;
         }
         &.deleting {
             background: #ffd9d9;
