@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Link, hashHistory } from 'react-router'
 import { Overlay, Popover } from 'react-bootstrap'
 import Validator from '../../utils/validator'
+import calculator from '../../utils/calculator'
 import validateConfig from '../../config/validate/deal'
 import accessConfig from '../../config/access/dealDetail'
 import Controls from './controls'
@@ -11,6 +12,7 @@ import Table from './table'
 import DealModal from './modal'
 import * as Actions from '../../actions/dealDetailActions'
 import { createDeal, saveDeal, deleteDeal } from '../../actions/dealsActions'
+import { updateItem } from '../../actions/stockActions'
 
 class Deal extends Component {
 	componentWillMount() {
@@ -119,6 +121,14 @@ class Deal extends Component {
     this.validator.validate({number: e.target.value})
   }
   submitDeal() {
+    if (this.props.dealDetail.state !== this.originalDeal.state) {
+      calculator(
+        this.props.dealDetail, 
+        this.originalDeal, 
+        this.props.stock, 
+        this.props.updateStockItem
+      )
+    }
     if (!this.validator.validate({number: this.props.number, client: this.props.client})) return
     let deal = _.cloneDeep(this.props.dealDetail)
     deal.items = deal.items.map(item => {
@@ -278,6 +288,7 @@ const mapDispatchToProps = dispatch => (
     createDeal:       bindActionCreators(createDeal, dispatch),
     saveDeal:         bindActionCreators(saveDeal, dispatch),
     deleteDeal:       bindActionCreators(deleteDeal, dispatch),
+    updateStockItem:  bindActionCreators(updateItem, dispatch)
   }
 )
 
