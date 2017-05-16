@@ -121,15 +121,14 @@ class Deal extends Component {
     this.validator.validate({number: e.target.value})
   }
   submitDeal() {
-    if (this.props.dealDetail.state !== this.originalDeal.state) {
-      calculator(
-        this.props.dealDetail, 
-        this.originalDeal, 
-        this.props.stock, 
-        this.props.updateStockItem
-      )
-    }
     if (!this.validator.validate({number: this.props.number, client: this.props.client})) return
+    let res = calculator(
+      this.props.dealDetail, 
+      this.originalDeal, 
+      this.props.stock.items, 
+      this.props.updateStockItem
+    )
+  console.log(res)
     let deal = _.cloneDeep(this.props.dealDetail)
     deal.items = deal.items.map(item => {
       return {

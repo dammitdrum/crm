@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { applyMiddleware, compose, createStore } from 'redux'
 import rootReducer from './reducers'
 import thunk from 'redux-thunk'
-import { Router, Route, hashHistory, IndexRoute } from 'react-router'
+import { Router, Route, hashHistory, IndexRedirect } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import _ from 'lodash'
 
@@ -58,7 +58,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
     	<Route path="/" component={App}>
-        <IndexRoute component={Home}/>
+        <IndexRedirect to='stock'/>
       	<Route path="/stock" component={Stock}/>
       	<Route path="/deals" component={Deals}/>
         <Route path="/deals/create" component={DealDetail}/>
