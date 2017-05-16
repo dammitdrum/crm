@@ -3,8 +3,17 @@ import _ from 'lodash'
 function calculator(deal, originalDeal, stock, action) {
   let state = deal.state
   let originalState = originalDeal ? originalDeal.state : false
-  let stopper = false
+  let resObj = { success: true }
+  let removedItems = []
   
+  if (originalDeal) {
+    originalDeal.items.forEach(item => {
+      if (!_.find(deal.items, { _id: item.id })) {
+        removedItems.push({ ...item, _id: item.id})
+      }
+    })
+  }
+
   switch (state) {
     case 'new':
     case 'canceled':
@@ -42,7 +51,10 @@ function calculator(deal, originalDeal, stock, action) {
                 debt: stockItem.debt + item.number
               })
             } else {
-              return `Не хватает на складе "${ stockItem.name }" чтобы положить в резерв`
+              resObj = {
+                success: false,
+                errorMess: `Не хватает свободного товара "${ stockItem.name }" чтобы положить в резерв`
+              }
             }
           })
           break
@@ -55,6 +67,15 @@ function calculator(deal, originalDeal, stock, action) {
               debt: stockItem.debt + item.number
             })
           })
+          if (removedItems.length) {
+            removedItems.forEach(item => {
+              let stockItem = _.find(stock, { _id: item._id })
+              action({ 
+                ...item,
+                quantity: stockItem.quantity + item.number
+              })
+            })
+          }
           break
       }
       break
@@ -71,7 +92,10 @@ function calculator(deal, originalDeal, stock, action) {
                 quantity: stockItem.quantity - item.number
               })
             } else {
-              return `Не хватает на складе "${ stockItem.name }" чтобы списать`
+              resObj = {
+                success: false,
+                errorMess: `Не хватает на складе "${ stockItem.name }" чтобы списать`
+              }
             }
           })
           break
@@ -85,13 +109,26 @@ function calculator(deal, originalDeal, stock, action) {
                 debt: stockItem.debt - item.number
               })
             } else {
-              return `Не хватает на складе "${ stockItem.name }" чтобы списать`
+              resObj = {
+                success: false,
+                errorMess: `Не хватает на складе "${ stockItem.name }" чтобы списать`
+              }
             }
           })
+          if (removedItems.length) {
+            removedItems.forEach(item => {
+              let stockItem = _.find(stock, { _id: item._id })
+              action({ 
+                ...item,
+                debt: stockItem.debt - item.number
+              })
+            })
+          }
           break
       }
       break
   }
+  return resObj
 }
 
 export default calculator

@@ -128,7 +128,7 @@ class Deal extends Component {
       this.props.stock.items, 
       this.props.updateStockItem
     )
-  console.log(res)
+    console.log(res)
     let deal = _.cloneDeep(this.props.dealDetail)
     deal.items = deal.items.map(item => {
       return {
