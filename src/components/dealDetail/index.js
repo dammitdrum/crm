@@ -112,8 +112,7 @@ class Deal extends Component {
   setItemNumber(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     let item = _.find(this.props.stock.items, item => item._id === id)
-    if (item.quantity < e.target.value) return
-    this.props.setItemNumber(e.target.value, id)
+    this.props.setItemNumber(e.target.value > 0 ? e.target.value : 0, id)
     this.props.setDealSum()
   }
   setDealNumber(e) {
@@ -169,7 +168,7 @@ class Deal extends Component {
   render() {
     let props = this.props
     let id = props.routeParams.id
-    let title = this.originalDeal ? 'Редактирование сделки' : 'Создание новой сделки'
+    let title = id ? `Редактирование сделки №${id}` : 'Создание новой сделки'
     let btnInfo = {
       cssClass: id ? 'btn-warning' : 'btn-success',
       text: id ? 'Сохранить сделку' : 'Создать сделку'
