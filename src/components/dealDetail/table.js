@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 class Table extends Component {
 
 	render() {
 		let props = this.props
+
 		return (
 			<table className='stock_table deals table table-striped table-bordered'>
 				<thead>
@@ -13,7 +15,7 @@ class Table extends Component {
 						<th>Наименование</th>
 						<th>Цена</th>
 						<th>Наличие</th>
-						<th>Резерв</th>
+						<th>Обязательства</th>
 						<th>Заказано</th>
 						<th>Кол-во</th>
 					</tr>
@@ -47,19 +49,40 @@ class Table extends Component {
 				      	{
 				      		props.access < 330 ?
 				      		<td>
-					      		<input 
-					      			type='number' 
-					      			name="quantity" 
-					      			className='quant_input' 
-					      			pattern="/^\d+$/"
-					      			value={ item.number }
-					      			onChange={ props.setNumber }
-					      			required/>
-					      		<span 
-					      			className="btn btn-danger btn-sm pull-right remove_butt"
-					      			onClick={ props.removeItem }>
-				            	<span className="glyphicon glyphicon-remove"></span>
-				          	</span>
+					      		{
+					      			props.access < 130 ?
+					      			<div>
+						      			<input 
+							      			type='number' 
+							      			name="quantity" 
+							      			className='quant_input' 
+							      			pattern="/^\d+$/"
+							      			value={ item.number }
+							      			onChange={ props.setNumber }
+							      			required/>
+						      			<span 
+							      			className="btn btn-danger btn-sm pull-right remove_butt"
+							      			onClick={ props.removeItem }>
+						            	<span className="glyphicon glyphicon-remove"></span>
+						          	</span>
+						          </div>
+					          	: 
+					          	<OverlayTrigger placement="top" overlay={ 
+					          		<Tooltip id="tooltip">Необходимо перевести сделку в статус "Новая"</Tooltip> 
+					          	}>
+						          	<div>
+							          	<input 
+							          		className='quant_input' 
+							          		value={ item.number }
+								      			required disabled/>
+										      <span 
+								      			className="btn btn-danger btn-sm pull-right remove_butt disabled">
+							            	<span className="glyphicon glyphicon-remove"></span>
+							          	</span>
+							          </div>
+									    </OverlayTrigger>
+									   	
+					      		}
 					      	</td>
 					      	:
 					      	<td>{ item.number }</td>

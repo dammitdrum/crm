@@ -21,7 +21,7 @@ class DealModal extends Component {
 		      { text: 'Наименование', code: 'name' },
 		      { text: 'Цена', code: 'price' },
 		      { text: 'Наличие', code: 'quantity' },
-		      { text: 'Резерв', code: 'debt' },
+		      { text: 'Обязательства', code: 'debt' },
 		      { text: 'Заказано', code: 'ordered' }
 		    ]
 				break
