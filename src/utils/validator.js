@@ -18,7 +18,7 @@ class Validator {
     return res
   }
   _check(val, prop) {
-    let config = this._getConfig(prop)
+    const config = this._getConfig(prop)
     let res = false
     if (!config) return true
     if (config.regExp) {
