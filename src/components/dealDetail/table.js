@@ -4,7 +4,10 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 class Table extends Component {
 
 	render() {
-		let props = this.props
+		const props = this.props
+		const tooltip = (
+			<Tooltip id="tooltip">Необходимо перевести сделку в статус "Новая"</Tooltip>
+		)
 
 		return (
 			<table className='stock_table deals table table-striped table-bordered'>
@@ -67,9 +70,7 @@ class Table extends Component {
 						          	</span>
 						          </div>
 					          	: 
-					          	<OverlayTrigger placement="top" overlay={ 
-					          		<Tooltip id="tooltip">Необходимо перевести сделку в статус "Новая"</Tooltip> 
-					          	}>
+					          	<OverlayTrigger placement="top" overlay={ tooltip }>
 						          	<div>
 							          	<input 
 							          		className='quant_input' 
@@ -102,9 +103,19 @@ class Table extends Component {
 	       		props.access < 330 ?
 	       		<tr className="not_hover">
 		        	<td colSpan="8" className="text-center">
-		        		<span className="btn btn-default" onClick={ props.openModal } data-modal='stock'>
-									Добавить товар <span className="glyphicon glyphicon-plus"></span>
-								</span>
+		        		{
+		        			props.access < 130 ?
+		        			<span className="btn btn-default" onClick={ props.openModal } data-modal='stock'>
+										Добавить товар <span className="glyphicon glyphicon-plus"></span>
+									</span>
+									:
+									<OverlayTrigger placement="top" overlay={ tooltip }>
+				          	<span className="btn btn-default disabled">
+											Добавить товар <span className="glyphicon glyphicon-plus"></span>
+										</span>
+			          	</OverlayTrigger>
+		        		}
+		        		
 		          </td>
 		        </tr>
 		        : null
