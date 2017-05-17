@@ -56,7 +56,7 @@ class DealModal extends Component {
 		} else {
 			list = items.map((item, i) =>
 	      <tr key={ i } 
-	      	onClick={ item.quantity > 0 ? onSet : '' } 
+	      	onClick={ item.quantity <= 0 ? '' : onSet } 
 	      	data-id={ item._id } 
 	      	className={ item.quantity <= 0 ? 'disabled' : 'pointer' }>
 	      	<td>{ i + 1 }</td>

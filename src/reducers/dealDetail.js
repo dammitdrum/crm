@@ -57,10 +57,7 @@ const dealDetail = (state = initialState, action) => {
     case 'ADD_ITEM_TO_DEAL':
       state.items.push(payload)
       return { ...state,
-        items: state.items.concat(),
-        modal: { ...state.modal,
-          show: false
-        }
+        items: state.items.concat()
       }
 
     case 'REMOVE_ITEM_FROM_DEAL':
@@ -85,18 +82,12 @@ const dealDetail = (state = initialState, action) => {
         }
       })
       return { ...state,
-        items: state.items.concat(),
-        modal: { ...state.modal,
-          show: false
-        }
+        items: state.items.concat()
       }
 
     case 'SET_CLIENT_TO_DEAL':
       return { ...state,
-        client: payload,
-        modal: { ...state.modal,
-          show: false
-        }
+        client: payload
       }
 
     case 'SET_SUM_DEAL':

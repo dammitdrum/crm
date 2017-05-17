@@ -64,7 +64,7 @@ class Controls extends Component {
               Выбрать покупателя 
               &nbsp;<span className="glyphicon glyphicon-menu-hamburger"></span>
             </span>
-            <strong>&nbsp; { props.client ? props.client.name : 'Не выбран покупатель' }</strong>
+            <strong>&nbsp; { props.client ? props.client.name : '' }</strong>
           </div>
           :
           <div className="pull-left pos clearfix">

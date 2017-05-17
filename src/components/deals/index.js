@@ -5,7 +5,9 @@ import { hashHistory } from 'react-router'
 
 import Controls from './controls'
 import Table from './table'
-import * as Actions from '../../actions/dealsActions'
+import DealModal from '../dealDetail/modal'
+import * as dealsActions from '../../actions/dealsActions'
+import * as dealDetailActions from '../../actions/dealDetailActions'
 import Enum from '../../utils/Enum'
 
 class Deals extends Component {
@@ -32,6 +34,44 @@ class Deals extends Component {
     let id = e.currentTarget.getAttribute('data-id')
     hashHistory.push('/deals/edit/' + id)
   }
+  openModal(e) {
+    this.props.showModal({
+      show: true,
+      mode: 'clients',
+      sortBy: { code: 'name', type: 'asc' },
+      searchQuery: ''
+    })
+  }
+  closeModal() { 
+    this.props.showModal({
+      ...this.props.modal,
+      show: false
+    })
+  }
+  onSortModal(e) {
+    let sortBy = this.props.modal.sortBy
+    let code = e.currentTarget.getAttribute('data-sort')
+    let type = sortBy.type === 'desc' ? 'asc' : 'desc'
+    type = code !== sortBy.code ? 'asc' : type
+    this.props.sortModal({ code, type })
+  }
+  searchModal(e) {
+    this.props.searchModal(e.target.value)
+  }
+  clearSearchModal() {
+    this.props.searchModal('')
+  }
+  filterByClient(e) {
+    let id = e.currentTarget.getAttribute('data-id')
+    let client = _.find(this.props.clients, item => item._id === id)
+    let count = this.props.deals.filter(deal => deal.client._id === id).length
+    this.props.filterByClient({ ...client, count})
+    this.closeModal()
+  }
+  clearClient(e) {
+    let id = e.currentTarget.getAttribute('data-id')
+    this.props.clearClient(id)
+  }
   render() {
     let props = this.props
     let deals = []
@@ -48,6 +88,13 @@ class Deals extends Component {
       )
     } else {
       deals = props.deals
+    }
+    if (props.filterClients.length) {
+      let filteredDeals = []
+      props.filterClients.forEach(client => {
+        filteredDeals = filteredDeals.concat(_.filter(deals, deal => deal.client._id === client._id))
+      })
+      deals = filteredDeals
     }
     if (props.searchQuery) {
       deals = _.filter(
@@ -66,6 +113,9 @@ class Deals extends Component {
           states={ states } 
           clickState={ ::this.filterByState }
           activeState={ props.activeState }
+          clients={ props.filterClients }
+          openModal={ ::this.openModal }
+          clearClient={ ::this.clearClient }
           changeSearch={ ::this.filterBySearch }
           clearSearch={ ::this.clearSearch }
           query={ props.searchQuery }
@@ -75,6 +125,15 @@ class Deals extends Component {
           deals= { deals }
           onSort={ ::this.onSort }
           openDeal={ ::this.openDeal }
+        />
+        <DealModal 
+          clients={ props.clients }
+          modal={ props.modal }
+          onSort={ ::this.onSortModal }
+          onSearch={ ::this.searchModal }
+          onClearSearch={ ::this.clearSearchModal }
+          onSetClient={ ::this.filterByClient }
+          close={ ::this.closeModal }
         />
       </div>
     )
@@ -86,16 +145,24 @@ const mapStateToProps = state => (
     title: state.deals.title,
     deals: state.deals.items,
     searchQuery: state.deals.searchQuery,
+    filterClients: state.deals.filterClients,
     activeState: state.deals.activeState,
-    sortBy: state.deals.sortBy
+    sortBy: state.deals.sortBy,
+    modal: state.dealDetail.modal,
+    clients: state.clients.items
   }
 )
 
 const mapDispatchToProps = dispatch => (
   {
-    filterByState:    bindActionCreators(Actions.filterByState, dispatch),
-    filterBySearch:   bindActionCreators(Actions.filterBySearch, dispatch),
-    sortData:         bindActionCreators(Actions.sortData, dispatch)
+    filterByState:    bindActionCreators(dealsActions.filterByState, dispatch),
+    filterByClient:   bindActionCreators(dealsActions.filterByClient, dispatch),
+    clearClient:      bindActionCreators(dealsActions.clearClient, dispatch),
+    filterBySearch:   bindActionCreators(dealsActions.filterBySearch, dispatch),
+    sortData:         bindActionCreators(dealsActions.sortData, dispatch),
+    showModal:        bindActionCreators(dealDetailActions.showModal, dispatch),
+    sortModal:        bindActionCreators(dealDetailActions.sortModal, dispatch),
+    searchModal:      bindActionCreators(dealDetailActions.searchModal, dispatch),
   }
 )
 

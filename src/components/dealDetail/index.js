@@ -75,13 +75,9 @@ class Deal extends Component {
   clearSearchModal() {
     this.props.searchModal('')
   }
-  _findItem(collection, e) {
-    let id = e.currentTarget.getAttribute('data-id')
-    return _.find(collection, item => item._id === id)
-  }
   addItem(e) {
-    let stock = _.cloneDeep(this.props.stock.items)
-    let item = this._findItem(stock, e)
+    let id = e.currentTarget.getAttribute('data-id')
+    let item = _.find(_.cloneDeep(this.props.stock.items), item => item._id === id)
     let addedItem = _.find(this.props.items, i => i._id === item._id)
     if (addedItem) {
       let number = addedItem.number
@@ -92,6 +88,7 @@ class Deal extends Component {
       item.number = 1
       this.props.addItem(item)
     }
+    this.closeModal()
     this.props.setDealSum()
   }
   removeItem(e) {
@@ -100,8 +97,10 @@ class Deal extends Component {
     this.props.setDealSum()
   }
   setDealClient(e) {
-    let client = this._findItem(this.props.clients.items, e)
+    let id = e.currentTarget.getAttribute('data-id')
+    let client = _.find(this.props.clients.items, item => item._id === id)
     this.props.setDealClient(client)
+    this.closeModal()
     this.validator.validate({client: client})
   }
   setItemPrice(e) {

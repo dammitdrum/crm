@@ -21,7 +21,7 @@ class Controls extends Component {
 		let props = this.props
 		
 		return (
-			<div className="controls">
+			<div className='controls'>
 				<ul className='nav nav-pills stock_filters'>
 					{
 						props.states.map((state, i) =>
@@ -36,20 +36,41 @@ class Controls extends Component {
 				    )	
 					}
 				</ul>
-				<span className="search_wrap">
-				  <input type="text" 
-				    placeholder="Искать по номеру" 
-				    className="search_field"
+				<div className='clearfix'>
+          <span 
+            className='btn btn-default pull-left' 
+            onClick={ props.openModal }>
+            По контрагенту 
+            &nbsp;<span className='glyphicon glyphicon-filter'></span>
+          </span>
+          <div className='pull-left badges'>
+          	{
+          		props.clients.map((client, i) =>
+          			<button 
+          				className='btn btn-info' 
+          				key={ i }
+          				onClick={ props.clearClient }
+          				data-id={ client._id }>
+								  { client.name } <span className='badge'>{ client.count }</span>
+								</button>
+							)
+          	}
+          </div>
+        </div>
+				<span className='search_wrap'>
+				  <input type='text' 
+				    placeholder='Искать по номеру' 
+				    className='search_field'
 				    onChange={ props.changeSearch }
 				    value={ props.query }
 				  />
 				  {
 				  	props.query.length ?
-				  	<span className="clear_search" onClick={ props.clearSearch }>×</span> : ''
+				  	<span className='clear_search' onClick={ props.clearSearch }>×</span> : ''
 				  }
 			  </span>
 			  <Link to='/deals/create' className='btn btn-success add_butt pull-right'>
-			  	<span className="glyphicon glyphicon-plus"></span> Новая сделка
+			  	<span className='glyphicon glyphicon-plus'></span> Новая сделка
 			  </Link>
 			</div>
 		)

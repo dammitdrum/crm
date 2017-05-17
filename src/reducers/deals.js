@@ -5,6 +5,7 @@ const initialState = {
   title: 'Сделки',
   items: [],
   searchQuery: '',
+  filterClients: [],
   activeState: Enum.defaultStateDeals,
   sortBy: { code: 'date', type: 'desc' },
   loading: false,
@@ -60,6 +61,17 @@ const deals = (state = initialState, action) => {
 
     case 'FILTER_DEALS_BY_STATE':
       return { ...state, activeState: payload }
+
+    case 'FILTER_DEALS_BY_CLIENT':
+      state.filterClients.push(payload)
+      return { ...state, 
+        filterClients: state.filterClients.concat() 
+      }
+
+    case 'CLEAR_FILTER_BY_CLIENT':
+      return { ...state, 
+        filterClients: state.filterClients.filter(client => client._id !== payload)
+      }
 
     case 'FILTER_DEALS_BY_SEARCH':
       return { ...state, searchQuery: payload }

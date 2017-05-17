@@ -88,6 +88,20 @@ export function filterByState(state) {
 	}
 }
 
+export function filterByClient(client) {
+	return {
+		type: 'FILTER_DEALS_BY_CLIENT',
+		payload: client
+	}
+}
+
+export function clearClient(id) {
+	return {
+		type: 'CLEAR_FILTER_BY_CLIENT',
+		payload: id
+	}
+}
+
 export function filterBySearch(query) {
 	return {
 		type: 'FILTER_DEALS_BY_SEARCH',
