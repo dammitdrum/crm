@@ -92,6 +92,18 @@ h2 {
     line-height: 1.5;
 
 }
+.badges {
+    margin: 2px 0 0 10px;
+    .btn {
+        margin-right: 5px;
+        .badge {
+            font-weight: 100;
+        }
+        &:hover {
+            text-decoration: line-through;
+        }
+    }
+}
 .stock_table {
     td {
         &:first-child {

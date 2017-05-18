@@ -61,6 +61,7 @@ ReactDOM.render(
         <IndexRedirect to='stock'/>
       	<Route path="/stock" component={Stock}/>
       	<Route path="/deals" component={Deals}/>
+        <Route path="/deals/user/:login" component={Deals}/>
         <Route path="/deals/create" component={DealDetail}/>
         <Route path="/deals/edit/:id" component={DealDetail}/>
       	<Route path="/clients" component={Clients}/>

@@ -16,8 +16,9 @@ import { updateItem } from '../../actions/stockActions'
 
 class Deal extends Component {
 	componentWillMount() {
+    const dealNumber = this.props.routeParams.id
+    let dealData
     this.validator = new Validator(this.props.validate, validateConfig)
-    let dealNumber = this.props.routeParams.id, dealData
     if (dealNumber) {
       this.originalDeal = _.find(this.props.deals.items, deal => deal.number === +dealNumber)
       dealData = _.cloneDeep(this.originalDeal)

@@ -47,11 +47,11 @@ class Controls extends Component {
           	{
           		props.clients.map((client, i) =>
           			<button 
-          				className='btn btn-info' 
+          				className='btn btn-sm btn-warning' 
           				key={ i }
           				onClick={ props.clearClient }
           				data-id={ client._id }>
-								  { client.name } <span className='badge'>{ client.count }</span>
+								  { client.name } <span className='badge'>X</span>
 								</button>
 							)
           	}

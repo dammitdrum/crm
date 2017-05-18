@@ -12,7 +12,7 @@ import Enum from '../../utils/Enum'
 
 class Deals extends Component {
 	componentWillMount() {
-    
+
   }
   filterByState(e) {
     if (e.currentTarget.className === 'active') return
@@ -64,8 +64,7 @@ class Deals extends Component {
   filterByClient(e) {
     let id = e.currentTarget.getAttribute('data-id')
     let client = _.find(this.props.clients, item => item._id === id)
-    let count = this.props.deals.filter(deal => deal.client._id === id).length
-    this.props.filterByClient({ ...client, count})
+    this.props.filterByClient(client)
     this.closeModal()
   }
   clearClient(e) {
@@ -76,19 +75,19 @@ class Deals extends Component {
     let props = this.props
     let deals = []
     let states = []
-
-    deals = props.deals
-    states = [Enum.defaultStateDeals].concat(
-      _.uniqBy(props.deals, 'state').map((deal) => deal.state).sort()
-    )
-    if (props.activeState !== Enum.defaultStateDeals) {
-      deals = _.filter(
-        props.deals, 
-        deal => deal.state === props.activeState
-      )
+    const userFilter = this.props.routeParams.login
+    
+    if (userFilter) {
+      deals = _.filter(props.deals, deal => deal.manager.login === userFilter)
     } else {
       deals = props.deals
     }
+    states = [Enum.defaultStateDeals].concat(
+      _.uniqBy(deals, 'state').map((deal) => deal.state).sort()
+    )
+    if (props.activeState !== Enum.defaultStateDeals) {
+      deals = _.filter(deals, deal => deal.state === props.activeState)
+    } 
     if (props.filterClients.length) {
       let filteredDeals = []
       props.filterClients.forEach(client => {

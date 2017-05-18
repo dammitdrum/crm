@@ -29,7 +29,10 @@ class Header extends Component {
                 )  
               }
             </ul>
-            <ul className="nav navbar-nav navbar-right" > 
+            <ul className="nav navbar-nav navbar-right" >
+              <li className="divider">
+                <Link to={`/deals/user/${props.user.login}`} activeClassName='active'>Мои сделки</Link>
+              </li>
               <li>
                 <Link to='/user' activeClassName='active'>{ props.user.name }</Link>
               </li>
