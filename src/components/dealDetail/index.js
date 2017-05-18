@@ -31,7 +31,10 @@ class Deal extends Component {
       })
     }
     this.props.loadDeal(dealData ? dealData : null)
-    this.props.setDealManager(dealData ? dealData.manager : this.props.user)
+    this.props.setDealManager(dealData ? dealData.manager : {
+      login: this.props.user.login,
+      name: this.props.user.name
+    })
   }
   componentDidUpdate() {
     if (this.props.redirect) {
@@ -45,7 +48,10 @@ class Deal extends Component {
   setDealManager(e) {
     let login = e.currentTarget.getAttribute('data-id')
     let manager = _.find(this.props.user.users, (manager) => manager.login === login)
-    this.props.setDealManager(manager)
+    this.props.setDealManager({
+      login: manager.login,
+      name: manager.name
+    })
   }
   openModal(e) {
     let mode = e.currentTarget.getAttribute('data-modal')

@@ -32,7 +32,7 @@ const config = [
     side: 'right',
     title: 'Только цифры(целое число)',
     message: 'Необходимо ввести кол-во в наличии',
-    regExp: '^\\-\\d+$'
+    regExp: '^\\-?\\d+$'
   },
   {
     name: 'ordered',
