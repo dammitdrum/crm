@@ -85,7 +85,7 @@ app.post('/auth', function(req, res, next) {
     if (req.session.user) {
         return res.send({ status: 'OK', user:req.session.user });
     } else {
-        return res.send('noAuth');
+        return res.send({ auth: false });
     }
 })
 
@@ -112,7 +112,7 @@ app.post('/login', function(req, res, next) {
 app.post('/logout', function(req, res, next) {
     if (req.session.user) {
         delete req.session.user;
-        res.send('noAuth');
+        res.send({ auth: false });
     }
 });
 
@@ -132,6 +132,10 @@ app.get('/users/read', function (req, res) {
 });
 
 function readHandler(Model,req,res) {
+    if (!req.session.user) {
+        res.statusCode = 403;
+        return res.send({ error: 'Session is expired' });
+    }
     return Model.find(function (err,items) {
         if (!err) {
             return res.send(items);
@@ -155,7 +159,7 @@ app.post('/stock/create', function (req, res) {
         ordered: req.body.ordered
     });
 
-    createHandler(item,res,'item');
+    createHandler(item,res,req,'item');
 });
 app.post('/deals/create', function (req, res) {
     var deal = new DealModel({
@@ -167,7 +171,7 @@ app.post('/deals/create', function (req, res) {
         state: req.body.state
     });
 
-   createHandler(deal,res,'deal');
+   createHandler(deal,res,req,'deal');
 });
 app.post('/clients/create', function (req, res) {
     var client = new ClientModel({
@@ -177,7 +181,7 @@ app.post('/clients/create', function (req, res) {
         person: req.body.person
     });
 
-    createHandler(client,res,'client');
+    createHandler(client,res,req,'client');
 });
 app.post('/users/create', function (req, res) {
     var user = new UserModel({
@@ -187,10 +191,14 @@ app.post('/users/create', function (req, res) {
         access: req.body.access
     });
 
-    createHandler(user,res,'user');
+    createHandler(user,res,req,'user');
 });
 
-function createHandler(item,res,str) {
+function createHandler(item, res, req, str) {
+    if (!req.session.user) {
+        res.statusCode = 403;
+        return res.send({ error: 'Session is expired' });
+    }
     item.save(function (err) {
         if (!err) {
             console.log(str+" created");
@@ -217,7 +225,11 @@ app.put('/users/update/:id', function (req, res){
     updateHandler(UserModel,req,res,'user');
 });
 
-function updateHandler(Model,req,res,str) {
+function updateHandler(Model, req, res, str) {
+    if (!req.session.user) {
+        res.statusCode = 403;
+        return res.send({ error: 'Session is expired' });
+    }
     return Model.findById(req.params.id, function (err, item) {
         if(!item) {
             res.statusCode = 404;
@@ -253,7 +265,11 @@ app.delete('/users/delete/:id', function (req, res){
     deleteHandler(UserModel,req,res,'user');
 });
 
-function deleteHandler(Model,req,res,str) {
+function deleteHandler(Model, req, res, str) {
+    if (!req.session.user) {
+        res.statusCode = 403;
+        return res.send({ error: 'Session is expired' });
+    }
     return Model.findById(req.params.id, function (err, item) {
         if(!item) {
             res.statusCode = 404;

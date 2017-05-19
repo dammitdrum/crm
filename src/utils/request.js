@@ -4,7 +4,9 @@ export default function request(EP, method, body) {
 	if (!method) method = 'GET'
 	switch (method) {
 		case 'GET':
-			return fetch(EP).then(function(res) {
+			return fetch(EP, {
+				credentials: 'same-origin'
+			}).then(function(res) {
 		    return res.json()
 		  })
 

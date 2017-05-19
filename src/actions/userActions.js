@@ -59,7 +59,6 @@ export function deleteUser(id) {
         payload: id
       })
 	  }).catch(function(err) {
-	  	console.log(err)
 	    dispatch({
         type: 'DELETE_USER_FAIL',
         payload: err
