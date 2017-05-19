@@ -15,10 +15,10 @@ export function getMenuData() {
 	        type: 'GET_MENU_SUCCESS',
 	        payload: res
 	      })
-		  }).catch(function(ex) {
+		  }).catch(function(err) {
 		    dispatch({
 	        type: 'GET_MENU_FAIL',
-	        payload: ex
+	        payload: err
 	      })
 		  })
 	}

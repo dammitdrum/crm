@@ -1,94 +1,70 @@
-import 'whatwg-fetch'
+import request from '../utils/request'
 
 export function logout() {
 	return dispatch => {
-
-		fetch('/logout',{
-			method: 'POST',
-			credentials: 'same-origin'
-		}).then(function(res) {
-		    dispatch({
-	        type: 'LOGOUT_SUCCESS'
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'LOGOUT_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/logout', 'POST')
+		.then(function(res) {
+	    dispatch({
+        type: 'LOGOUT_SUCCESS'
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'LOGOUT_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 
 export function createUser(item) {
 	return dispatch => {
-		fetch('/users/create', {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-		    'Content-Type': 'application/json'
-		  },
-			body: JSON.stringify(item)
-		}).then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'CREATE_USER_SUCCESS',
-	        payload: res.item
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'CREATE_USER_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/users/create', 'POST', item)
+		.then(function(res) {
+	    dispatch({
+        type: 'CREATE_USER_SUCCESS',
+        payload: res.item
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'CREATE_USER_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 
 export function updateUser(item) {
 	return dispatch => {
-		fetch('/users/update/' + item._id, {
-			method: 'PUT',
-			headers: {
-				'Accept': 'application/json',
-		    'Content-Type': 'application/json'
-		  },
-			body: JSON.stringify(item)
-		}).then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'UPDATE_USER_SUCCESS',
-	        payload: res.item
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'UPDATE_USER_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/users/update/' + item._id, 'PUT', item)
+		.then(function(res) {
+	    dispatch({
+        type: 'UPDATE_USER_SUCCESS',
+        payload: res.item
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'UPDATE_USER_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 
 export function deleteUser(id) {
 	return dispatch => {
-
-		fetch('/users/delete/'+id, {
-			method: 'DELETE'
-		}).then(function() {
-		    dispatch({
-	        type: 'DELETE_USER_SUCCESS',
-	        payload: id
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'DELETE_USER_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/users/delete/' + id, 'DELETE')
+		.then(function() {
+	    dispatch({
+        type: 'DELETE_USER_SUCCESS',
+        payload: id
+      })
+	  }).catch(function(err) {
+	  	console.log(err)
+	    dispatch({
+        type: 'DELETE_USER_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 

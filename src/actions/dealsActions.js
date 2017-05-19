@@ -1,83 +1,63 @@
-import 'whatwg-fetch'
+import request from '../utils/request'
 
 export function createDeal(deal) {
 	return dispatch => {
-		fetch('/deals/create', {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-		    'Content-Type': 'application/json'
-		  },
-			body: JSON.stringify(deal)
-		}).then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'CREATE_DEAL_SUCCESS',
-	        payload: res.item
-	      })
-	      dispatch({
-	        type: 'RESET_REDIRECT'
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'CREATE_DEAL_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/deals/create', 'POST', deal)
+		.then(function(res) {
+	    dispatch({
+        type: 'CREATE_DEAL_SUCCESS',
+        payload: res.item
+      })
+      dispatch({
+        type: 'RESET_REDIRECT'
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'CREATE_DEAL_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 
 export function saveDeal(deal) {
 	return dispatch => {
-		fetch('/deals/update/' + deal._id, {
-			method: 'PUT',
-			headers: {
-				'Accept': 'application/json',
-		    'Content-Type': 'application/json'
-		  },
-			body: JSON.stringify(deal)
-		}).then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'UPDATE_DEAL_SUCCESS',
-	        payload: res.item
-	      })
-	      dispatch({
-	        type: 'RESET_REDIRECT'
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'UPDATE_DEAL_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/deals/update' + deal._id, 'PUT', deal._id)
+		.then(function(res) {
+	    dispatch({
+        type: 'UPDATE_DEAL_SUCCESS',
+        payload: res.item
+      })
+      dispatch({
+        type: 'RESET_REDIRECT'
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'UPDATE_DEAL_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 
 export function deleteDeal(id) {
 	return dispatch => {
-
-		fetch('/deals/delete/'+id, {
-			method: 'DELETE'
-		}).then(function() {
-		    dispatch({
-	        type: 'DELETE_DEAL_SUCCESS',
-	        payload: id
-	      })
-	      dispatch({
-	        type: 'RESET_REDIRECT'
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'DELETE_DEAL_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/deals/delete' + id, 'DELETE')
+		.then(function() {
+	    dispatch({
+        type: 'DELETE_DEAL_SUCCESS',
+        payload: id
+      })
+      dispatch({
+        type: 'RESET_REDIRECT'
+      })
+	  }).catch(function(err) {
+	  	console.log(err)
+	    dispatch({
+        type: 'DELETE_DEAL_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 

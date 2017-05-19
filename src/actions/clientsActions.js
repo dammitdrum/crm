@@ -1,74 +1,53 @@
-import 'whatwg-fetch'
+import request from '../utils/request'
 
 export function createItem(item) {
 	return dispatch => {
-		fetch('/clients/create', {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-		    'Content-Type': 'application/json'
-		  },
-			body: JSON.stringify(item)
-		}).then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'CREATE_CLIENT_SUCCESS',
-	        payload: res.item
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'CREATE_CLIENT_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/clients/create', 'POST', item)
+		.then(function(res) {
+	    dispatch({
+        type: 'CREATE_CLIENT_SUCCESS',
+        payload: res.item
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'CREATE_CLIENT_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 
 export function updateItem(item) {
 	return dispatch => {
-		fetch('/clients/update/' + item._id, {
-			method: 'PUT',
-			headers: {
-				'Accept': 'application/json',
-		    'Content-Type': 'application/json'
-		  },
-			body: JSON.stringify(item)
-		}).then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'UPDATE_CLIENT_SUCCESS',
-	        payload: res.item
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'UPDATE_CLIENT_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/clients/update' + deal._id, 'PUT', item._id)
+		.then(function(res) {
+	    dispatch({
+        type: 'UPDATE_CLIENT_SUCCESS',
+        payload: res.item
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'UPDATE_CLIENT_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 
 export function deleteItem(id) {
 	return dispatch => {
-
-		fetch('/clients/delete/'+id, {
-			method: 'DELETE'
-		}).then(function() {
-		    dispatch({
-	        type: 'DELETE_CLIENT_SUCCESS',
-	        payload: id
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'DELETE_CLIENT_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/clients/delete' + id, 'DELETE')
+		.then(function() {
+	    dispatch({
+        type: 'DELETE_CLIENT_SUCCESS',
+        payload: id
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'DELETE_CLIENT_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 

@@ -1,60 +1,42 @@
-import 'whatwg-fetch'
+import request from '../utils/request'
 
 export function createItem(item) {
 	return dispatch => {
-		fetch('/stock/create', {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-		    'Content-Type': 'application/json'
-		  },
-			body: JSON.stringify(item)
-		}).then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'CREATE_ITEM_SUCCESS',
-	        payload: res.item
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'CREATE_ITEM_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/stock/create', 'POST', item)
+		.then(function(res) {
+	    dispatch({
+        type: 'CREATE_ITEM_SUCCESS',
+        payload: res.item
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'CREATE_ITEM_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 
 export function updateItem(item) {
 	return dispatch => {
-		fetch('/stock/update/' + item._id, {
-			method: 'PUT',
-			headers: {
-				'Accept': 'application/json',
-		    'Content-Type': 'application/json'
-		  },
-			body: JSON.stringify(item)
-		}).then(function(res) {
-		    return res.json()
-		  }).then(function(res) {
-		    dispatch({
-	        type: 'UPDATE_ITEM_SUCCESS',
-	        payload: res.item
+		request('/stock/update/' + item._id, 'PUT', item)
+		.then(function(res) {
+	    dispatch({
+        type: 'UPDATE_ITEM_SUCCESS',
+        payload: res.item
+      })
+      setTimeout(() => {
+      	dispatch({
+	        type: 'STOP_FLASH_UPDATE_ITEM',
+	        payload: item._id
 	      })
-	      setTimeout(() => {
-	      	dispatch({
-		        type: 'STOP_FLASH_UPDATE_ITEM',
-		        payload: item._id
-		      })
-	      }, 2000)
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'UPDATE_ITEM_FAIL',
-	        payload: err
-	      })
-		  })
+      }, 2000)
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'UPDATE_ITEM_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
 
@@ -64,24 +46,20 @@ export function deleteItem(id) {
       type: 'DELETE_ITEM_REQUEST',
       payload: id
     })
-
-		fetch('/stock/delete/'+id, {
-			method: 'DELETE'
-		}).then(function() {
-		    dispatch({
-	        type: 'DELETE_ITEM_SUCCESS',
-	        payload: id
-	      })
-		  }).catch(function(err) {
-		  	console.log(err)
-		    dispatch({
-	        type: 'DELETE_ITEM_FAIL',
-	        payload: err
-	      })
-		  })
+		request('/stock/delete/' + id, 'DELETE')
+		.then(function() {
+	    dispatch({
+        type: 'DELETE_ITEM_SUCCESS',
+        payload: id
+      })
+	  }).catch(function(err) {
+	    dispatch({
+        type: 'DELETE_ITEM_FAIL',
+        payload: err
+      })
+	  })
 	}
 }
-
 
 export function filterByCategory(category) {
 	return {
