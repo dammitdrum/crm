@@ -11,9 +11,6 @@ import * as dealDetailActions from '../../actions/dealDetailActions'
 import Enum from '../../utils/Enum'
 
 class Deals extends Component {
-	componentWillMount() {
-
-  }
   filterByState(e) {
     if (e.currentTarget.className === 'active') return
     this.props.filterByState(e.currentTarget.getAttribute('data-state'))
@@ -64,6 +61,7 @@ class Deals extends Component {
   filterByClient(e) {
     let id = e.currentTarget.getAttribute('data-id')
     let client = _.find(this.props.clients, item => item._id === id)
+    if (_.find(this.props.filterClients, client => client._id === id)) return
     this.props.filterByClient(client)
     this.closeModal()
   }

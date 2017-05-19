@@ -7,12 +7,12 @@ const initialState = {
   toLogin: false
 }
 
-const app = (state = initialState, action) => {
+const app = (state = _.cloneDeep(initialState), action) => {
   let payload = action.payload
 
   switch (action.type) {
     case 'RESET_DATA':
-      return _.cloneDeep(Object.assign({}, state, initialState))
+      return Object.assign({}, state, initialState)
 
     case 'LOGIN_SUCCESS':
       return { ...state,

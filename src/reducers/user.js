@@ -20,7 +20,7 @@ const initialState = {
   users: []
 }
 
-const user = (state = initialState, action) => {
+const user = (state = _.cloneDeep(initialState), action) => {
   let payload = action.payload
   
   switch (action.type) {
@@ -44,7 +44,7 @@ const user = (state = initialState, action) => {
       }
 
     case 'LOGOUT_SUCCESS':
-      return _.cloneDeep(Object.assign({}, state, initialState))
+      return Object.assign({}, state, initialState)
 
     case 'CREATE_USER_SUCCESS':
       state.users.push(payload)

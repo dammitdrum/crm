@@ -23,12 +23,12 @@ const initialState = {
   }
 }
 
-const stock = (state = initialState, action) => {
+const stock = (state = _.cloneDeep(initialState), action) => {
 	let payload = action.payload
 
 	switch (action.type) {
 		case 'RESET_DATA':
-      return Object.assign({}, state, _.cloneDeep(initialState))
+      return Object.assign({}, state, initialState)
 
 		case 'GET_STOCK_SUCCESS':
 			return { ...state,
