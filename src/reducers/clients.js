@@ -42,7 +42,7 @@ const clients = (state = _.cloneDeep(initialState), action) => {
       }
 
     case 'CREATE_CLIENT_FAIL':
-      return { ...state}
+      return { ...state, error: payload }
 
     case 'UPDATE_CLIENT_SUCCESS':
       let updated = state.items.filter(item => item._id !== payload._id)
@@ -55,7 +55,7 @@ const clients = (state = _.cloneDeep(initialState), action) => {
       }
 
     case 'UPDATE_CLIENT_FAIL':
-      return { ...state}
+      return { ...state, error: payload }
 
     case 'DELETE_CLIENT_SUCCESS':
       return { ...state, 
@@ -63,7 +63,7 @@ const clients = (state = _.cloneDeep(initialState), action) => {
       }
 
     case 'DELETE_CLIENT_FAIL':
-      return { ...state}
+      return { ...state, error: payload }
 
     case 'FILTER_CLIENTS_BY_SEARCH':
       return { ...state, searchQuery: payload }

@@ -39,7 +39,7 @@ const deals = (state = _.cloneDeep(initialState), action) => {
       }
 
     case 'CREATE_DEAL_FAIL':
-      return { ...state }
+      return { ...state, error: payload }
 
     case 'UPDATE_DEAL_SUCCESS':
       let updated = state.items.filter(item => item._id !== payload._id)
@@ -49,7 +49,7 @@ const deals = (state = _.cloneDeep(initialState), action) => {
       }
 
     case 'UPDATE_DEAL_FAIL':
-      return { ...state }
+      return { ...state, error: payload }
 
     case 'DELETE_DEAL_SUCCESS':
       return { ...state, 
@@ -57,7 +57,7 @@ const deals = (state = _.cloneDeep(initialState), action) => {
       }
 
     case 'DELETE_DEAL_FAIL':
-      return { ...state}
+      return { ...state, error: payload }
 
     case 'FILTER_DEALS_BY_STATE':
       return { ...state, activeState: payload }

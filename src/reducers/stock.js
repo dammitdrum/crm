@@ -36,7 +36,7 @@ const stock = (state = _.cloneDeep(initialState), action) => {
 			}
 
 		case 'GET_STOCK_FAIL':
-			return { ...state, error: true }
+			return { ...state}
 
 		case 'CREATE_ITEM_SUCCESS':
 			state.items.push(payload)
@@ -48,7 +48,7 @@ const stock = (state = _.cloneDeep(initialState), action) => {
 			}
 
 		case 'CREATE_ITEM_FAIL':
-			return { ...state}
+			return { ...state, error: payload }
 
 		case 'UPDATE_ITEM_SUCCESS':
 			let updated = state.items.filter(item => item._id !== payload._id)
@@ -61,7 +61,7 @@ const stock = (state = _.cloneDeep(initialState), action) => {
 			}
 
 		case 'UPDATE_ITEM_FAIL':
-			return { ...state}
+			return { ...state, error: payload }
 
 		case 'STOP_FLASH_UPDATE_ITEM':
 			state.items.forEach(item => {
@@ -89,7 +89,7 @@ const stock = (state = _.cloneDeep(initialState), action) => {
 			}
 
 		case 'DELETE_ITEM_FAIL':
-			return { ...state}
+			return { ...state, error: payload }
 
 		case 'FILTER_STOCK_BY_CATEGORY':
 			return { ...state, activeCategory: payload }

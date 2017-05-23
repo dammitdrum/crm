@@ -56,7 +56,7 @@ const user = (state = _.cloneDeep(initialState), action) => {
       }
 
     case 'CREATE_USER_FAIL':
-      return { ...state}
+      return { ...state, error: payload }
 
     case 'UPDATE_USER_SUCCESS':
       let updated = state.users.filter(user => user._id !== payload._id)
@@ -69,7 +69,7 @@ const user = (state = _.cloneDeep(initialState), action) => {
       }
 
     case 'UPDATE_USER_FAIL':
-      return { ...state}
+      return { ...state, error: payload }
 
     case 'DELETE_USER_SUCCESS':
       return { ...state, 
@@ -77,7 +77,7 @@ const user = (state = _.cloneDeep(initialState), action) => {
       }
 
     case 'DELETE_USER_FAIL':
-      return { ...state}
+      return { ...state, error: payload }
 
     case 'SHOW_USER_MODAL':
       return { ...state,
