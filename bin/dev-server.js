@@ -4,10 +4,13 @@ const app = require('../server/main')
 const debug = require('debug')('app:bin:dev-server')
 const bodyParser= require('body-parser')
 
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 const mongoose = require('mongoose')
 const crypto = require('crypto')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
+
 
 const MONGO_URL = 'mongodb://dbuser:password@ds035766.mlab.com:35766/crmdb'
 
@@ -21,6 +24,25 @@ app.use(session({
     })
 }))
 
+const connections = [];
+
+io.on('connection', function(socket){
+  connections.push(socket);
+  console.log('a user connected');
+  socket.on('create stock item', function(item){
+    console.log('create stock item: ' + item.name);
+    connections.forEach(function(connectedSocket) {
+      if (connectedSocket !== socket) {
+        connectedSocket.emit('create stock item', item);
+      }
+    })
+    
+  });
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URL);
 var db = mongoose.connection;
@@ -29,7 +51,7 @@ db.on('error', function (err) {
 })
 db.once('open', function callback () {
     console.log("Connected to DB!")
-    app.listen(project.server_port)
+    http.listen(project.server_port)
 	debug(`Server is now running at http://localhost:${project.server_port}.`)
 })
 

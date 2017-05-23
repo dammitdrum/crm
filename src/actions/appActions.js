@@ -1,4 +1,5 @@
 import request from '../utils/request'
+import socket from '../utils/socket'
 
 export function onLogin(data) {
 	return dispatch => {
@@ -81,5 +82,11 @@ export function loadData() {
         payload: err
       })
 	  })
+	  socket.on('create stock item', item => {
+			dispatch({
+		    type: 'CREATE_ITEM_SUCCESS',
+		    payload: item
+		  })
+		})
 	}
 }

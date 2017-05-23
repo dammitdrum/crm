@@ -1,9 +1,11 @@
 import request from '../utils/request'
+import socket from '../utils/socket'
 
 export function createItem(item) {
 	return dispatch => {
 		request('/stock/create', 'POST', item)
 		.then(function(res) {
+			socket.emit('create stock item', res.item)
 	    dispatch({
         type: 'CREATE_ITEM_SUCCESS',
         payload: res.item
