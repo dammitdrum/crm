@@ -1,5 +1,4 @@
 import request from '../utils/request'
-import socket from '../utils/socket'
 
 export function onLogin(data) {
 	return dispatch => {
@@ -71,7 +70,13 @@ export function loadData() {
 			        payload: res
 			      })
 			      dispatch({
-			        type: 'GET_APP_DATA_SUCCESS'
+			        type: 'GET_APP_DATA_SUCCESS',
+			        meta: {
+						    socketInit: {
+						      action: 'CREATE_ITEM_SUCCESS',
+						      channel: 'create stock item'
+						    }
+						  }
 			      })
 			    })
 				})
@@ -82,11 +87,5 @@ export function loadData() {
         payload: err
       })
 	  })
-	  socket.on('create stock item', item => {
-			dispatch({
-		    type: 'CREATE_ITEM_SUCCESS',
-		    payload: item
-		  })
-		})
 	}
 }

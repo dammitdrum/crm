@@ -4,6 +4,8 @@ import { Provider } from 'react-redux'
 import { applyMiddleware, compose, createStore } from 'redux'
 import rootReducer from './reducers'
 import thunk from 'redux-thunk'
+import socketMiddleware from './utils/socketMiddleware'
+import io from 'socket.io-client'
 import { Router, Route, hashHistory, IndexRedirect } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import _ from 'lodash'
@@ -23,7 +25,7 @@ const initialState = {
 
 }
 
-const middleware = [thunk]
+const middleware = [thunk, socketMiddleware(io.connect())]
 
 const enhancers = []
 
