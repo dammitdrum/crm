@@ -29,7 +29,10 @@ export function auth(data) {
 		.then(function(res) {
   		dispatch({
         type: 'AUTH_SUCCESS',
-        payload: res.user
+        payload: res.user,
+        meta: {
+			    socketInit: true
+			  }
       })
 	  }).catch(function(err) {
 	    dispatch({
@@ -70,13 +73,7 @@ export function loadData() {
 			        payload: res
 			      })
 			      dispatch({
-			        type: 'GET_APP_DATA_SUCCESS',
-			        meta: {
-						    socketInit: {
-						      action: 'CREATE_ITEM_SUCCESS',
-						      channel: 'create stock item'
-						    }
-						  }
+			        type: 'GET_APP_DATA_SUCCESS'
 			      })
 			    })
 				})
@@ -87,5 +84,11 @@ export function loadData() {
         payload: err
       })
 	  })
+	}
+}
+
+export function hideMess() {
+	return {
+		type: 'HIDE_APP_MESS'
 	}
 }

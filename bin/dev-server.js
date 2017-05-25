@@ -29,11 +29,10 @@ const connections = [];
 io.on('connection', function(socket){
   connections.push(socket);
   console.log('a user connected');
-  socket.on('create stock item', function(item){
-    console.log('create stock item: ' + item.name);
+  socket.on('change:data', function(data){
     connections.forEach(function(connectedSocket) {
       if (connectedSocket !== socket) {
-        connectedSocket.emit('create stock item', item);
+        connectedSocket.emit('change:data', data);
       }
     })
     

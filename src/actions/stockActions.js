@@ -9,8 +9,7 @@ export function createItem(item) {
         payload: res.item,
         meta: {
 			    socket: {
-			      channel: 'create stock item',
-			      data: res.item
+			      channel: 'change:data'
 			    }
 			  }
       })
@@ -29,12 +28,22 @@ export function updateItem(item) {
 		.then(function(res) {
 	    dispatch({
         type: 'UPDATE_ITEM_SUCCESS',
-        payload: res.item
+        payload: res.item,
+        meta: {
+			    socket: {
+			      channel: 'change:data'
+			    }
+			  }
       })
       setTimeout(() => {
       	dispatch({
 	        type: 'STOP_FLASH_UPDATE_ITEM',
-	        payload: item._id
+	        payload: item._id,
+	        meta: {
+				    socket: {
+				      channel: 'change:data'
+				    }
+				  }
 	      })
       }, 2000)
 	  }).catch(function(err) {
@@ -56,7 +65,12 @@ export function deleteItem(id) {
 		.then(function() {
 	    dispatch({
         type: 'DELETE_ITEM_SUCCESS',
-        payload: id
+        payload: id,
+        meta: {
+			    socket: {
+			      channel: 'change:data'
+			    }
+			  }
       })
 	  }).catch(function(err) {
 	    dispatch({

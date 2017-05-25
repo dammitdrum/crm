@@ -6,7 +6,12 @@ export function createDeal(deal) {
 		.then(function(res) {
 	    dispatch({
         type: 'CREATE_DEAL_SUCCESS',
-        payload: res.item
+        payload: res.item,
+        meta: {
+			    socket: {
+			      channel: 'change:data'
+			    }
+			  }
       })
       dispatch({
         type: 'RESET_REDIRECT'
@@ -22,11 +27,16 @@ export function createDeal(deal) {
 
 export function saveDeal(deal) {
 	return dispatch => {
-		request('/deals/update' + deal._id, 'PUT', deal._id)
+		request('/deals/update/' + deal._id, 'PUT', deal._id)
 		.then(function(res) {
 	    dispatch({
         type: 'UPDATE_DEAL_SUCCESS',
-        payload: res.item
+        payload: res.item,
+        meta: {
+			    socket: {
+			      channel: 'change:data'
+			    }
+			  }
       })
       dispatch({
         type: 'RESET_REDIRECT'
@@ -42,11 +52,16 @@ export function saveDeal(deal) {
 
 export function deleteDeal(id) {
 	return dispatch => {
-		request('/deals/delete' + id, 'DELETE')
+		request('/deals/delete/' + id, 'DELETE')
 		.then(function() {
 	    dispatch({
         type: 'DELETE_DEAL_SUCCESS',
-        payload: id
+        payload: id,
+        meta: {
+			    socket: {
+			      channel: 'change:data'
+			    }
+			  }
       })
       dispatch({
         type: 'RESET_REDIRECT'

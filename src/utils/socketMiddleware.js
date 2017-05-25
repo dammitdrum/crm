@@ -1,21 +1,25 @@
 const socketIO = socket => ({ dispatch }) => next => action => {
-  if (action.meta && action.meta.socketInit) {
-    socket.on(action.meta.socketInit.channel, (data) => {
+  const meta = action.meta
+  if (meta && meta.socketInit) {
+    socket.on('change:data', (data) => {
       dispatch({
-        type: action.meta.socketInit.action,
+        type: data.type,
         payload: data.payload
+      })
+      dispatch({
+        type: 'EXTERNAL_CHANGED_APP_DATA'
       })
     })
   }
-  if (action.meta && action.meta.socket && action.meta.socket.channel) {
+  if (meta && meta.socket && meta.socket.channel) {
     let io = socket
-    if (action.meta.socket.namespace) {
-      io = io.of(action.meta.socket.namespace)
+    if (meta.socket.namespace) {
+      io = io.of(meta.socket.namespace)
     }
-    if (action.meta.socket.room) {
-      io = io.to(action.meta.socket.room)
+    if (meta.socket.room) {
+      io = io.to(meta.socket.room)
     }
-    io.emit(action.meta.socket.channel, action)
+    io.emit(meta.socket.channel, action)
   }
 
   return next(action)

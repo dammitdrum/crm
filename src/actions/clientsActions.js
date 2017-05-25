@@ -6,7 +6,12 @@ export function createItem(item) {
 		.then(function(res) {
 	    dispatch({
         type: 'CREATE_CLIENT_SUCCESS',
-        payload: res.item
+        payload: res.item,
+        meta: {
+			    socket: {
+			      channel: 'change:data'
+			    }
+			  }
       })
 	  }).catch(function(err) {
 	    dispatch({
@@ -19,11 +24,16 @@ export function createItem(item) {
 
 export function updateItem(item) {
 	return dispatch => {
-		request('/clients/update' + deal._id, 'PUT', item._id)
+		request('/clients/update/' + deal._id, 'PUT', item._id)
 		.then(function(res) {
 	    dispatch({
         type: 'UPDATE_CLIENT_SUCCESS',
-        payload: res.item
+        payload: res.item,
+        meta: {
+			    socket: {
+			      channel: 'change:data'
+			    }
+			  }
       })
 	  }).catch(function(err) {
 	    dispatch({
@@ -36,11 +46,16 @@ export function updateItem(item) {
 
 export function deleteItem(id) {
 	return dispatch => {
-		request('/clients/delete' + id, 'DELETE')
+		request('/clients/delete/' + id, 'DELETE')
 		.then(function() {
 	    dispatch({
         type: 'DELETE_CLIENT_SUCCESS',
-        payload: id
+        payload: id,
+        meta: {
+			    socket: {
+			      channel: 'change:data'
+			    }
+			  }
       })
 	  }).catch(function(err) {
 	    dispatch({

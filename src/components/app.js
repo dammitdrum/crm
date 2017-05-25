@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { hashHistory } from 'react-router'
+import { Alert, Fade } from 'react-bootstrap'
 
 import Header from './header'
-import * as Actions from '../actions/appActions'
+import * as appActions from '../actions/appActions'
 
 class App extends Component {
   componentWillMount() {
@@ -19,6 +20,9 @@ class App extends Component {
     if (this.props.toLogin) {
       hashHistory.push('/login')
     }
+  }
+  alertDismiss() {
+    this.props.hideMess()
   }
   render() {
     let props = this.props, content
@@ -36,6 +40,12 @@ class App extends Component {
     return (
       <div>
         <Header/>
+        <Fade className='container' in={ props.showMess } unmountOnExit={ true }>
+          <Alert bsStyle='info' onDismiss={ ::this.alertDismiss }>
+            <h4>Кто-то что-то изменил!</h4>
+            <p>Будь внимателен юнный джедай!</p>
+          </Alert>
+        </Fade>
         { content }
       </div>
     )
@@ -48,14 +58,16 @@ const mapStateToProps = state => (
     toLogin: state.app.toLogin,
     loaded: state.app.loaded,
     loading: state.app.loading,
-    error: state.app.error
+    error: state.app.error,
+    showMess: state.app.showMess
   }
 )
 
 const mapDispatchToProps = dispatch => (
   {
-    loadData: bindActionCreators(Actions.loadData, dispatch),
-    checkAuth: bindActionCreators(Actions.auth, dispatch)
+    loadData:  bindActionCreators(appActions.loadData, dispatch),
+    checkAuth: bindActionCreators(appActions.auth, dispatch),
+    hideMess:  bindActionCreators(appActions.hideMess, dispatch)
   }
 )
 

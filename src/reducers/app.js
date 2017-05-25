@@ -4,7 +4,8 @@ const initialState = {
   isAuth: false,
   loading: false,
   loaded: false,
-  toLogin: false
+  toLogin: false,
+  showMess: false
 }
 
 const app = (state = _.cloneDeep(initialState), action) => {
@@ -59,6 +60,16 @@ const app = (state = _.cloneDeep(initialState), action) => {
       return { ...state,
         isAuth: false,
         toLogin: true
+      }
+
+    case 'EXTERNAL_CHANGED_APP_DATA':
+      return { ...state,
+        showMess: true
+      }
+
+    case 'HIDE_APP_MESS':
+      return { ...state,
+        showMess: false
       }
 
     default:
