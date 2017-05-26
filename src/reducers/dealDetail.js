@@ -25,7 +25,7 @@ const dealDetail = (state = _.cloneDeep(initialState), action) => {
 
   switch (action.type) {
     case 'LOAD_DEAL_DETAIL':
-      return Object.assign({}, state, payload ? payload : initialState)
+      return Object.assign({}, state, payload ? payload : _.cloneDeep(initialState))
 
     case 'SET_DEAL_STATE':
       return { ...state, 

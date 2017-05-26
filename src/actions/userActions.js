@@ -16,9 +16,9 @@ export function logout() {
 	}
 }
 
-export function createUser(item) {
+export function createUser(user) {
 	return dispatch => {
-		request('/users/create', 'POST', item)
+		request('/users/create', 'POST', user)
 		.then(function(res) {
 	    dispatch({
         type: 'CREATE_USER_SUCCESS',
@@ -33,9 +33,9 @@ export function createUser(item) {
 	}
 }
 
-export function updateUser(item) {
+export function updateUser(user) {
 	return dispatch => {
-		request('/users/update/' + item._id, 'PUT', item)
+		request('/users/update/' + user._id, 'PUT', user)
 		.then(function(res) {
 	    dispatch({
         type: 'UPDATE_USER_SUCCESS',

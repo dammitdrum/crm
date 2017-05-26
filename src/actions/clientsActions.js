@@ -22,9 +22,9 @@ export function createItem(item) {
 	}
 }
 
-export function updateItem(item) {
+export function updateItem(client) {
 	return dispatch => {
-		request('/clients/update/' + deal._id, 'PUT', item._id)
+		request('/clients/update/' + client._id, 'PUT', client)
 		.then(function(res) {
 	    dispatch({
         type: 'UPDATE_CLIENT_SUCCESS',
