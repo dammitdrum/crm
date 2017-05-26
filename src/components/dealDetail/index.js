@@ -10,7 +10,7 @@ import accessConfig from '../../config/access/dealDetail'
 import Controls from './controls'
 import Table from './table'
 import DealModal from './modal'
-import * as Actions from '../../actions/dealDetailActions'
+import * as dealDetailActions from '../../actions/dealDetailActions'
 import { createDeal, saveDeal, deleteDeal } from '../../actions/dealsActions'
 import { updateItem } from '../../actions/stockActions'
 
@@ -274,20 +274,20 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = dispatch => (
   {
-    loadDeal:         bindActionCreators(Actions.loadDeal, dispatch),
-    setDealState:     bindActionCreators(Actions.setDealState, dispatch),
-    setDealManager:   bindActionCreators(Actions.setDealManager, dispatch),
-    showModal:        bindActionCreators(Actions.showModal, dispatch),
-    sortModal:        bindActionCreators(Actions.sortModal, dispatch),
-    searchModal:      bindActionCreators(Actions.searchModal, dispatch),
-    addItem:          bindActionCreators(Actions.addItem, dispatch),
-    removeItem:       bindActionCreators(Actions.removeItem, dispatch),
-    setDealClient:    bindActionCreators(Actions.setDealClient, dispatch),
-    setItemPrice:     bindActionCreators(Actions.setItemPrice, dispatch),
-    setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
-    setDealNumber:    bindActionCreators(Actions.setDealNumber, dispatch),
-    setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
-    validate:         bindActionCreators(Actions.validate, dispatch),
+    loadDeal:         bindActionCreators(dealDetailActions.loadDeal, dispatch),
+    setDealState:     bindActionCreators(dealDetailActions.setDealState, dispatch),
+    setDealManager:   bindActionCreators(dealDetailActions.setDealManager, dispatch),
+    showModal:        bindActionCreators(dealDetailActions.showModal, dispatch),
+    sortModal:        bindActionCreators(dealDetailActions.sortModal, dispatch),
+    searchModal:      bindActionCreators(dealDetailActions.searchModal, dispatch),
+    addItem:          bindActionCreators(dealDetailActions.addItem, dispatch),
+    removeItem:       bindActionCreators(dealDetailActions.removeItem, dispatch),
+    setDealClient:    bindActionCreators(dealDetailActions.setDealClient, dispatch),
+    setItemPrice:     bindActionCreators(dealDetailActions.setItemPrice, dispatch),
+    setItemNumber:    bindActionCreators(dealDetailActions.setItemNumber, dispatch),
+    setDealNumber:    bindActionCreators(dealDetailActions.setDealNumber, dispatch),
+    setDealSum:       bindActionCreators(dealDetailActions.setDealSum, dispatch),
+    validate:         bindActionCreators(dealDetailActions.validate, dispatch),
     createDeal:       bindActionCreators(createDeal, dispatch),
     saveDeal:         bindActionCreators(saveDeal, dispatch),
     deleteDeal:       bindActionCreators(deleteDeal, dispatch),
