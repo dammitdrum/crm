@@ -10,15 +10,17 @@ import accessConfig from '../../config/access/dealDetail'
 import Controls from './controls'
 import Table from './table'
 import DealModal from './modal'
-import * as Actions from '../../actions/dealDetailActions'
 import { createDeal, saveDeal, deleteDeal } from '../../actions/dealsActions'
 import { updateItem } from '../../actions/stockActions'
 
 class Deal extends Component {
+  /*constructor(props) {
+    super(props)
+  }*/
 	componentWillMount() {
     const dealNumber = this.props.routeParams.id
     let dealData
-    this.validator = new Validator(this.props.validate, validateConfig)
+    this.validator = new Validator(::this.validate, validateConfig)
     if (dealNumber) {
       this.originalDeal = _.find(this.props.deals.items, deal => deal.number === +dealNumber)
       dealData = _.cloneDeep(this.originalDeal)
@@ -30,43 +32,75 @@ class Deal extends Component {
         )
       })
     }
-    this.props.loadDeal(dealData ? dealData : null)
-    this.props.setDealManager(dealData ? dealData.manager : {
-      login: this.props.user.login,
-      name: this.props.user.name
-    })
+    const initState = {
+      state: 'new',
+      manager: {
+        login: this.props.user.login,
+        name: this.props.user.name
+      },
+      modal: { 
+        show: false, 
+        mode: '',
+        sortBy: { code: 'price', type: 'asc' },
+        searchQuery: ''
+      },
+      items: [],
+      sum: 0,
+      client: false,
+      number: '',
+      redirect: false,
+      validateMess: {
+        show: false
+      }
+    }
+    this.setState(dealData ? dealData : initState)
   }
   componentDidUpdate() {
-    if (this.props.redirect) {
+    if (this.state.redirect) {
       hashHistory.push('/deals')
     }
   }
+  validate(messObj) {
+    this.setState({
+      ...this.state,
+      validateMess: messObj
+    })
+  }
   setDealState(e) {
     if (e.currentTarget.classList.contains('active')) return
-    this.props.setDealState(e.currentTarget.getAttribute('data-state'))
+    this.setState({
+      ...this.state,
+      state: e.currentTarget.getAttribute('data-state')
+    })
   }
   setDealManager(e) {
     let login = e.currentTarget.getAttribute('data-id')
     let manager = _.find(this.props.user.users, (manager) => manager.login === login)
-    this.props.setDealManager({
-      login: manager.login,
-      name: manager.name
+    this.setState({
+      ...this.state,
+      manager: {
+        login: manager.login,
+        name: manager.name
+      }
     })
   }
   openModal(e) {
     let mode = e.currentTarget.getAttribute('data-modal')
     let code = mode === 'stock' ? 'price' : 'name'
-    this.props.showModal({
-      show: true,
-      mode,
-      sortBy: { code, type: 'asc' },
-      searchQuery: ''
+    this.setState({
+      ...this.state,
+      modal: {
+        show: true,
+        mode,
+        sortBy: { code, type: 'asc' },
+        searchQuery: ''
+      }
     })
   }
-  closeModal() { 
-    this.props.showModal({
-      ...this.props.modal,
-      show: false
+  closeModal() {
+    this.setState({
+      ...this.state,
+      modal: { ...this.state.modal, show: false }
     })
   }
   onSortModal(e) {
@@ -74,66 +108,103 @@ class Deal extends Component {
     let code = e.currentTarget.getAttribute('data-sort')
     let type = sortBy.type === 'desc' ? 'asc' : 'desc'
     type = code !== sortBy.code ? 'asc' : type
-    this.props.sortModal({ code, type })
+    this.setState({
+      ...this.state,
+      modal: { ...this.state.modal, sortBy: { code, type } }
+    })
   }
   searchModal(e) {
-    this.props.searchModal(e.target.value)
+    this._searchModal(e.target.value)
   }
   clearSearchModal() {
-    this.props.searchModal('')
+    this._searchModal('')
+  }
+  _searchModal(val) {
+    this.setState({
+      ...this.state,
+      modal: { ...this.state.modal, searchQuery: val }
+    })
   }
   addItem(e) {
     let id = e.currentTarget.getAttribute('data-id')
     let item = _.find(_.cloneDeep(this.props.stock.items), item => item._id === id)
-    let addedItem = _.find(this.props.items, i => i._id === item._id)
+    let items = this.state.items
+    let addedItem = _.find(items, i => i._id === item._id)
     if (addedItem) {
       let number = addedItem.number
       let id = addedItem._id
       if (item.quantity != number) ++number
-      this.props.setItemNumber(number, id)
+      items.forEach(item => {
+        if (item._id === id) {
+          item.price = +number
+        }
+      })
     } else {
       item.number = 1
-      this.props.addItem(item)
+      items.push(item)
     }
+    this.setState({ ...this.state, items: items.concat() })
     this.closeModal()
-    this.props.setDealSum()
+    this.setDealSum()
+  }
+  setDealSum() {
+    let sum = 0
+    this.state.items.forEach(item => {
+      sum += item.price * item.number
+    })
+    this.setState({ ...this.state, sum })
   }
   removeItem(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
-    this.props.removeItem(id)
-    this.props.setDealSum()
+    this.setState({
+      ...this.state,
+      items: this.state.items.filter(item => item._id !== id)
+    })
+    this.setDealSum()
   }
   setDealClient(e) {
     let id = e.currentTarget.getAttribute('data-id')
     let client = _.find(this.props.clients.items, item => item._id === id)
-    this.props.setDealClient(client)
+    this.setState({ ...this.state, client })
     this.closeModal()
     this.validator.validate({client: client})
   }
   setItemPrice(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
-    this.props.setItemPrice(e.target.value, id)
-    this.props.setDealSum()
+    let items = this.state.items
+    items.forEach(item => {
+      if (item._id === id) {
+        item.price = +e.target.value
+      }
+    })
+    this.setState({ ...this.state, items: items.concat() })
+    this.setDealSum()
   }
   setItemNumber(e) {
     let id = e.currentTarget.closest('[data-id]').getAttribute('data-id')
     let item = _.find(this.props.stock.items, item => item._id === id)
-    this.props.setItemNumber(e.target.value > 0 ? e.target.value : 0, id)
-    this.props.setDealSum()
+    let items = this.state.items
+    items.forEach(item => {
+      if (item._id === id) {
+        item.number = +(e.target.value > 0 ? e.target.value : 0)
+      }
+    })
+    this.setState({ ...this.state, items: items.concat() })
+    this.setDealSum()
   }
   setDealNumber(e) {
-    this.props.setDealNumber(e.target.value)
+    this.setState({ ...this.state, number: e.target.value })
     this.validator.validate({number: e.target.value})
   }
   submitDeal() {
-    if (!this.validator.validate({number: this.props.number, client: this.props.client})) return
+    if (!this.validator.validate({number: this.state.number, client: this.state.client})) return
     calculator(
-      this.props.dealDetail, 
+      this.state, 
       this.originalDeal, 
       this.props.stock.items, 
       this.props.updateStockItem
     )
-    let deal = _.cloneDeep(this.props.dealDetail)
+    let deal = _.cloneDeep(this.state)
     deal.items = deal.items.map(item => {
       return {
         id: item._id,
@@ -172,14 +243,14 @@ class Deal extends Component {
     return access * k
   }
   render() {
-    let props = this.props
-    let id = props.routeParams.id
+    let props = this.state
+    let id = this.props.routeParams.id
     let title = id ? `Редактирование сделки №${id}` : 'Создание новой сделки'
     let btnInfo = {
       cssClass: id ? 'btn-warning' : 'btn-success',
       text: id ? 'Сохранить сделку' : 'Создать сделку'
     }
-    let access = accessConfig[props.user.access]
+    let access = accessConfig[this.props.user.access]
     let accessComponent = this._getAccess(access.component)
     
     return (
@@ -191,7 +262,7 @@ class Deal extends Component {
             access={ this._getAccess(access.controls) }
             dealState={ props.state }
             clickStateBtn={ ::this.setDealState }
-            managerList={ props.user.users }
+            managerList={ this.props.user.users }
             manager={ props.manager }
             client={ props.client }
             selectManager={ ::this.setDealManager }
@@ -225,8 +296,8 @@ class Deal extends Component {
           </Link>
         </div>
         <DealModal 
-          stock={ props.stock.items }
-          clients={ props.clients.items }
+          stock={ this.props.stock.items }
+          clients={ this.props.clients.items }
           modal={ props.modal }
           onSort={ ::this.onSortModal }
           onSearch={ ::this.searchModal }
@@ -253,18 +324,6 @@ class Deal extends Component {
 
 const mapStateToProps = (state) => (
   {
-    title: state.dealDetail.title,
-    state: state.dealDetail.state,
-    items: state.dealDetail.items,
-    manager: state.dealDetail.manager,
-    client: state.dealDetail.client,
-    modal: state.dealDetail.modal,
-    reCalculate: state.dealDetail.reCalculate,
-    sum: state.dealDetail.sum,
-    number: state.dealDetail.number,
-    redirect: state.dealDetail.redirect,
-    validateMess: state.dealDetail.validateMess,
-    dealDetail: state.dealDetail,
     user: state.user,
     stock: state.stock,
     deals: state.deals,
@@ -274,20 +333,6 @@ const mapStateToProps = (state) => (
 
 const mapDispatchToProps = dispatch => (
   {
-    loadDeal:         bindActionCreators(Actions.loadDeal, dispatch),
-    setDealState:     bindActionCreators(Actions.setDealState, dispatch),
-    setDealManager:   bindActionCreators(Actions.setDealManager, dispatch),
-    showModal:        bindActionCreators(Actions.showModal, dispatch),
-    sortModal:        bindActionCreators(Actions.sortModal, dispatch),
-    searchModal:      bindActionCreators(Actions.searchModal, dispatch),
-    addItem:          bindActionCreators(Actions.addItem, dispatch),
-    removeItem:       bindActionCreators(Actions.removeItem, dispatch),
-    setDealClient:    bindActionCreators(Actions.setDealClient, dispatch),
-    setItemPrice:     bindActionCreators(Actions.setItemPrice, dispatch),
-    setItemNumber:    bindActionCreators(Actions.setItemNumber, dispatch),
-    setDealNumber:    bindActionCreators(Actions.setDealNumber, dispatch),
-    setDealSum:       bindActionCreators(Actions.setDealSum, dispatch),
-    validate:         bindActionCreators(Actions.validate, dispatch),
     createDeal:       bindActionCreators(createDeal, dispatch),
     saveDeal:         bindActionCreators(saveDeal, dispatch),
     deleteDeal:       bindActionCreators(deleteDeal, dispatch),

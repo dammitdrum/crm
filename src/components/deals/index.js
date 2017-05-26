@@ -11,6 +11,17 @@ import * as dealDetailActions from '../../actions/dealDetailActions'
 import Enum from '../../utils/Enum'
 
 class Deals extends Component {
+  componentWillMount() {
+    const initState = {
+      modal: { 
+        show: false, 
+        mode: '',
+        sortBy: { code: 'price', type: 'asc' },
+        searchQuery: ''
+      }
+    }
+    this.setState(initState)
+  }
   filterByState(e) {
     if (e.currentTarget.className === 'active') return
     this.props.filterByState(e.currentTarget.getAttribute('data-state'))
@@ -32,17 +43,22 @@ class Deals extends Component {
     hashHistory.push('/deals/edit/' + id)
   }
   openModal(e) {
-    this.props.showModal({
-      show: true,
-      mode: 'clients',
-      sortBy: { code: 'name', type: 'asc' },
-      searchQuery: ''
+    let mode = e.currentTarget.getAttribute('data-modal')
+    let code = mode === 'stock' ? 'price' : 'name'
+    this.setState({
+      ...this.state,
+      modal: {
+        show: true,
+        mode,
+        sortBy: { code, type: 'asc' },
+        searchQuery: ''
+      }
     })
   }
-  closeModal() { 
-    this.props.showModal({
-      ...this.props.modal,
-      show: false
+  closeModal() {
+    this.setState({
+      ...this.state,
+      modal: { ...this.state.modal, show: false }
     })
   }
   onSortModal(e) {
@@ -50,13 +66,22 @@ class Deals extends Component {
     let code = e.currentTarget.getAttribute('data-sort')
     let type = sortBy.type === 'desc' ? 'asc' : 'desc'
     type = code !== sortBy.code ? 'asc' : type
-    this.props.sortModal({ code, type })
+    this.setState({
+      ...this.state,
+      modal: { ...this.state.modal, sortBy: { code, type } }
+    })
   }
   searchModal(e) {
-    this.props.searchModal(e.target.value)
+    this._searchModal(e.target.value)
   }
   clearSearchModal() {
-    this.props.searchModal('')
+    this._searchModal('')
+  }
+  _searchModal(val) {
+    this.setState({
+      ...this.state,
+      modal: { ...this.state.modal, searchQuery: val }
+    })
   }
   filterByClient(e) {
     let id = e.currentTarget.getAttribute('data-id')
@@ -125,7 +150,7 @@ class Deals extends Component {
         />
         <DealModal 
           clients={ props.clients }
-          modal={ props.modal }
+          modal={ this.state.modal }
           onSort={ ::this.onSortModal }
           onSearch={ ::this.searchModal }
           onClearSearch={ ::this.clearSearchModal }
@@ -145,7 +170,6 @@ const mapStateToProps = state => (
     filterClients: state.deals.filterClients,
     activeState: state.deals.activeState,
     sortBy: state.deals.sortBy,
-    modal: state.dealDetail.modal,
     clients: state.clients.items
   }
 )
@@ -156,10 +180,7 @@ const mapDispatchToProps = dispatch => (
     filterByClient:   bindActionCreators(dealsActions.filterByClient, dispatch),
     clearClient:      bindActionCreators(dealsActions.clearClient, dispatch),
     filterBySearch:   bindActionCreators(dealsActions.filterBySearch, dispatch),
-    sortData:         bindActionCreators(dealsActions.sortData, dispatch),
-    showModal:        bindActionCreators(dealDetailActions.showModal, dispatch),
-    sortModal:        bindActionCreators(dealDetailActions.sortModal, dispatch),
-    searchModal:      bindActionCreators(dealDetailActions.searchModal, dispatch),
+    sortData:         bindActionCreators(dealsActions.sortData, dispatch)
   }
 )
 
