@@ -66,11 +66,9 @@ class Stock extends Component {
     item._id ?
       this.props.updateItem(item) : this.props.createItem(item)
   }
-  render() {
-    let props = this.props
+  _filter(props) {
     let items = []
     let categories = []
-    let access = accessConfig[props.access]
 
     categories = [Enum.defaultCatStock].concat(
       _.uniqBy(props.items, 'category').map((item) => item.category).sort()
@@ -90,13 +88,19 @@ class Stock extends Component {
       )
     }
     items = _.orderBy(items, [props.sortBy.code], [props.sortBy.type])
+    return { categories, items }
+  }
+  render() {
+    let props = this.props
+    let access = accessConfig[props.access]
+    let filtered = this._filter(props)
 
     return (
       <div className='stock container'>
         <h2 className="main_title">Прайс-лист</h2>
         <Controls 
           access={ access.controls }
-          categories={ categories }
+          categories={ filtered.categories }
           clickCategory={ ::this.clickCategory }
           activeCategory={ props.activeCategory }
           changeSearch={ ::this.changeSearch }
@@ -107,7 +111,7 @@ class Stock extends Component {
         <Table 
           access={ access.table }
           data={ props }
-          items= { items }
+          items= { filtered.items }
           onSort={ ::this.onSort }
           onDelete={ ::this.onDelete }
           openModal={ ::this.openModal }

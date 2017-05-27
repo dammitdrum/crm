@@ -69,8 +69,7 @@ class Deals extends Component {
     let id = e.currentTarget.getAttribute('data-id')
     this.props.clearClient(id)
   }
-  render() {
-    let props = this.props
+  _filter(props) {
     let deals = []
     let states = []
     const userFilter = this.props.routeParams.login
@@ -103,11 +102,17 @@ class Deals extends Component {
       deal[props.sortBy.code]['name'] || deal[props.sortBy.code]
     ), [props.sortBy.type])
 
+    return { states, deals }
+  }
+  render() {
+    let props = this.props
+    let filtered = this._filter(props)
+
     return (
       <div className='deals container'>
         <h2 className="main_title">{ props.title }</h2>
         <Controls 
-          states={ states } 
+          states={ filtered.states } 
           clickState={ ::this.filterByState }
           activeState={ props.activeState }
           clients={ props.filterClients }
@@ -119,7 +124,7 @@ class Deals extends Component {
         />
         <Table 
           data={ props }
-          deals= { deals }
+          deals= { filtered.deals }
           onSort={ ::this.onSort }
           openDeal={ ::this.openDeal }
         />
